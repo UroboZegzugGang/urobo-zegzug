@@ -13,6 +13,12 @@
 		4143722929E0540000A670C0 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143722829E0540000A670C0 /* MessagesViewController.swift */; };
 		4143722C29E0540000A670C0 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4143722A29E0540000A670C0 /* MainInterface.storyboard */; };
 		4143722E29E0540100A670C0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4143722D29E0540100A670C0 /* Assets.xcassets */; };
+		4143723D29E06F0B00A670C0 /* MenuScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143723C29E06F0B00A670C0 /* MenuScreen.swift */; };
+		4143723F29E06F1900A670C0 /* MenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143723E29E06F1900A670C0 /* MenuViewModel.swift */; };
+		4143724229E0702E00A670C0 /* GameMenuTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143724129E0702E00A670C0 /* GameMenuTile.swift */; };
+		4143724729E0901900A670C0 /* UroboGameScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143724629E0901900A670C0 /* UroboGameScreen.swift */; };
+		4143724929E0902600A670C0 /* UroboGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143724829E0902600A670C0 /* UroboGameViewModel.swift */; };
+		4143724C29E0945000A670C0 /* Padding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143724B29E0945000A670C0 /* Padding.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +54,12 @@
 		4143722B29E0540000A670C0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		4143722D29E0540100A670C0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4143722F29E0540100A670C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4143723C29E06F0B00A670C0 /* MenuScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScreen.swift; sourceTree = "<group>"; };
+		4143723E29E06F1900A670C0 /* MenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewModel.swift; sourceTree = "<group>"; };
+		4143724129E0702E00A670C0 /* GameMenuTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMenuTile.swift; sourceTree = "<group>"; };
+		4143724629E0901900A670C0 /* UroboGameScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UroboGameScreen.swift; sourceTree = "<group>"; };
+		4143724829E0902600A670C0 /* UroboGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UroboGameViewModel.swift; sourceTree = "<group>"; };
+		4143724B29E0945000A670C0 /* Padding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Padding.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,12 +112,74 @@
 		4143722729E0540000A670C0 /* urobo-zegzug MessagesExtension */ = {
 			isa = PBXGroup;
 			children = (
+				4143724A29E0944300A670C0 /* Utilities */,
+				4143723B29E063FF00A670C0 /* Menu */,
+				4143723929E0584E00A670C0 /* Urobo */,
 				4143722829E0540000A670C0 /* MessagesViewController.swift */,
 				4143722A29E0540000A670C0 /* MainInterface.storyboard */,
 				4143722D29E0540100A670C0 /* Assets.xcassets */,
 				4143722F29E0540100A670C0 /* Info.plist */,
 			);
 			path = "urobo-zegzug MessagesExtension";
+			sourceTree = "<group>";
+		};
+		4143723929E0584E00A670C0 /* Urobo */ = {
+			isa = PBXGroup;
+			children = (
+				4143724529E0900D00A670C0 /* Game */,
+				4143723A29E0585600A670C0 /* HowToPlay */,
+			);
+			path = Urobo;
+			sourceTree = "<group>";
+		};
+		4143723A29E0585600A670C0 /* HowToPlay */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = HowToPlay;
+			sourceTree = "<group>";
+		};
+		4143723B29E063FF00A670C0 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				4143724029E06F3500A670C0 /* Views */,
+				4143723C29E06F0B00A670C0 /* MenuScreen.swift */,
+				4143723E29E06F1900A670C0 /* MenuViewModel.swift */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
+		4143724029E06F3500A670C0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4143724129E0702E00A670C0 /* GameMenuTile.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		4143724529E0900D00A670C0 /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				4143724629E0901900A670C0 /* UroboGameScreen.swift */,
+				4143724829E0902600A670C0 /* UroboGameViewModel.swift */,
+			);
+			path = Game;
+			sourceTree = "<group>";
+		};
+		4143724A29E0944300A670C0 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				4143724D29E095D400A670C0 /* UI */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		4143724D29E095D400A670C0 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				4143724B29E0945000A670C0 /* Padding.swift */,
+			);
+			path = UI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -207,7 +281,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4143724229E0702E00A670C0 /* GameMenuTile.swift in Sources */,
+				4143724929E0902600A670C0 /* UroboGameViewModel.swift in Sources */,
+				4143724729E0901900A670C0 /* UroboGameScreen.swift in Sources */,
+				4143723F29E06F1900A670C0 /* MenuViewModel.swift in Sources */,
+				4143723D29E06F0B00A670C0 /* MenuScreen.swift in Sources */,
 				4143722929E0540000A670C0 /* MessagesViewController.swift in Sources */,
+				4143724C29E0945000A670C0 /* Padding.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,10 +433,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = H96D2TP7LP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "urobo-zegzug MessagesExtension/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "urobo-zegzug";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -378,10 +460,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = H96D2TP7LP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "urobo-zegzug MessagesExtension/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "urobo-zegzug";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -404,6 +488,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = H96D2TP7LP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -424,6 +509,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = H96D2TP7LP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
