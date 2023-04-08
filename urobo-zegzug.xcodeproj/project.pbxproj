@@ -19,6 +19,7 @@
 		4143724729E0901900A670C0 /* UroboGameScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143724629E0901900A670C0 /* UroboGameScreen.swift */; };
 		4143724929E0902600A670C0 /* UroboGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143724829E0902600A670C0 /* UroboGameViewModel.swift */; };
 		4143724C29E0945000A670C0 /* Padding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143724B29E0945000A670C0 /* Padding.swift */; };
+		4143726429E19BEC00A670C0 /* HowToPlayUroboView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143726329E19BEC00A670C0 /* HowToPlayUroboView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 		4143724629E0901900A670C0 /* UroboGameScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UroboGameScreen.swift; sourceTree = "<group>"; };
 		4143724829E0902600A670C0 /* UroboGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UroboGameViewModel.swift; sourceTree = "<group>"; };
 		4143724B29E0945000A670C0 /* Padding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Padding.swift; sourceTree = "<group>"; };
+		4143726329E19BEC00A670C0 /* HowToPlayUroboView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayUroboView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +137,7 @@
 		4143723A29E0585600A670C0 /* HowToPlay */ = {
 			isa = PBXGroup;
 			children = (
+				4143726329E19BEC00A670C0 /* HowToPlayUroboView.swift */,
 			);
 			path = HowToPlay;
 			sourceTree = "<group>";
@@ -285,6 +288,7 @@
 				4143724929E0902600A670C0 /* UroboGameViewModel.swift in Sources */,
 				4143724729E0901900A670C0 /* UroboGameScreen.swift in Sources */,
 				4143723F29E06F1900A670C0 /* MenuViewModel.swift in Sources */,
+				4143726429E19BEC00A670C0 /* HowToPlayUroboView.swift in Sources */,
 				4143723D29E06F0B00A670C0 /* MenuScreen.swift in Sources */,
 				4143722929E0540000A670C0 /* MessagesViewController.swift in Sources */,
 				4143724C29E0945000A670C0 /* Padding.swift in Sources */,
