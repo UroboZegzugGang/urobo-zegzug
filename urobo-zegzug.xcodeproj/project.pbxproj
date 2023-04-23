@@ -25,6 +25,8 @@
 		418CF6D829F3D2F2001C0FCD /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418CF6D729F3D2F2001C0FCD /* MenuButton.swift */; };
 		418CF6DB29F3D633001C0FCD /* GameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418CF6DA29F3D633001C0FCD /* GameType.swift */; };
 		55D9B32829F5D77000A2369C /* ZegzugGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B32729F5D77000A2369C /* ZegzugGameView.swift */; };
+		55D9B32B29F5D8B000A2369C /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B32A29F5D8B000A2369C /* Circle.swift */; };
+		55D9B32D29F5DAA500A2369C /* BackgroundCircles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B32C29F5DAA500A2369C /* BackgroundCircles.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +74,8 @@
 		418CF6D729F3D2F2001C0FCD /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		418CF6DA29F3D633001C0FCD /* GameType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameType.swift; sourceTree = "<group>"; };
 		55D9B32729F5D77000A2369C /* ZegzugGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZegzugGameView.swift; sourceTree = "<group>"; };
+		55D9B32A29F5D8B000A2369C /* Circle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Circle.swift; sourceTree = "<group>"; };
+		55D9B32C29F5DAA500A2369C /* BackgroundCircles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundCircles.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -251,6 +255,7 @@
 		55D9B32529F5D74400A2369C /* Zegzug */ = {
 			isa = PBXGroup;
 			children = (
+				55D9B32929F5D88A00A2369C /* Views */,
 				55D9B32629F5D75000A2369C /* Game */,
 			);
 			path = Zegzug;
@@ -262,6 +267,15 @@
 				55D9B32729F5D77000A2369C /* ZegzugGameView.swift */,
 			);
 			path = Game;
+			sourceTree = "<group>";
+		};
+		55D9B32929F5D88A00A2369C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				55D9B32A29F5D8B000A2369C /* Circle.swift */,
+				55D9B32C29F5DAA500A2369C /* BackgroundCircles.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -371,11 +385,13 @@
 				4143726429E19BEC00A670C0 /* HowToPlayUroboView.swift in Sources */,
 				418CF6DB29F3D633001C0FCD /* GameType.swift in Sources */,
 				4143723D29E06F0B00A670C0 /* MenuScreen.swift in Sources */,
+				55D9B32B29F5D8B000A2369C /* Circle.swift in Sources */,
 				418CF6D829F3D2F2001C0FCD /* MenuButton.swift in Sources */,
 				4143722929E0540000A670C0 /* MessagesViewController.swift in Sources */,
 				55D9B32829F5D77000A2369C /* ZegzugGameView.swift in Sources */,
 				418CF6D029F3D118001C0FCD /* Color+appColors.swift in Sources */,
 				4143724C29E0945000A670C0 /* Padding.swift in Sources */,
+				55D9B32D29F5DAA500A2369C /* BackgroundCircles.swift in Sources */,
 				418CF6D329F3D1E7001C0FCD /* Image+appImages.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
