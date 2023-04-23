@@ -24,6 +24,7 @@
 		418CF6D329F3D1E7001C0FCD /* Image+appImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418CF6D229F3D1E7001C0FCD /* Image+appImages.swift */; };
 		418CF6D829F3D2F2001C0FCD /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418CF6D729F3D2F2001C0FCD /* MenuButton.swift */; };
 		418CF6DB29F3D633001C0FCD /* GameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418CF6DA29F3D633001C0FCD /* GameType.swift */; };
+		55D9B32829F5D77000A2369C /* ZegzugGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B32729F5D77000A2369C /* ZegzugGameView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 		418CF6D229F3D1E7001C0FCD /* Image+appImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+appImages.swift"; sourceTree = "<group>"; };
 		418CF6D729F3D2F2001C0FCD /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		418CF6DA29F3D633001C0FCD /* GameType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameType.swift; sourceTree = "<group>"; };
+		55D9B32729F5D77000A2369C /* ZegzugGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZegzugGameView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +124,7 @@
 		4143722729E0540000A670C0 /* urobo-zegzug MessagesExtension */ = {
 			isa = PBXGroup;
 			children = (
+				55D9B32529F5D74400A2369C /* Zegzug */,
 				4143724A29E0944300A670C0 /* Utilities */,
 				4143723B29E063FF00A670C0 /* Menu */,
 				4143723929E0584E00A670C0 /* Urobo */,
@@ -245,6 +248,22 @@
 			path = GameType;
 			sourceTree = "<group>";
 		};
+		55D9B32529F5D74400A2369C /* Zegzug */ = {
+			isa = PBXGroup;
+			children = (
+				55D9B32629F5D75000A2369C /* Game */,
+			);
+			path = Zegzug;
+			sourceTree = "<group>";
+		};
+		55D9B32629F5D75000A2369C /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				55D9B32729F5D77000A2369C /* ZegzugGameView.swift */,
+			);
+			path = Game;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -294,6 +313,7 @@
 				TargetAttributes = {
 					4143721629E053FF00A670C0 = {
 						CreatedOnToolsVersion = 14.2;
+						LastSwiftMigration = 1430;
 					};
 					4143721F29E0540000A670C0 = {
 						CreatedOnToolsVersion = 14.2;
@@ -353,6 +373,7 @@
 				4143723D29E06F0B00A670C0 /* MenuScreen.swift in Sources */,
 				418CF6D829F3D2F2001C0FCD /* MenuButton.swift in Sources */,
 				4143722929E0540000A670C0 /* MessagesViewController.swift in Sources */,
+				55D9B32829F5D77000A2369C /* ZegzugGameView.swift in Sources */,
 				418CF6D029F3D118001C0FCD /* Color+appColors.swift in Sources */,
 				4143724C29E0945000A670C0 /* Padding.swift in Sources */,
 				418CF6D329F3D1E7001C0FCD /* Image+appImages.swift in Sources */,
@@ -554,6 +575,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = H96D2TP7LP;
@@ -565,6 +587,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "samu.urobo-zegzug";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -575,6 +598,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = H96D2TP7LP;
