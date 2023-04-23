@@ -27,6 +27,12 @@
 		55D9B32829F5D77000A2369C /* ZegzugGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B32729F5D77000A2369C /* ZegzugGameView.swift */; };
 		55D9B32B29F5D8B000A2369C /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B32A29F5D8B000A2369C /* Circle.swift */; };
 		55D9B32D29F5DAA500A2369C /* BackgroundCircles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B32C29F5DAA500A2369C /* BackgroundCircles.swift */; };
+		55D9B32F29F5DFB100A2369C /* PlayableArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B32E29F5DFB100A2369C /* PlayableArea.swift */; };
+		55D9B33129F5E02400A2369C /* ZegzugGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B33029F5E02400A2369C /* ZegzugGameViewModel.swift */; };
+		55D9B33429F5E15100A2369C /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B33329F5E15100A2369C /* CGPoint+Extension.swift */; };
+		55D9B33729F5E1B200A2369C /* Shape+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B33629F5E1B200A2369C /* Shape+Extension.swift */; };
+		55D9B33A29F5E23400A2369C /* Path+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B33929F5E23400A2369C /* Path+Extension.swift */; };
+		55D9B33D29F5E2BB00A2369C /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B33C29F5E2BB00A2369C /* Array+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +82,12 @@
 		55D9B32729F5D77000A2369C /* ZegzugGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZegzugGameView.swift; sourceTree = "<group>"; };
 		55D9B32A29F5D8B000A2369C /* Circle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Circle.swift; sourceTree = "<group>"; };
 		55D9B32C29F5DAA500A2369C /* BackgroundCircles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundCircles.swift; sourceTree = "<group>"; };
+		55D9B32E29F5DFB100A2369C /* PlayableArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayableArea.swift; sourceTree = "<group>"; };
+		55D9B33029F5E02400A2369C /* ZegzugGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZegzugGameViewModel.swift; sourceTree = "<group>"; };
+		55D9B33329F5E15100A2369C /* CGPoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
+		55D9B33629F5E1B200A2369C /* Shape+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Shape+Extension.swift"; sourceTree = "<group>"; };
+		55D9B33929F5E23400A2369C /* Path+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Path+Extension.swift"; sourceTree = "<group>"; };
+		55D9B33C29F5E2BB00A2369C /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,6 +218,10 @@
 		418CF6CC29F3D0D4001C0FCD /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				55D9B33B29F5E2AC00A2369C /* Array */,
+				55D9B33829F5E22600A2369C /* Path */,
+				55D9B33529F5E19B00A2369C /* Shape */,
+				55D9B33229F5E11500A2369C /* CGPoint */,
 				418CF6D129F3D1D3001C0FCD /* Image */,
 				418CF6CE29F3D103001C0FCD /* Color */,
 			);
@@ -265,6 +281,7 @@
 			isa = PBXGroup;
 			children = (
 				55D9B32729F5D77000A2369C /* ZegzugGameView.swift */,
+				55D9B33029F5E02400A2369C /* ZegzugGameViewModel.swift */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -274,8 +291,41 @@
 			children = (
 				55D9B32A29F5D8B000A2369C /* Circle.swift */,
 				55D9B32C29F5DAA500A2369C /* BackgroundCircles.swift */,
+				55D9B32E29F5DFB100A2369C /* PlayableArea.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		55D9B33229F5E11500A2369C /* CGPoint */ = {
+			isa = PBXGroup;
+			children = (
+				55D9B33329F5E15100A2369C /* CGPoint+Extension.swift */,
+			);
+			path = CGPoint;
+			sourceTree = "<group>";
+		};
+		55D9B33529F5E19B00A2369C /* Shape */ = {
+			isa = PBXGroup;
+			children = (
+				55D9B33629F5E1B200A2369C /* Shape+Extension.swift */,
+			);
+			path = Shape;
+			sourceTree = "<group>";
+		};
+		55D9B33829F5E22600A2369C /* Path */ = {
+			isa = PBXGroup;
+			children = (
+				55D9B33929F5E23400A2369C /* Path+Extension.swift */,
+			);
+			path = Path;
+			sourceTree = "<group>";
+		};
+		55D9B33B29F5E2AC00A2369C /* Array */ = {
+			isa = PBXGroup;
+			children = (
+				55D9B33C29F5E2BB00A2369C /* Array+Extension.swift */,
+			);
+			path = Array;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -378,6 +428,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55D9B33A29F5E23400A2369C /* Path+Extension.swift in Sources */,
+				55D9B32F29F5DFB100A2369C /* PlayableArea.swift in Sources */,
 				4143724229E0702E00A670C0 /* GameMenuTile.swift in Sources */,
 				4143724929E0902600A670C0 /* UroboGameViewModel.swift in Sources */,
 				4143724729E0901900A670C0 /* UroboGameScreen.swift in Sources */,
@@ -385,6 +437,8 @@
 				4143726429E19BEC00A670C0 /* HowToPlayUroboView.swift in Sources */,
 				418CF6DB29F3D633001C0FCD /* GameType.swift in Sources */,
 				4143723D29E06F0B00A670C0 /* MenuScreen.swift in Sources */,
+				55D9B33429F5E15100A2369C /* CGPoint+Extension.swift in Sources */,
+				55D9B33729F5E1B200A2369C /* Shape+Extension.swift in Sources */,
 				55D9B32B29F5D8B000A2369C /* Circle.swift in Sources */,
 				418CF6D829F3D2F2001C0FCD /* MenuButton.swift in Sources */,
 				4143722929E0540000A670C0 /* MessagesViewController.swift in Sources */,
@@ -392,7 +446,9 @@
 				418CF6D029F3D118001C0FCD /* Color+appColors.swift in Sources */,
 				4143724C29E0945000A670C0 /* Padding.swift in Sources */,
 				55D9B32D29F5DAA500A2369C /* BackgroundCircles.swift in Sources */,
+				55D9B33D29F5E2BB00A2369C /* Array+Extension.swift in Sources */,
 				418CF6D329F3D1E7001C0FCD /* Image+appImages.swift in Sources */,
+				55D9B33129F5E02400A2369C /* ZegzugGameViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

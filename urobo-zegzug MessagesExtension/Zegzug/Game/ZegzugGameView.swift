@@ -5,6 +5,9 @@ struct ZegzugGameView: View {
         VStack {
             resetButton()
             BackgroundCircles()
+                .background {
+                    PlayableArea()
+                }
             sendButton()
         }
     }
