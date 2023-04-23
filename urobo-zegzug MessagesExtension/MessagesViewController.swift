@@ -14,7 +14,8 @@ class MessagesViewController: MSMessagesAppViewController {
         if presentationStyle == .compact {
             controller = instantiateMenuVC()
         } else {
-            return  // TODO: present previous game
+            // TODO: Get state and instantiate urobo/zegzug
+            controller = instantiateUroboVC()
         }
 
         for child in children {
@@ -38,9 +39,13 @@ class MessagesViewController: MSMessagesAppViewController {
 
     private func instantiateMenuVC() -> UIViewController {
         let viewModel = MenuViewModel()
-        let menuVC = UIHostingController(rootView: MenuScreen(viewModel: viewModel))
+        viewModel.delegate = self
+        return UIHostingController(rootView: MenuScreen(viewModel: viewModel))
+    }
 
-        return menuVC
+    private func instantiateUroboVC() -> UIViewController {
+        let viewModel = UroboGameViewModel()
+        return UIHostingController(rootView: UroboGameScreen(viewModel: viewModel))
     }
 }
 
@@ -91,5 +96,19 @@ extension MessagesViewController {
         // Called after the extension transitions to a new presentation style.
 
         // Use this method to finalize any behaviors associated with the change in presentation style.
+
+        guard let conversation = activeConversation else {
+            fatalError("Expected the active conversation")
+        }
+
+        presentVC(for: conversation, with: presentationStyle)
     }
+}
+
+extension MessagesViewController: MenuViewModelDelegate {
+    func startUrobo() {
+        requestPresentationStyle(.expanded)
+    }
+
+    func startZegZug() {}
 }

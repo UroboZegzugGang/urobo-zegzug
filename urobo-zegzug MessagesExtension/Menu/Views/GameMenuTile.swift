@@ -55,9 +55,3 @@ extension GameMenuButton {
         static let titleSize: CGFloat = 16
     }
 }
-
-struct GameMenuTile_Previews: PreviewProvider {
-    static var previews: some View {
-        GameMenuButton(gameType: .urobo) {}
-    }
-}
