@@ -20,6 +20,10 @@
 		4143724929E0902600A670C0 /* UroboGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143724829E0902600A670C0 /* UroboGameViewModel.swift */; };
 		4143724C29E0945000A670C0 /* Padding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143724B29E0945000A670C0 /* Padding.swift */; };
 		4143726429E19BEC00A670C0 /* HowToPlayUroboView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143726329E19BEC00A670C0 /* HowToPlayUroboView.swift */; };
+		418CF6D029F3D118001C0FCD /* Color+appColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418CF6CF29F3D118001C0FCD /* Color+appColors.swift */; };
+		418CF6D329F3D1E7001C0FCD /* Image+appImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418CF6D229F3D1E7001C0FCD /* Image+appImages.swift */; };
+		418CF6D829F3D2F2001C0FCD /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418CF6D729F3D2F2001C0FCD /* MenuButton.swift */; };
+		418CF6DB29F3D633001C0FCD /* GameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418CF6DA29F3D633001C0FCD /* GameType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +66,10 @@
 		4143724829E0902600A670C0 /* UroboGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UroboGameViewModel.swift; sourceTree = "<group>"; };
 		4143724B29E0945000A670C0 /* Padding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Padding.swift; sourceTree = "<group>"; };
 		4143726329E19BEC00A670C0 /* HowToPlayUroboView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayUroboView.swift; sourceTree = "<group>"; };
+		418CF6CF29F3D118001C0FCD /* Color+appColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+appColors.swift"; sourceTree = "<group>"; };
+		418CF6D229F3D1E7001C0FCD /* Image+appImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+appImages.swift"; sourceTree = "<group>"; };
+		418CF6D729F3D2F2001C0FCD /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
+		418CF6DA29F3D633001C0FCD /* GameType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +180,8 @@
 		4143724A29E0944300A670C0 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				418CF6D929F3D624001C0FCD /* GameType */,
+				418CF6CC29F3D0D4001C0FCD /* Extensions */,
 				4143724D29E095D400A670C0 /* UI */,
 			);
 			path = Utilities;
@@ -180,9 +190,59 @@
 		4143724D29E095D400A670C0 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				4143724B29E0945000A670C0 /* Padding.swift */,
+				418CF6D529F3D2D7001C0FCD /* Button */,
+				418CF6D429F3D2C9001C0FCD /* Padding */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		418CF6CC29F3D0D4001C0FCD /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				418CF6D129F3D1D3001C0FCD /* Image */,
+				418CF6CE29F3D103001C0FCD /* Color */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		418CF6CE29F3D103001C0FCD /* Color */ = {
+			isa = PBXGroup;
+			children = (
+				418CF6CF29F3D118001C0FCD /* Color+appColors.swift */,
+			);
+			path = Color;
+			sourceTree = "<group>";
+		};
+		418CF6D129F3D1D3001C0FCD /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				418CF6D229F3D1E7001C0FCD /* Image+appImages.swift */,
+			);
+			path = Image;
+			sourceTree = "<group>";
+		};
+		418CF6D429F3D2C9001C0FCD /* Padding */ = {
+			isa = PBXGroup;
+			children = (
+				4143724B29E0945000A670C0 /* Padding.swift */,
+			);
+			path = Padding;
+			sourceTree = "<group>";
+		};
+		418CF6D529F3D2D7001C0FCD /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				418CF6D729F3D2F2001C0FCD /* MenuButton.swift */,
+			);
+			path = Button;
+			sourceTree = "<group>";
+		};
+		418CF6D929F3D624001C0FCD /* GameType */ = {
+			isa = PBXGroup;
+			children = (
+				418CF6DA29F3D633001C0FCD /* GameType.swift */,
+			);
+			path = GameType;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -289,9 +349,13 @@
 				4143724729E0901900A670C0 /* UroboGameScreen.swift in Sources */,
 				4143723F29E06F1900A670C0 /* MenuViewModel.swift in Sources */,
 				4143726429E19BEC00A670C0 /* HowToPlayUroboView.swift in Sources */,
+				418CF6DB29F3D633001C0FCD /* GameType.swift in Sources */,
 				4143723D29E06F0B00A670C0 /* MenuScreen.swift in Sources */,
+				418CF6D829F3D2F2001C0FCD /* MenuButton.swift in Sources */,
 				4143722929E0540000A670C0 /* MessagesViewController.swift in Sources */,
+				418CF6D029F3D118001C0FCD /* Color+appColors.swift in Sources */,
 				4143724C29E0945000A670C0 /* Padding.swift in Sources */,
+				418CF6D329F3D1E7001C0FCD /* Image+appImages.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

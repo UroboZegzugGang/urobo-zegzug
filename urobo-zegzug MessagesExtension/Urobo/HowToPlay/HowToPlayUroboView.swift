@@ -1,10 +1,3 @@
-//
-//  HowToPlayUroboView.swift
-//  urobo-zegzug MessagesExtension
-//
-//  Created by Váczi Samu on 2023. 04. 08..
-//
-
 import SwiftUI
 
 struct HowToPlayUroboView: View {

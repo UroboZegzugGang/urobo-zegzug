@@ -1,10 +1,3 @@
-//
-//  MenuScreen.swift
-//  urobo-zegzug MessagesExtension
-//
-//  Created by Váczi Samu on 2023. 04. 07..
-//
-
 import SwiftUI
 
 struct MenuScreen: View {
@@ -20,21 +13,19 @@ struct MenuScreen: View {
         }
         .padding(Padding.single)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color("appBackground"))
+        .background(Color.appBackground)
     }
 
     @ViewBuilder private func uroboTile() -> some View {
-        GameMenuTile(title: "Urobo", graphic: Image("uroboGraphic"), backgroundColor: Color("menuTileBackground"))
-            .onTapGesture {
-                viewModel.startUrobo()
-            }
+        GameMenuButton(gameType: .urobo) {
+            viewModel.startUrobo()
+        }
     }
 
     @ViewBuilder private func zegzugTile() -> some View {
-        GameMenuTile(title: "ZegZug", graphic: Image("zegzugGraphic"), backgroundColor: Color("menuTileBackground"))
-            .onTapGesture {
-                viewModel.startZegZug()
-            }
+        GameMenuButton(gameType: .zegzug) {
+            viewModel.startZegZug()
+        }
     }
 }
 
