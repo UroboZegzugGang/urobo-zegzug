@@ -586,7 +586,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = H96D2TP7LP;
+				DEVELOPMENT_TEAM = 85XVJT6RC3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "urobo-zegzug MessagesExtension/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "urobo-zegzug";
@@ -613,7 +613,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = H96D2TP7LP;
+				DEVELOPMENT_TEAM = 85XVJT6RC3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "urobo-zegzug MessagesExtension/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "urobo-zegzug";
@@ -642,7 +642,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = H96D2TP7LP;
+				DEVELOPMENT_TEAM = 85XVJT6RC3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -666,7 +666,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = H96D2TP7LP;
+				DEVELOPMENT_TEAM = 85XVJT6RC3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
