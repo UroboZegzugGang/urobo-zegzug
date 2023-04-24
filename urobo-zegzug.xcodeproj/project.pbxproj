@@ -19,7 +19,7 @@
 		4143724729E0901900A670C0 /* UroboGameScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143724629E0901900A670C0 /* UroboGameScreen.swift */; };
 		4143724929E0902600A670C0 /* UroboGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143724829E0902600A670C0 /* UroboGameViewModel.swift */; };
 		4143724C29E0945000A670C0 /* Padding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143724B29E0945000A670C0 /* Padding.swift */; };
-		4143726429E19BEC00A670C0 /* HowToPlayUroboView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143726329E19BEC00A670C0 /* HowToPlayUroboView.swift */; };
+		4143726429E19BEC00A670C0 /* HowToPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143726329E19BEC00A670C0 /* HowToPlayView.swift */; };
 		418CF6D029F3D118001C0FCD /* Color+appColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418CF6CF29F3D118001C0FCD /* Color+appColors.swift */; };
 		418CF6D329F3D1E7001C0FCD /* Image+appImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418CF6D229F3D1E7001C0FCD /* Image+appImages.swift */; };
 		418CF6D829F3D2F2001C0FCD /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418CF6D729F3D2F2001C0FCD /* MenuButton.swift */; };
@@ -67,7 +67,7 @@
 		4143724629E0901900A670C0 /* UroboGameScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UroboGameScreen.swift; sourceTree = "<group>"; };
 		4143724829E0902600A670C0 /* UroboGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UroboGameViewModel.swift; sourceTree = "<group>"; };
 		4143724B29E0945000A670C0 /* Padding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Padding.swift; sourceTree = "<group>"; };
-		4143726329E19BEC00A670C0 /* HowToPlayUroboView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayUroboView.swift; sourceTree = "<group>"; };
+		4143726329E19BEC00A670C0 /* HowToPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayView.swift; sourceTree = "<group>"; };
 		418CF6CF29F3D118001C0FCD /* Color+appColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+appColors.swift"; sourceTree = "<group>"; };
 		418CF6D229F3D1E7001C0FCD /* Image+appImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+appImages.swift"; sourceTree = "<group>"; };
 		418CF6D729F3D2F2001C0FCD /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
@@ -149,7 +149,7 @@
 		4143723A29E0585600A670C0 /* HowToPlay */ = {
 			isa = PBXGroup;
 			children = (
-				4143726329E19BEC00A670C0 /* HowToPlayUroboView.swift */,
+				4143726329E19BEC00A670C0 /* HowToPlayView.swift */,
 			);
 			path = HowToPlay;
 			sourceTree = "<group>";
@@ -363,7 +363,7 @@
 				4143724929E0902600A670C0 /* UroboGameViewModel.swift in Sources */,
 				4143724729E0901900A670C0 /* UroboGameScreen.swift in Sources */,
 				4143723F29E06F1900A670C0 /* MenuViewModel.swift in Sources */,
-				4143726429E19BEC00A670C0 /* HowToPlayUroboView.swift in Sources */,
+				4143726429E19BEC00A670C0 /* HowToPlayView.swift in Sources */,
 				418CF6DB29F3D633001C0FCD /* GameType.swift in Sources */,
 				4143723D29E06F0B00A670C0 /* MenuScreen.swift in Sources */,
 				418CF6D829F3D2F2001C0FCD /* MenuButton.swift in Sources */,
