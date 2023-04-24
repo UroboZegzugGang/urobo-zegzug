@@ -28,9 +28,3 @@ struct MenuScreen: View {
         }
     }
 }
-
-struct MenuScreen_Previews: PreviewProvider {
-    static var previews: some View {
-        MenuScreen(viewModel: MenuViewModel())
-    }
-}

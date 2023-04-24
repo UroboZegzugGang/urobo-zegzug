@@ -24,6 +24,8 @@
 		418CF6D329F3D1E7001C0FCD /* Image+appImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418CF6D229F3D1E7001C0FCD /* Image+appImages.swift */; };
 		418CF6D829F3D2F2001C0FCD /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418CF6D729F3D2F2001C0FCD /* MenuButton.swift */; };
 		418CF6DB29F3D633001C0FCD /* GameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418CF6DA29F3D633001C0FCD /* GameType.swift */; };
+		41F72A7E29F5BB8F00A386EC /* MonochromeShadowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F72A7D29F5BB8F00A386EC /* MonochromeShadowButton.swift */; };
+		41F72A8129F5BBF600A386EC /* UroboPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F72A8029F5BBF600A386EC /* UroboPlayer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +72,8 @@
 		418CF6D229F3D1E7001C0FCD /* Image+appImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+appImages.swift"; sourceTree = "<group>"; };
 		418CF6D729F3D2F2001C0FCD /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		418CF6DA29F3D633001C0FCD /* GameType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameType.swift; sourceTree = "<group>"; };
+		41F72A7D29F5BB8F00A386EC /* MonochromeShadowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonochromeShadowButton.swift; sourceTree = "<group>"; };
+		41F72A8029F5BBF600A386EC /* UroboPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UroboPlayer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +175,7 @@
 		4143724529E0900D00A670C0 /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				41F72A7F29F5BBE900A386EC /* Model */,
 				4143724629E0901900A670C0 /* UroboGameScreen.swift */,
 				4143724829E0902600A670C0 /* UroboGameViewModel.swift */,
 			);
@@ -233,6 +238,7 @@
 			isa = PBXGroup;
 			children = (
 				418CF6D729F3D2F2001C0FCD /* MenuButton.swift */,
+				41F72A7D29F5BB8F00A386EC /* MonochromeShadowButton.swift */,
 			);
 			path = Button;
 			sourceTree = "<group>";
@@ -243,6 +249,14 @@
 				418CF6DA29F3D633001C0FCD /* GameType.swift */,
 			);
 			path = GameType;
+			sourceTree = "<group>";
+		};
+		41F72A7F29F5BBE900A386EC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				41F72A8029F5BBF600A386EC /* UroboPlayer.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -344,6 +358,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41F72A8129F5BBF600A386EC /* UroboPlayer.swift in Sources */,
 				4143724229E0702E00A670C0 /* GameMenuTile.swift in Sources */,
 				4143724929E0902600A670C0 /* UroboGameViewModel.swift in Sources */,
 				4143724729E0901900A670C0 /* UroboGameScreen.swift in Sources */,
@@ -356,6 +371,7 @@
 				418CF6D029F3D118001C0FCD /* Color+appColors.swift in Sources */,
 				4143724C29E0945000A670C0 /* Padding.swift in Sources */,
 				418CF6D329F3D1E7001C0FCD /* Image+appImages.swift in Sources */,
+				41F72A7E29F5BB8F00A386EC /* MonochromeShadowButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -561,6 +577,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "samu.urobo-zegzug";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -582,6 +599,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "samu.urobo-zegzug";
 				PRODUCT_NAME = "$(TARGET_NAME)";
