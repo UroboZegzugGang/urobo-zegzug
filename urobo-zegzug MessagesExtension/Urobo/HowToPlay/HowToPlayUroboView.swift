@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct HowToPlayUroboView: View {
+    var hideAction: () -> Void
+
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: Constants.cornerRadius)
@@ -10,7 +12,7 @@ struct HowToPlayUroboView: View {
 
             RoundedRectangle(cornerRadius: Constants.cornerRadius)
                 .frame(maxWidth: Constants.width, maxHeight: Constants.height)
-                .foregroundColor(.white)
+                .foregroundColor(.menuTileBackground)
                 .overlay {
                     gameDescription()
                 }
@@ -20,9 +22,10 @@ struct HowToPlayUroboView: View {
     @ViewBuilder private func gameDescription() -> some View {
         ScrollView(showsIndicators: false) {
             VStack {
+                closeButton()
                 Text("How to play Urobo")
                     .font(.system(size: Constants.titleSize, weight: .bold))
-                    .padding(Padding.triple)
+                    .padding([.bottom, .horizontal], Padding.triple)
                 VStack(alignment: .leading) {
                     sectionHeader("Dark plays against light")
                     sectionBody("There are no strongest or weakest tiles. The strength of each tile depends on their position to the one that had been laid.")
@@ -42,6 +45,19 @@ struct HowToPlayUroboView: View {
             }
         }
         .padding()
+    }
+
+    @ViewBuilder private func closeButton() -> some View {
+        HStack {
+            Spacer()
+            Button {
+                hideAction()
+            } label: {
+                Image(systemName: "x.circle.fill")
+                    .foregroundColor(.gray)
+                    .frame(width: Constants.closeButtonSize, height: Constants.closeButtonSize)
+            }
+        }
     }
 
     @ViewBuilder private func sectionHeader(_ text: String) -> some View {
@@ -66,11 +82,6 @@ extension HowToPlayUroboView {
         static let titleSize: CGFloat = 24
         static let sectionHeaderSize: CGFloat = 20
         static let sectionBodySize: CGFloat = 14
-    }
-}
-
-struct HowToPlayUroboView_Previews: PreviewProvider {
-    static var previews: some View {
-        HowToPlayUroboView()
+        static let closeButtonSize: CGFloat = 30
     }
 }
