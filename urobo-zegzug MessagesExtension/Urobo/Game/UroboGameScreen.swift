@@ -14,6 +14,7 @@ struct UroboGameScreen: View {
         }
         .background {
             Color.appBackground
+                .ignoresSafeArea()
         }
         .overlay {
             if viewModel.helpShowing {
