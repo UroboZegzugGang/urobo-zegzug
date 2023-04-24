@@ -10,7 +10,6 @@ struct PlayableArea: View {
             greenLines(from: normalizedCenters, in: geo)
             orangeLines(from: normalizedCenters, in: geo)
             tappableCircles(from: normalizedCenters, in: geo)
-
         }
     }
 
