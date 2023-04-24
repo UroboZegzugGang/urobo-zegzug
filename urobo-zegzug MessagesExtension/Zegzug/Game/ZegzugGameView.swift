@@ -13,11 +13,17 @@ struct ZegzugGameView: View {
                 }
             Spacer()
             sendButton()
+            infoButton()
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background {
             Color.appBackground.ignoresSafeArea()
+        }
+        .overlay {
+            if viewModel.showingHowTo {
+                howToPanel()
+            }
         }
     }
 
@@ -39,5 +45,27 @@ struct ZegzugGameView: View {
         }
         .buttonStyle(.monochromeShadow)
         .padding(.top)
+    }
+
+    @ViewBuilder private func infoButton() -> some View {
+        HStack {
+            Spacer()
+            Button("?") {
+                viewModel.showingHowTo = true
+            }
+            .buttonStyle(.circular)
+        }
+    }
+
+    @ViewBuilder private func howToPanel() -> some View {
+        Rectangle()
+            .ignoresSafeArea()
+            .opacity(.zero)
+            .background(.ultraThinMaterial)
+            .overlay {
+                HowToPlayView(gameType: .zegzug) {
+                    viewModel.showingHowTo = false
+                }
+            }
     }
 }
