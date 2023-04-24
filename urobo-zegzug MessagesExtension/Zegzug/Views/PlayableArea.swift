@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PlayableArea: View {
-    @StateObject var viewModel = ZegzugGameViewModel()
+    @StateObject var viewModel: ZegzugGameViewModel
 
     var body: some View {
         GeometryReader { geo in

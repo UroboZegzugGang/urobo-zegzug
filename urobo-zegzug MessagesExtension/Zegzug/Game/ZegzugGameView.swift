@@ -1,12 +1,14 @@
 import SwiftUI
 
 struct ZegzugGameView: View {
+    @StateObject var viewModel: ZegzugGameViewModel
+
     var body: some View {
         VStack {
             resetButton()
             BackgroundCircles()
                 .background {
-                    PlayableArea()
+                    PlayableArea(viewModel: viewModel)
                 }
             sendButton()
         }
