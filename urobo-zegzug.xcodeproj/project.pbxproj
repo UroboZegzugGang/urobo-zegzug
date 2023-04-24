@@ -32,8 +32,8 @@
 		55D9B33429F5E15100A2369C /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B33329F5E15100A2369C /* CGPoint+Extension.swift */; };
 		55D9B33729F5E1B200A2369C /* Shape+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B33629F5E1B200A2369C /* Shape+Extension.swift */; };
 		55D9B33A29F5E23400A2369C /* Path+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B33929F5E23400A2369C /* Path+Extension.swift */; };
-		41F72A7E29F5BB8F00A386EC /* MonochromeShadowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F72A7D29F5BB8F00A386EC /* MonochromeShadowButton.swift */; };
-		41F72A8129F5BBF600A386EC /* UroboPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F72A8029F5BBF600A386EC /* UroboPlayer.swift */; };
+		55D9B34229F6C6E900A2369C /* UroboPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B34129F6C6E900A2369C /* UroboPlayer.swift */; };
+		55D9B34429F6C6F400A2369C /* MonochromeShadowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B34329F6C6F400A2369C /* MonochromeShadowButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +88,8 @@
 		55D9B33329F5E15100A2369C /* CGPoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
 		55D9B33629F5E1B200A2369C /* Shape+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Shape+Extension.swift"; sourceTree = "<group>"; };
 		55D9B33929F5E23400A2369C /* Path+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Path+Extension.swift"; sourceTree = "<group>"; };
+		55D9B34129F6C6E900A2369C /* UroboPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UroboPlayer.swift; sourceTree = "<group>"; };
+		55D9B34329F6C6F400A2369C /* MonochromeShadowButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonochromeShadowButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,7 +192,7 @@
 		4143724529E0900D00A670C0 /* Game */ = {
 			isa = PBXGroup;
 			children = (
-				41F72A7F29F5BBE900A386EC /* Model */,
+				55D9B34029F6C6E900A2369C /* Model */,
 				4143724629E0901900A670C0 /* UroboGameScreen.swift */,
 				4143724829E0902600A670C0 /* UroboGameViewModel.swift */,
 			);
@@ -255,8 +257,8 @@
 		418CF6D529F3D2D7001C0FCD /* Button */ = {
 			isa = PBXGroup;
 			children = (
+				55D9B34329F6C6F400A2369C /* MonochromeShadowButton.swift */,
 				418CF6D729F3D2F2001C0FCD /* MenuButton.swift */,
-				41F72A7D29F5BB8F00A386EC /* MonochromeShadowButton.swift */,
 			);
 			path = Button;
 			sourceTree = "<group>";
@@ -319,6 +321,14 @@
 				55D9B33929F5E23400A2369C /* Path+Extension.swift */,
 			);
 			path = Path;
+			sourceTree = "<group>";
+		};
+		55D9B34029F6C6E900A2369C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				55D9B34129F6C6E900A2369C /* UroboPlayer.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -429,12 +439,14 @@
 				4143723F29E06F1900A670C0 /* MenuViewModel.swift in Sources */,
 				4143726429E19BEC00A670C0 /* HowToPlayUroboView.swift in Sources */,
 				418CF6DB29F3D633001C0FCD /* GameType.swift in Sources */,
+				55D9B34429F6C6F400A2369C /* MonochromeShadowButton.swift in Sources */,
 				4143723D29E06F0B00A670C0 /* MenuScreen.swift in Sources */,
 				55D9B33429F5E15100A2369C /* CGPoint+Extension.swift in Sources */,
 				55D9B33729F5E1B200A2369C /* Shape+Extension.swift in Sources */,
 				55D9B32B29F5D8B000A2369C /* Circle.swift in Sources */,
 				418CF6D829F3D2F2001C0FCD /* MenuButton.swift in Sources */,
 				4143722929E0540000A670C0 /* MessagesViewController.swift in Sources */,
+				55D9B34229F6C6E900A2369C /* UroboPlayer.swift in Sources */,
 				55D9B32829F5D77000A2369C /* ZegzugGameView.swift in Sources */,
 				418CF6D029F3D118001C0FCD /* Color+appColors.swift in Sources */,
 				4143724C29E0945000A670C0 /* Padding.swift in Sources */,
