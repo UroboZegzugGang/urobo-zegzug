@@ -81,7 +81,7 @@ struct UroboGameScreen: View {
         } label: {
             HStack {
                 Spacer()
-                Circle()
+                SwiftUI.Circle()
                     .frame(width: Constants.helpButtonSize, height: Constants.helpButtonSize)
                     .foregroundColor(.gray)
                     .shadow(color: .black, radius: .zero, x: Constants.helpButtonShadowOffset, y: Constants.helpButtonShadowOffset)
