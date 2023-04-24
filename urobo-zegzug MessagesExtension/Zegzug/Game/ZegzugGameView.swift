@@ -24,9 +24,12 @@ struct ZegzugGameView: View {
     @ViewBuilder private func resetButton() -> some View {
         HStack {
             Spacer()
-            Button("Reset") {
+            Button {
                 // TODO: reset current turn
+            } label: {
+                Image(systemName: "arrow.counterclockwise")
             }
+            .buttonStyle(.circular)
         }
     }
 
@@ -34,7 +37,7 @@ struct ZegzugGameView: View {
         Button("Send") {
             // TODO: End turn and send it
         }
-        .buttonStyle(MonochromeShadowButton())
+        .buttonStyle(.monochromeShadow)
         .padding(.top)
     }
 }

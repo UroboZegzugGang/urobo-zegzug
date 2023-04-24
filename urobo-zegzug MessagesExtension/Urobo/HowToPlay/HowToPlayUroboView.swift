@@ -50,13 +50,11 @@ struct HowToPlayUroboView: View {
     @ViewBuilder private func closeButton() -> some View {
         HStack {
             Spacer()
-            Button {
+            Button("X") {
                 hideAction()
-            } label: {
-                Image(systemName: "x.circle.fill")
-                    .foregroundColor(.gray)
-                    .frame(width: Constants.closeButtonSize, height: Constants.closeButtonSize)
             }
+            .buttonStyle(.circular)
+            .padding(.trailing, Padding.half)
         }
     }
 
@@ -82,6 +80,5 @@ extension HowToPlayUroboView {
         static let titleSize: CGFloat = 24
         static let sectionHeaderSize: CGFloat = 20
         static let sectionBodySize: CGFloat = 14
-        static let closeButtonSize: CGFloat = 30
     }
 }
