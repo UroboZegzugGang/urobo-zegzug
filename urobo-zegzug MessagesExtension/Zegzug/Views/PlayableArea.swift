@@ -5,69 +5,60 @@ struct PlayableArea: View {
 
     var body: some View {
         GeometryReader { geo in
-            let normalizedCenters = viewModel.circleCenters
-                .enumerated()
-                .map { (index,center) in
-                    normalizeCoords(center, in: geo).rotate(by: Constants.rotationDegree * CGFloat(index),
-                                                            around: middle(of: geo))
-                }
+            let normalizedCenters = viewModel.normalizeCoords(for: geo)
 
-            // MARK: Draw green lines
-            Path { path in
-                let startPoint = normalizedCenters[Constants.greenStartIndex]
-                path.move(to: startPoint)
-                var currPos = startPoint
-                for nIndex in stride(from: 0, to: viewModel.greenNeighbours.count, by: Constants.stepSize) {
-                    let index = viewModel.greenNeighbours[nIndex]
-                    path.move(to: normalizedCenters[index])
-                    //Draw short straight lines
-                    for i in nIndex ..< nIndex + Constants.stepSize {
-                        let lineIndex = viewModel.greenNeighbours[i]
-                        path.addLine(to: normalizedCenters[lineIndex])
-                    }
-                    //Draw curved lines
-                    path.move(to: currPos)
-                    path.addCurve(from: currPos, to: normalizedCenters[index], geometry: geo)
-                    currPos = normalizedCenters[index]
-                }
-                path.addLine(to: startPoint)
-            }
-            .stroke(lineWidth: Constants.lineWidth).foregroundColor(.greenLine)
+            greenLines(from: normalizedCenters, in: geo)
+            orangeLines(from: normalizedCenters, in: geo)
+            tappableCircles(from: normalizedCenters, in: geo)
 
-            //MARK: Draw orange lines
-            Path { path in
-                let startPoint = normalizedCenters[Constants.orangeStartIndex]
-                path.move(to: startPoint)
-                for nIndex in viewModel.orangeNeighbours {
-                    path.addLine(to: normalizedCenters[nIndex])
-                }
-                path.addLine(to: startPoint)
-            }
-            .stroke(lineWidth: Constants.lineWidth).foregroundColor(.orangeLine)
-
-            // MARK: Draw little circles
-            ForEach(normalizedCenters.indices, id: \.self) { index in
-                Circle(center: normalizedCenters[index], diameter: circleDiameter(in: geo))
-                    .fill(viewModel.isTapped[index] ? Color.blue : Color.white,
-                          stroke: StrokeStyle(lineWidth: Constants.outlineWidth)
-                    )
-                    .onTapGesture {
-                        viewModel.isTapped[index].toggle()
-                    }
-            }
         }
     }
 
-    private func circleDiameter(in geo: GeometryProxy) -> CGFloat {
-        geo.size.width / 14
+    @ViewBuilder private func greenLines(from coords: [CGPoint], in geo: GeometryProxy) -> some View {
+        Path { path in
+            let startPoint = coords[Constants.greenStartIndex]
+            path.move(to: startPoint)
+            var currPos = startPoint
+            for nIndex in stride(from: 0, to: viewModel.greenNeighbours.count, by: Constants.stepSize) {
+                let index = viewModel.greenNeighbours[nIndex]
+                path.move(to: coords[index])
+                //Draw short straight lines
+                for i in nIndex ..< nIndex + Constants.stepSize {
+                    let lineIndex = viewModel.greenNeighbours[i]
+                    path.addLine(to: coords[lineIndex])
+                }
+                //Draw curved lines
+                path.move(to: currPos)
+                path.addCurve(from: currPos, to: coords[index], geometry: geo)
+                currPos = coords[index]
+            }
+            path.addLine(to: startPoint)
+        }
+        .stroke(lineWidth: Constants.lineWidth).foregroundColor(.greenLine)
     }
 
-    private func middle(of geo: GeometryProxy) -> CGPoint {
-        CGPoint(x: geo.size.width / 2, y: geo.size.height / 2)
+    @ViewBuilder private func orangeLines(from coords: [CGPoint], in geo: GeometryProxy) -> some View {
+        Path { path in
+            let startPoint = coords[Constants.orangeStartIndex]
+            path.move(to: startPoint)
+            for nIndex in viewModel.orangeNeighbours {
+                path.addLine(to: coords[nIndex])
+            }
+            path.addLine(to: startPoint)
+        }
+        .stroke(lineWidth: Constants.lineWidth).foregroundColor(.orangeLine)
     }
 
-    private func normalizeCoords(_ center: CGPoint, in geo: GeometryProxy) -> CGPoint {
-        CGPoint(x: center.x * geo.size.width + circleDiameter(in: geo) / 2, y: center.y * geo.size.height)
+    @ViewBuilder private func tappableCircles(from coords: [CGPoint], in geo: GeometryProxy) -> some View {
+        ForEach(coords.indices, id: \.self) { index in
+            Circle(center: coords[index], diameter: viewModel.circleDiameter(in: geo))
+                .fill(viewModel.isTapped[index] ? Color.blue : Color.white,
+                      stroke: StrokeStyle(lineWidth: Constants.outlineWidth)
+                )
+                .onTapGesture {
+                    viewModel.isTapped[index].toggle()
+                }
+        }
     }
 }
 

@@ -1,8 +1,11 @@
 import Foundation
+import SwiftUI
 
 final class ZegzugGameViewModel: ObservableObject {
     @Published var circleCenters = [CGPoint]()
     @Published var isTapped = [Bool]()
+
+    let rotationDegree: CGFloat = 30
 
     let orangeNeighbours: [Int] = [
         0,
@@ -106,5 +109,26 @@ final class ZegzugGameViewModel: ObservableObject {
         }
 
         isTapped = .init(repeating: false, count: 36)
+    }
+
+    func normalizeCoords(for geo: GeometryProxy) -> [CGPoint] {
+        circleCenters
+            .enumerated()
+            .map { (index,center) in
+                normalizeCoords(center, in: geo).rotate(by: rotationDegree * CGFloat(index),
+                                                        around: middle(of: geo))
+            }
+    }
+
+    func circleDiameter(in geo: GeometryProxy) -> CGFloat {
+        geo.size.width / 14
+    }
+
+    private func middle(of geo: GeometryProxy) -> CGPoint {
+        CGPoint(x: geo.size.width / 2, y: geo.size.height / 2)
+    }
+
+    private func normalizeCoords(_ center: CGPoint, in geo: GeometryProxy) -> CGPoint {
+        CGPoint(x: center.x * geo.size.width + circleDiameter(in: geo) / 2, y: center.y * geo.size.height)
     }
 }
