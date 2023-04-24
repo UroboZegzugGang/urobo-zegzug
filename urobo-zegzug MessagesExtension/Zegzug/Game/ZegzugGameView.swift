@@ -5,12 +5,19 @@ struct ZegzugGameView: View {
 
     var body: some View {
         VStack {
+            Spacer()
             resetButton()
             BackgroundCircles()
                 .background {
                     PlayableArea(viewModel: viewModel)
                 }
+            Spacer()
             sendButton()
+        }
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background {
+            Color.appBackground.ignoresSafeArea()
         }
     }
 
@@ -21,14 +28,13 @@ struct ZegzugGameView: View {
                 // TODO: reset current turn
             }
         }
-        .padding(.trailing)
     }
 
     @ViewBuilder private func sendButton() -> some View {
         Button("Send") {
             // TODO: End turn and send it
         }
-        .buttonStyle(.borderedProminent)
-        .padding()
+        .buttonStyle(MonochromeShadowButton())
+        .padding(.top)
     }
 }

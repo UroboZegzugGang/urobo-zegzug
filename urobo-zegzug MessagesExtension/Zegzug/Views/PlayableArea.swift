@@ -32,7 +32,7 @@ struct PlayableArea: View {
                 }
                 path.addLine(to: startPoint)
             }
-            .stroke(lineWidth: Constants.lineWidth).foregroundColor(.green)
+            .stroke(lineWidth: Constants.lineWidth).foregroundColor(.greenLine)
 
             //MARK: Draw orange lines
             Path { path in
@@ -43,7 +43,7 @@ struct PlayableArea: View {
                 }
                 path.addLine(to: startPoint)
             }
-            .stroke(lineWidth: Constants.lineWidth).foregroundColor(.orange)
+            .stroke(lineWidth: Constants.lineWidth).foregroundColor(.orangeLine)
 
             // MARK: Draw little circles
             ForEach(normalizedCenters.indices, id: \.self) { index in
