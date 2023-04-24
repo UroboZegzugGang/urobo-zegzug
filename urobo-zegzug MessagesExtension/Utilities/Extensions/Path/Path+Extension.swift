@@ -14,9 +14,4 @@ extension Path {
         self.move(to: point1)
         self.addQuadCurve(to: point2, control: control)
     }
-
-    mutating func addLine(from point1: CGPoint, to point2: CGPoint) {
-        self.move(to: point1)
-        self.addLine(to: point2)
-    }
 }

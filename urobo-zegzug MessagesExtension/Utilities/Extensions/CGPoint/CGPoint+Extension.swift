@@ -11,9 +11,4 @@ extension CGPoint {
         let y = origin.y + radius * sin(newAzimuth)
         return CGPoint(x: x, y: y)
     }
-
-    static func -(lhs: inout CGPoint, rhs: CGPoint) {
-        lhs.x -= rhs.x
-        lhs.y -= rhs.y
-    }
 }
