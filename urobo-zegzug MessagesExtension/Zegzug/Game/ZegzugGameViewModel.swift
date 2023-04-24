@@ -4,7 +4,8 @@ final class ZegzugGameViewModel: ObservableObject {
     @Published var circleCenters = [CGPoint]()
     @Published var isTapped = [Bool]()
 
-    let neighbours: [Int] = [
+    let orangeNeighbours: [Int] = [
+        0,
         25,
         26,
         3,
@@ -40,7 +41,6 @@ final class ZegzugGameViewModel: ObservableObject {
         9,
         34,
         11,
-        0,
     ]
 
     let greenNeighbours: [Int] = [
