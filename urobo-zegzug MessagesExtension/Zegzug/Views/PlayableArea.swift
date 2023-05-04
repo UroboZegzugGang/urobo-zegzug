@@ -15,35 +15,34 @@ struct PlayableArea: View {
 
     @ViewBuilder private func greenLines(from coords: [CGPoint], in geo: GeometryProxy) -> some View {
         Path { path in
-            let startPoint = coords[Constants.greenStartIndex]
-            path.move(to: startPoint)
-            var currPos = startPoint
-            for nIndex in stride(from: 0, to: viewModel.greenNeighbours.count, by: Constants.stepSize) {
-                let index = viewModel.greenNeighbours[nIndex]
-                path.move(to: coords[index])
-                //Draw short straight lines
-                for i in nIndex ..< nIndex + Constants.stepSize {
-                    let lineIndex = viewModel.greenNeighbours[i]
-                    path.addLine(to: coords[lineIndex])
+            path.createClosedPath(start: coords[Constants.greenStartIndex]) { path in
+                var currPos = path.currentPoint!
+                for nIndex in stride(from: 0, to: viewModel.greenNeighbours.count, by: Constants.stepSize) {
+                    let index = viewModel.greenNeighbours[nIndex]
+                    path.move(to: coords[index])
+                    //Draw short straight lines
+                    path.connectLinesByIndexes(start: nIndex,
+                                               end: nIndex + Constants.stepSize,
+                                               points: coords,
+                                               indexes: viewModel.greenNeighbours)
+                    //Draw curved lines
+                    path.move(to: currPos)
+                    path.addCurve(from: currPos, to: coords[index], geometry: geo)
+                    currPos = coords[index]
                 }
-                //Draw curved lines
-                path.move(to: currPos)
-                path.addCurve(from: currPos, to: coords[index], geometry: geo)
-                currPos = coords[index]
             }
-            path.addLine(to: startPoint)
         }
         .stroke(lineWidth: Constants.lineWidth).foregroundColor(.greenLine)
     }
 
     @ViewBuilder private func orangeLines(from coords: [CGPoint], in geo: GeometryProxy) -> some View {
         Path { path in
-            let startPoint = coords[Constants.orangeStartIndex]
-            path.move(to: startPoint)
-            for nIndex in viewModel.orangeNeighbours {
-                path.addLine(to: coords[nIndex])
+            path.createClosedPath(start: coords[Constants.orangeStartIndex]) { path in
+                path.connectLinesByIndexes(start: 0,
+                                           end: viewModel.orangeNeighbours.count,
+                                           points: coords,
+                                           indexes: viewModel.orangeNeighbours)
             }
-            path.addLine(to: startPoint)
         }
         .stroke(lineWidth: Constants.lineWidth).foregroundColor(.orangeLine)
     }
