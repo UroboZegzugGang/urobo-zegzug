@@ -4,6 +4,7 @@ import SwiftUI
 
 class MessagesViewController: MSMessagesAppViewController {
     var controller = UIViewController()
+    var gameType: GameType = .urobo
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -14,8 +15,12 @@ class MessagesViewController: MSMessagesAppViewController {
         if presentationStyle == .compact {
             controller = instantiateMenuVC()
         } else {
-            // TODO: Get state and instantiate urobo/zegzug
-            controller = instantiateUroboVC()
+            switch gameType {
+            case .urobo:
+                controller = instantiateUroboVC()
+            case .zegzug:
+                controller = instantiateZegzugVC()
+            }
         }
 
         for child in children {
@@ -46,6 +51,11 @@ class MessagesViewController: MSMessagesAppViewController {
     private func instantiateUroboVC() -> UIViewController {
         let viewModel = UroboGameViewModel()
         return UIHostingController(rootView: UroboGameScreen(viewModel: viewModel))
+    }
+
+    private func instantiateZegzugVC() -> UIViewController {
+        let viewModel = ZegzugGameViewModel()
+        return UIHostingController(rootView: ZegzugGameView(viewModel: viewModel))
     }
 }
 
@@ -107,8 +117,12 @@ extension MessagesViewController {
 
 extension MessagesViewController: MenuViewModelDelegate {
     func startUrobo() {
+        self.gameType = .urobo
         requestPresentationStyle(.expanded)
     }
 
-    func startZegZug() {}
+    func startZegZug() {
+        self.gameType = .zegzug
+        requestPresentationStyle(.expanded)
+    }
 }
