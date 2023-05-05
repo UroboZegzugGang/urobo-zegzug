@@ -91,7 +91,7 @@ struct UroboGameScreen: View {
             .opacity(.zero)
             .background(.ultraThinMaterial)
             .overlay {
-                HowToPlayUroboView {
+                HowToPlayView(gameType: .urobo) {
                     viewModel.helpShowing = false
                 }
             }
