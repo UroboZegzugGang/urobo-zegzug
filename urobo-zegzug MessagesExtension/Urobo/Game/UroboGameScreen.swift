@@ -14,6 +14,7 @@ struct UroboGameScreen: View {
         }
         .background {
             Color.appBackground
+                .ignoresSafeArea()
         }
         .overlay {
             if viewModel.helpShowing {
@@ -71,25 +72,15 @@ struct UroboGameScreen: View {
         Button("Send") {
 
         }
-        .buttonStyle(MonochromeShadowButton())
+        .buttonStyle(.monochromeShadow)
         .disabled(viewModel.selectedCardNumber == nil)
     }
 
     @ViewBuilder private func helpButton() -> some View {
-        Button {
+        Button("?") {
             viewModel.helpShowing = true
-        } label: {
-            HStack {
-                Spacer()
-                Circle()
-                    .frame(width: Constants.helpButtonSize, height: Constants.helpButtonSize)
-                    .foregroundColor(.gray)
-                    .shadow(color: .black, radius: .zero, x: Constants.helpButtonShadowOffset, y: Constants.helpButtonShadowOffset)
-                    .overlay {
-                        Text("?")
-                    }
-            }
         }
+        .buttonStyle(.circular)
         .padding()
         .foregroundColor(.white)
     }
@@ -121,7 +112,5 @@ extension UroboGameScreen {
         static let selectAnimationDuration: CGFloat = 0.1
         static let scoreTitleSize: CGFloat = 24
         static let scoreValueSize: CGFloat = 64
-        static let helpButtonSize: CGFloat = 30
-        static let helpButtonShadowOffset: CGFloat = 3
     }
 }

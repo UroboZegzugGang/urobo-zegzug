@@ -30,7 +30,7 @@ struct GameMenuButton: View {
                     }
             }
         }
-        .buttonStyle(ScaleOnTap())
+        .buttonStyle(.scaleOnTap)
     }
 
     @ViewBuilder private func graphic() -> some View {
