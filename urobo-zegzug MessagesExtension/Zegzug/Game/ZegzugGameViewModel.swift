@@ -116,26 +116,32 @@ final class ZegzugGameViewModel: ObservableObject {
         currentPlayer = playerOne
     }
 
-    func normalizeCoords(for geo: GeometryProxy) -> [ZegzugCircle] {
+    func normalizeCoords(for geo: GeometryProxy) {
         let rotationDegree: CGFloat = 30
-        for (index, circle) in circles.enumerated() {
-            circles[index].center = normalizeCoords(circle.center, in: geo).rotate(by: rotationDegree * CGFloat(index),
-                                                                            around: middle(of: geo))
+        DispatchQueue.main.async { [unowned self] in
+            for (index, circle) in circles.enumerated() {
+                let newCenter = normalizeCoords(circle.center, in: geo).rotate(by: rotationDegree * CGFloat(index),
+                                                                               around: middle(of: geo))
+                // This guard is critical since the view could call this function multiple times, resulting in the
+                // the coordinates being placed further and further off the screen. This prevents that.
+                guard CGRectContainsPoint(geo.frame(in: .local), newCenter) else { continue }
+                circles[index].center = newCenter
+            }
         }
-        return circles
     }
 
     func circleDiameter(in geo: GeometryProxy) -> CGFloat {
         geo.size.width / 14
     }
 
-    func tapped(_ circle: inout ZegzugCircle) {
-        guard circle.state == .none || circle.state == currentPlayer.circleState
+    func tapped(_ circle: ZegzugCircle) {
+        guard circle.state == .none || circle.state == currentPlayer.circleState,
+              let index = circles.firstIndex(where: { $0.id == circle.id })
         else { return }
         if circle.state == .none {
-            circle.state = currentPlayer.circleState
+            circles[index].state = currentPlayer.circleState
         } else {
-            circle.state = .none
+            circles[index].state = .none
         }
         //currentPlayer = currentPlayer == .first ? .second : .first
 

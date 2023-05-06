@@ -5,17 +5,18 @@ struct PlayableArea: View {
 
     var body: some View {
         GeometryReader { geo in
-            let normalizedCenters = viewModel.normalizeCoords(for: geo)
+            let _ = viewModel.normalizeCoords(for: geo)
 
-            greenLines(from: normalizedCenters, in: geo)
-            orangeLines(from: normalizedCenters, in: geo)
-            neighbourLinesPlayerOne(from: normalizedCenters, in: geo)
-            tappableCircles(from: normalizedCenters, in: geo)
+            greenLines(in: geo)
+            orangeLines(in: geo)
+            neighbourLinesPlayerOne(in: geo)
+            tappableCircles(in: geo)
         }
     }
 
-    @ViewBuilder private func greenLines(from coords: [ZegzugCircle], in geo: GeometryProxy) -> some View {
+    @ViewBuilder private func greenLines(in geo: GeometryProxy) -> some View {
         Path { path in
+            let coords = viewModel.circles
             path.createClosedPath(start: coords[Constants.greenStartIndex].center) { path in
                 var currPos = path.currentPoint!
                 for nIndex in stride(from: 0, to: viewModel.greenNeighbours.count, by: Constants.stepSize) {
@@ -36,8 +37,9 @@ struct PlayableArea: View {
         .stroke(lineWidth: Constants.lineWidth).foregroundColor(.greenLine)
     }
 
-    @ViewBuilder private func orangeLines(from coords: [ZegzugCircle], in geo: GeometryProxy) -> some View {
+    @ViewBuilder private func orangeLines(in geo: GeometryProxy) -> some View {
         Path { path in
+            let coords = viewModel.circles
             path.createClosedPath(start: coords[Constants.orangeStartIndex].center) { path in
                 path.connectLinesByIndexes(start: 0,
                                            end: viewModel.orangeNeighbours.count,
@@ -48,8 +50,9 @@ struct PlayableArea: View {
         .stroke(lineWidth: Constants.lineWidth).foregroundColor(.orangeLine)
     }
 
-    @ViewBuilder private func neighbourLinesPlayerOne(from coords: [ZegzugCircle], in geo: GeometryProxy) -> some View {
+    @ViewBuilder private func neighbourLinesPlayerOne(in geo: GeometryProxy) -> some View {
         Path { path in
+            let coords = viewModel.circles
             for neighbours in viewModel.playerOne.list(for: .orange) {
                 path.move(to: coords[neighbours.first!].center)
                 for circle in neighbours {
@@ -64,6 +67,7 @@ struct PlayableArea: View {
                   viewModel.playerOne.list(for: .green).first!.count > 0
             else { return }
 
+            let coords = viewModel.circles
             // straigth lines
             for list in viewModel.playerOne.list(for: .green) {
                 var currIndex = list.first!
@@ -95,14 +99,15 @@ struct PlayableArea: View {
         .stroke(.black, style: StrokeStyle(lineWidth: Constants.neighbourLineWidth, dash: Constants.neighbourLineDash))
     }
 
-    @ViewBuilder private func tappableCircles(from coords: [ZegzugCircle], in geo: GeometryProxy) -> some View {
-        ForEach(coords) { $circle in
+    @ViewBuilder private func tappableCircles(in geo: GeometryProxy) -> some View {
+        let coords = viewModel.circles
+        ForEach(Array(coords.enumerated()), id: \.element.id) { index, circle in
             Circle(center: circle.center, diameter: viewModel.circleDiameter(in: geo))
                 .fill(circle.fillColor,
                       stroke: StrokeStyle(lineWidth: Constants.outlineWidth)
                 )
                 .onTapGesture {
-                    viewModel.tapped(&circle)
+                    viewModel.tapped(circle)
                 }
         }
     }
