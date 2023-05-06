@@ -10,6 +10,7 @@ struct PlayableArea: View {
             greenLines(in: geo)
             orangeLines(in: geo)
             neighbourLines(for: viewModel.playerOne, in: geo)
+            neighbourLines(for: viewModel.playerTwo, in: geo)
             tappableCircles(in: geo)
         }
     }

@@ -143,14 +143,21 @@ final class ZegzugGameViewModel: ObservableObject {
         } else {
             circles[index].state = .none
         }
-        //currentPlayer = currentPlayer == .first ? .second : .first
 
+        togglePlayers()
         determineAllNeighbours()
+    }
+
+    private func togglePlayers() {
+        currentPlayer = currentPlayer.num == .first ? playerTwo : playerOne
     }
 
     private func determineAllNeighbours() {
         determineNeighbours(for: playerOne, color: .green)
         determineNeighbours(for: playerOne, color: .orange)
+
+        determineNeighbours(for: playerTwo, color: .green)
+        determineNeighbours(for: playerTwo, color: .orange)
     }
 
     private func determineNeighbours(for player: ZegzugPlayer, color: NeighbourColor) {
