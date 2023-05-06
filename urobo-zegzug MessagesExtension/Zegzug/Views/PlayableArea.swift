@@ -9,7 +9,7 @@ struct PlayableArea: View {
 
             greenLines(in: geo)
             orangeLines(in: geo)
-            neighbourLinesPlayerOne(in: geo)
+            neighbourLines(for: viewModel.playerOne, in: geo)
             tappableCircles(in: geo)
         }
     }
@@ -48,25 +48,24 @@ struct PlayableArea: View {
         .stroke(lineWidth: Constants.lineWidth).foregroundColor(.orangeLine)
     }
 
-    @ViewBuilder private func neighbourLinesPlayerOne(in geo: GeometryProxy) -> some View {
+    @ViewBuilder private func neighbourLines(for player: ZegzugPlayer, in geo: GeometryProxy) -> some View {
         Path { path in
-            let coords = viewModel.circles
-            for neighbours in viewModel.playerOne.list(for: .orange) {
+            for neighbours in player.list(for: .orange) {
                 path.move(to: viewModel.circles[neighbours.first!].center)
                 for circle in neighbours {
                     path.addLine(to: viewModel.circles[circle].center)
                 }
             }
         }
-        .stroke(.black, style: StrokeStyle(lineWidth: Constants.neighbourLineWidth, dash: Constants.neighbourLineDash))
+        .stroke(player.lineColor, style: StrokeStyle(lineWidth: Constants.neighbourLineWidth, dash: Constants.neighbourLineDash))
 
         Path { path in
-            guard viewModel.playerOne.list(for: .orange).count > 0,
-                  viewModel.playerOne.list(for: .green).first!.count > 0
+            guard player.list(for: .orange).count > 0,
+                  player.list(for: .green).first!.count > 0
             else { return }
 
             // straigth lines
-            for list in viewModel.playerOne.list(for: .green) {
+            for list in player.list(for: .green) {
                 var currIndex = list.first!
                 for index in list {
                     path.move(to: viewModel.circles[currIndex].center)
@@ -79,7 +78,7 @@ struct PlayableArea: View {
             }
 
             // curved lines
-            for list in viewModel.playerOne.list(for: .green) {
+            for list in player.list(for: .green) {
                 for index in list {
                     for iterIndex in list {
                         guard index != iterIndex else { continue }
@@ -93,7 +92,7 @@ struct PlayableArea: View {
                 }
             }
         }
-        .stroke(.black, style: StrokeStyle(lineWidth: Constants.neighbourLineWidth, dash: Constants.neighbourLineDash))
+        .stroke(player.lineColor, style: StrokeStyle(lineWidth: Constants.neighbourLineWidth, dash: Constants.neighbourLineDash))
     }
 
     @ViewBuilder private func tappableCircles(in geo: GeometryProxy) -> some View {

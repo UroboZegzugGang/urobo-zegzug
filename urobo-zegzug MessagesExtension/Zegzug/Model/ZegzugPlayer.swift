@@ -1,4 +1,4 @@
-import Foundation
+import SwiftUI
 
 class ZegzugPlayer {
     let num: PlayerNumber
@@ -12,6 +12,15 @@ class ZegzugPlayer {
             return .playerOne
         case .second:
             return .playerTwo
+        }
+    }
+
+    var lineColor: Color {
+        switch num {
+        case .first:
+            return .blue
+        case .second:
+            return .yellow
         }
     }
 
