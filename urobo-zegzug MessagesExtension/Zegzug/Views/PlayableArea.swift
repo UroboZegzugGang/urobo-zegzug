@@ -9,7 +9,7 @@ struct PlayableArea: View {
 
             greenLines(from: normalizedCenters, in: geo)
             orangeLines(from: normalizedCenters, in: geo)
-            neighbourLines(from: normalizedCenters, in: geo)
+            neighbourLinesPlayerOne(from: normalizedCenters, in: geo)
             tappableCircles(from: normalizedCenters, in: geo)
         }
     }
@@ -48,7 +48,7 @@ struct PlayableArea: View {
         .stroke(lineWidth: Constants.lineWidth).foregroundColor(.orangeLine)
     }
 
-    @ViewBuilder private func neighbourLines(from coords: [CGPoint], in geo: GeometryProxy) -> some View {
+    @ViewBuilder private func neighbourLinesPlayerOne(from coords: [CGPoint], in geo: GeometryProxy) -> some View {
         Path { path in
             for neighbours in viewModel.playerOneOrangeNeighbours {
                 path.move(to: coords[neighbours.first!])
@@ -57,7 +57,7 @@ struct PlayableArea: View {
                 }
             }
         }
-        .stroke(.black, style: StrokeStyle(lineWidth: Constants.lineWidth - 2, dash: [5]))
+        .stroke(.black, style: StrokeStyle(lineWidth: Constants.neighbourLineWidth, dash: Constants.neighbourLineDash))
 
         Path { path in
             guard viewModel.playerOneGreenNeighbours.count > 0,
@@ -69,7 +69,6 @@ struct PlayableArea: View {
                 var currIndex = list.first!
                 for index in list {
                     path.move(to: coords[currIndex])
-                    let currPos = viewModel.greenNeighbours.firstIndex(of: currIndex)!
                     let pos = viewModel.greenNeighbours.firstIndex(of: index)!
                     if pos % 3 != 0 {
                         path.addLine(to: coords[index])
@@ -93,7 +92,7 @@ struct PlayableArea: View {
                 }
             }
         }
-        .stroke(.black, style: StrokeStyle(lineWidth: Constants.lineWidth - 2, dash: [5]))
+        .stroke(.black, style: StrokeStyle(lineWidth: Constants.neighbourLineWidth, dash: Constants.neighbourLineDash))
     }
 
     @ViewBuilder private func tappableCircles(from coords: [CGPoint], in geo: GeometryProxy) -> some View {
@@ -117,5 +116,7 @@ extension PlayableArea {
         static let rotationDegree: CGFloat = 30
         static let orangeStartIndex: Int = 0
         static let greenStartIndex: Int = 24
+        static let neighbourLineWidth: CGFloat = 2
+        static let neighbourLineDash: [CGFloat] = [3]
     }
 }

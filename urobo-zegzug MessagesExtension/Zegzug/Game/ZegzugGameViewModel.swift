@@ -2,7 +2,8 @@ import Foundation
 import SwiftUI
 
 final class ZegzugGameViewModel: ObservableObject {
-    @Published var circleCenters = [CGPoint]()
+    @Published var circles = [ZegzugCircle]()
+
     @Published var showingHowTo = false
 
     @Published var orangeNeighbours: [Int] = [
@@ -84,7 +85,6 @@ final class ZegzugGameViewModel: ObservableObject {
     ]
 
     private var currentPlayer: ZegzugPlayer = .first
-    @Published var circleStates:[CircleState] = .init(repeating: .none, count: 36)
 
     @Published var playerOneOrangeNeighbours: [[Int]] = .init()
     @Published var playerOneGreenNeighbours: [[Int]] = .init()
@@ -103,26 +103,27 @@ final class ZegzugGameViewModel: ObservableObject {
         let inner = CGPoint(x: startInnerX, y: startY)
 
         for _ in 0 ..< 12 {
-            circleCenters.append(outer)
+            circles.append(ZegzugCircle(center: outer, state: .none))
         }
 
         for _ in 0 ..< 12 {
-            circleCenters.append(middle)
+            circles.append(ZegzugCircle(center: middle, state: .none))
         }
 
         for _ in 0 ..< 12 {
-            circleCenters.append(inner)
+            circles.append(ZegzugCircle(center: inner, state: .none))
         }
 
+        // TODO: rotate by the stored value in the gameState
         rotateBoardBy(sections: 0)
     }
 
     func normalizeCoords(for geo: GeometryProxy) -> [CGPoint] {
         let rotationDegree: CGFloat = 30
-        return circleCenters
+        return circles
             .enumerated()
-            .map { (index,center) in
-                normalizeCoords(center, in: geo).rotate(by: rotationDegree * CGFloat(index),
+            .map { index, circle in
+                normalizeCoords(circle.center, in: geo).rotate(by: rotationDegree * CGFloat(index),
                                                         around: middle(of: geo))
             }
     }
@@ -132,12 +133,12 @@ final class ZegzugGameViewModel: ObservableObject {
     }
 
     func handleTap(index: Int) {
-        guard circleStates[index] == .none || circleStates[index] == currentPlayer.circleState
+        guard circles[index].state == .none || circles[index].state == currentPlayer.circleState
         else { return }
-        if circleStates[index] == .none {
-            circleStates[index] = currentPlayer.circleState
+        if circles[index].state == .none {
+            circles[index].state = currentPlayer.circleState
         } else {
-            circleStates[index] = .none
+            circles[index].state = .none
         }
         //currentPlayer = currentPlayer == .first ? .second : .first
 
@@ -150,7 +151,7 @@ final class ZegzugGameViewModel: ObservableObject {
     }
 
     private func determineNeighbours(for player: ZegzugPlayer, color: NeighbourColor) {
-        let firstPersonCLicked = circleStates.filter { $0 == player.circleState }
+        let firstPersonCLicked = circles.filter { $0.state == player.circleState }
         guard firstPersonCLicked.count > 1 else { return }
         var neighbourList = [[Int]]()
         switch player {
@@ -161,8 +162,8 @@ final class ZegzugGameViewModel: ObservableObject {
         }
         neighbourList.removeAll()
 
-        for index in circleStates.indices {
-            guard circleStates[index] == player.circleState else { continue }
+        for index in circles.indices {
+            guard circles[index].state == player.circleState else { continue }
             var noNeighbours = true
             for outerIndex in neighbourList.indices {
                 guard neighbourList.indices.contains(outerIndex) else { break }
@@ -235,7 +236,7 @@ final class ZegzugGameViewModel: ObservableObject {
     }
 
     func getColorFor(index: Int) -> Color {
-        switch circleStates[index] {
+        switch circles[index].state {
         case .none:
             return .white
         case .playerOne:

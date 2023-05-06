@@ -24,6 +24,7 @@
 		418CF6D329F3D1E7001C0FCD /* Image+appImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418CF6D229F3D1E7001C0FCD /* Image+appImages.swift */; };
 		418CF6D829F3D2F2001C0FCD /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418CF6D729F3D2F2001C0FCD /* MenuButton.swift */; };
 		418CF6DB29F3D633001C0FCD /* GameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418CF6DA29F3D633001C0FCD /* GameType.swift */; };
+		555B3DF42A06687200F5C867 /* ZegzugCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555B3DF32A06687200F5C867 /* ZegzugCircle.swift */; };
 		55C257B529FBFF9F00F6B046 /* ZegzugPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C257B429FBFF9F00F6B046 /* ZegzugPlayer.swift */; };
 		55C257B729FBFFF300F6B046 /* CircleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C257B629FBFFF300F6B046 /* CircleState.swift */; };
 		55D9B32829F5D77000A2369C /* ZegzugGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B32729F5D77000A2369C /* ZegzugGameView.swift */; };
@@ -84,6 +85,7 @@
 		418CF6D229F3D1E7001C0FCD /* Image+appImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+appImages.swift"; sourceTree = "<group>"; };
 		418CF6D729F3D2F2001C0FCD /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		418CF6DA29F3D633001C0FCD /* GameType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameType.swift; sourceTree = "<group>"; };
+		555B3DF32A06687200F5C867 /* ZegzugCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZegzugCircle.swift; sourceTree = "<group>"; };
 		55C257B429FBFF9F00F6B046 /* ZegzugPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZegzugPlayer.swift; sourceTree = "<group>"; };
 		55C257B629FBFFF300F6B046 /* CircleState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleState.swift; sourceTree = "<group>"; };
 		55D9B32729F5D77000A2369C /* ZegzugGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZegzugGameView.swift; sourceTree = "<group>"; };
@@ -286,6 +288,7 @@
 			children = (
 				55C257B429FBFF9F00F6B046 /* ZegzugPlayer.swift */,
 				55C257B629FBFFF300F6B046 /* CircleState.swift */,
+				555B3DF32A06687200F5C867 /* ZegzugCircle.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -480,6 +483,7 @@
 				55D9B32829F5D77000A2369C /* ZegzugGameView.swift in Sources */,
 				418CF6D029F3D118001C0FCD /* Color+appColors.swift in Sources */,
 				4143724C29E0945000A670C0 /* Padding.swift in Sources */,
+				555B3DF42A06687200F5C867 /* ZegzugCircle.swift in Sources */,
 				55C257B529FBFF9F00F6B046 /* ZegzugPlayer.swift in Sources */,
 				55D9B32D29F5DAA500A2369C /* BackgroundCircles.swift in Sources */,
 				55D9B34929F6D18000A2369C /* CircularButton.swift in Sources */,
