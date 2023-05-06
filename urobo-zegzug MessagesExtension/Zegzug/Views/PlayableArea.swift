@@ -71,7 +71,7 @@ struct PlayableArea: View {
                 for index in list {
                     path.move(to: viewModel.circles[currIndex].center)
                     let pos = viewModel.greenNeighbours.firstIndex(of: index)!
-                    if pos % 3 != 0 {
+                    if !isCurvedLineEnd(pos) {
                         path.addLine(to: viewModel.circles[index].center)
                     }
                     currIndex = index
@@ -85,8 +85,8 @@ struct PlayableArea: View {
                         guard index != iterIndex else { continue }
                         let currPos = viewModel.greenNeighbours.firstIndex(of: index)!
                         let pos = viewModel.greenNeighbours.firstIndex(of: iterIndex)!
-                        if pos % 3 == 0, currPos % 3 == 0 {
-                            guard (currPos + 3) % 36 == pos || currPos - 3 + (currPos - 3 < 0 ? 36 : 0) == pos else { continue }
+                        if isCurvedLineEnd(pos), isCurvedLineEnd(currPos) {
+                            guard isCurvedNeighbour(currPos, to: pos) else { continue }
                             path.addCurve(from: viewModel.circles[index].center, to: viewModel.circles[iterIndex].center, geometry: geo)
                         }
                     }
@@ -107,6 +107,14 @@ struct PlayableArea: View {
                 }
         }
     }
+
+    private func isCurvedNeighbour(_ currPos: Int, to pos: Int) -> Bool {
+        (currPos + 3) % 36 == pos || currPos - 3 + (currPos - 3 < 0 ? 36 : 0) == pos
+    }
+
+    private func isCurvedLineEnd(_ pos: Int) -> Bool {
+        pos % Constants.curvedNeighbourDistance == 0
+    }
 }
 
 extension PlayableArea {
@@ -119,5 +127,6 @@ extension PlayableArea {
         static let greenStartIndex: Int = 24
         static let neighbourLineWidth: CGFloat = 2
         static let neighbourLineDash: [CGFloat] = [3]
+        static let curvedNeighbourDistance: Int = 3
     }
 }
