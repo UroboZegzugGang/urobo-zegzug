@@ -14,4 +14,17 @@ extension Path {
         self.move(to: point1)
         self.addQuadCurve(to: point2, control: control)
     }
+
+    mutating func createClosedPath(start: CGPoint, pathLogic: (inout Path) -> Void) {
+        self.move(to: start)
+        pathLogic(&self)
+        self.addLine(to: start)
+    }
+
+    mutating func connectLinesByIndexes(start: Int, end: Int, points: [CGPoint], indexes: [Int]) {
+        for i in start ..< end {
+            let lineIndex = indexes[i]
+            self.addLine(to: points[lineIndex])
+        }
+    }
 }
