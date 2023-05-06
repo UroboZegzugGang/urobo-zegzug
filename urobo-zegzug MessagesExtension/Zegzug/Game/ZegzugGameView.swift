@@ -11,6 +11,7 @@ struct ZegzugGameView: View {
                 .background {
                     PlayableArea(viewModel: viewModel)
                 }
+                .rotationEffect(Angle(degrees: -15))
             Spacer()
             sendButton()
             infoButton()

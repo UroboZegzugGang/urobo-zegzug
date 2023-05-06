@@ -9,6 +9,7 @@ struct PlayableArea: View {
 
             greenLines(from: normalizedCenters, in: geo)
             orangeLines(from: normalizedCenters, in: geo)
+            neighbourLines(from: normalizedCenters, in: geo)
             tappableCircles(from: normalizedCenters, in: geo)
         }
     }
@@ -47,14 +48,62 @@ struct PlayableArea: View {
         .stroke(lineWidth: Constants.lineWidth).foregroundColor(.orangeLine)
     }
 
+    @ViewBuilder private func neighbourLines(from coords: [CGPoint], in geo: GeometryProxy) -> some View {
+        Path { path in
+            for neighbours in viewModel.playerOneOrangeNeighbours {
+                path.move(to: coords[neighbours.first!])
+                for circle in neighbours {
+                    path.addLine(to: coords[circle])
+                }
+            }
+        }
+        .stroke(.black, style: StrokeStyle(lineWidth: Constants.lineWidth - 2, dash: [5]))
+
+        Path { path in
+            guard viewModel.playerOneGreenNeighbours.count > 0,
+                  viewModel.playerOneGreenNeighbours.first!.count > 0
+            else { return }
+
+            // straigth lines
+            for list in viewModel.playerOneGreenNeighbours {
+                var currIndex = list.first!
+                for index in list {
+                    path.move(to: coords[currIndex])
+                    let currPos = viewModel.greenNeighbours.firstIndex(of: currIndex)!
+                    let pos = viewModel.greenNeighbours.firstIndex(of: index)!
+                    if pos % 3 != 0 {
+                        path.addLine(to: coords[index])
+                    }
+                    currIndex = index
+                }
+            }
+
+            // curved lines
+            for list in viewModel.playerOneGreenNeighbours {
+                for index in list {
+                    for iterIndex in list {
+                        guard index != iterIndex else { continue }
+                        let currPos = viewModel.greenNeighbours.firstIndex(of: index)!
+                        let pos = viewModel.greenNeighbours.firstIndex(of: iterIndex)!
+                        if pos % 3 == 0, currPos % 3 == 0 {
+                            guard (currPos + 3) % 36 == pos || currPos - 3 + (currPos - 3 < 0 ? 36 : 0) == pos else { continue }
+                            path.addCurve(from: coords[index], to: coords[iterIndex], geometry: geo)
+                        }
+                    }
+                }
+            }
+        }
+        .stroke(.black, style: StrokeStyle(lineWidth: Constants.lineWidth - 2, dash: [5]))
+    }
+
     @ViewBuilder private func tappableCircles(from coords: [CGPoint], in geo: GeometryProxy) -> some View {
         ForEach(coords.indices, id: \.self) { index in
             Circle(center: coords[index], diameter: viewModel.circleDiameter(in: geo))
-                .fill(viewModel.isTapped[index] ? Color.blue : Color.white,
+                .fill(viewModel.getColorFor(index: index),
                       stroke: StrokeStyle(lineWidth: Constants.outlineWidth)
                 )
                 .onTapGesture {
-                    viewModel.isTapped[index].toggle()
+                    viewModel.handleTap(index: index)
                 }
         }
     }
