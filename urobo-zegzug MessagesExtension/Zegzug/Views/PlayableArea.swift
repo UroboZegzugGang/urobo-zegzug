@@ -14,71 +14,71 @@ struct PlayableArea: View {
         }
     }
 
-    @ViewBuilder private func greenLines(from coords: [CGPoint], in geo: GeometryProxy) -> some View {
+    @ViewBuilder private func greenLines(from coords: [ZegzugCircle], in geo: GeometryProxy) -> some View {
         Path { path in
-            path.createClosedPath(start: coords[Constants.greenStartIndex]) { path in
+            path.createClosedPath(start: coords[Constants.greenStartIndex].center) { path in
                 var currPos = path.currentPoint!
                 for nIndex in stride(from: 0, to: viewModel.greenNeighbours.count, by: Constants.stepSize) {
                     let index = viewModel.greenNeighbours[nIndex]
-                    path.move(to: coords[index])
+                    path.move(to: coords[index].center)
                     //Draw short straight lines
                     path.connectLinesByIndexes(start: nIndex,
                                                end: nIndex + Constants.stepSize,
-                                               points: coords,
+                                               points: coords.map { $0.center },
                                                indexes: viewModel.greenNeighbours)
                     //Draw curved lines
                     path.move(to: currPos)
-                    path.addCurve(from: currPos, to: coords[index], geometry: geo)
-                    currPos = coords[index]
+                    path.addCurve(from: currPos, to: coords[index].center, geometry: geo)
+                    currPos = coords[index].center
                 }
             }
         }
         .stroke(lineWidth: Constants.lineWidth).foregroundColor(.greenLine)
     }
 
-    @ViewBuilder private func orangeLines(from coords: [CGPoint], in geo: GeometryProxy) -> some View {
+    @ViewBuilder private func orangeLines(from coords: [ZegzugCircle], in geo: GeometryProxy) -> some View {
         Path { path in
-            path.createClosedPath(start: coords[Constants.orangeStartIndex]) { path in
+            path.createClosedPath(start: coords[Constants.orangeStartIndex].center) { path in
                 path.connectLinesByIndexes(start: 0,
                                            end: viewModel.orangeNeighbours.count,
-                                           points: coords,
+                                           points: coords.map { $0.center },
                                            indexes: viewModel.orangeNeighbours)
             }
         }
         .stroke(lineWidth: Constants.lineWidth).foregroundColor(.orangeLine)
     }
 
-    @ViewBuilder private func neighbourLinesPlayerOne(from coords: [CGPoint], in geo: GeometryProxy) -> some View {
+    @ViewBuilder private func neighbourLinesPlayerOne(from coords: [ZegzugCircle], in geo: GeometryProxy) -> some View {
         Path { path in
-            for neighbours in viewModel.playerOneOrangeNeighbours {
-                path.move(to: coords[neighbours.first!])
+            for neighbours in viewModel.playerOne.list(for: .orange) {
+                path.move(to: coords[neighbours.first!].center)
                 for circle in neighbours {
-                    path.addLine(to: coords[circle])
+                    path.addLine(to: coords[circle].center)
                 }
             }
         }
         .stroke(.black, style: StrokeStyle(lineWidth: Constants.neighbourLineWidth, dash: Constants.neighbourLineDash))
 
         Path { path in
-            guard viewModel.playerOneGreenNeighbours.count > 0,
-                  viewModel.playerOneGreenNeighbours.first!.count > 0
+            guard viewModel.playerOne.list(for: .orange).count > 0,
+                  viewModel.playerOne.list(for: .green).first!.count > 0
             else { return }
 
             // straigth lines
-            for list in viewModel.playerOneGreenNeighbours {
+            for list in viewModel.playerOne.list(for: .green) {
                 var currIndex = list.first!
                 for index in list {
-                    path.move(to: coords[currIndex])
+                    path.move(to: coords[currIndex].center)
                     let pos = viewModel.greenNeighbours.firstIndex(of: index)!
                     if pos % 3 != 0 {
-                        path.addLine(to: coords[index])
+                        path.addLine(to: coords[index].center)
                     }
                     currIndex = index
                 }
             }
 
             // curved lines
-            for list in viewModel.playerOneGreenNeighbours {
+            for list in viewModel.playerOne.list(for: .green) {
                 for index in list {
                     for iterIndex in list {
                         guard index != iterIndex else { continue }
@@ -86,7 +86,7 @@ struct PlayableArea: View {
                         let pos = viewModel.greenNeighbours.firstIndex(of: iterIndex)!
                         if pos % 3 == 0, currPos % 3 == 0 {
                             guard (currPos + 3) % 36 == pos || currPos - 3 + (currPos - 3 < 0 ? 36 : 0) == pos else { continue }
-                            path.addCurve(from: coords[index], to: coords[iterIndex], geometry: geo)
+                            path.addCurve(from: coords[index].center, to: coords[iterIndex].center, geometry: geo)
                         }
                     }
                 }
@@ -95,14 +95,14 @@ struct PlayableArea: View {
         .stroke(.black, style: StrokeStyle(lineWidth: Constants.neighbourLineWidth, dash: Constants.neighbourLineDash))
     }
 
-    @ViewBuilder private func tappableCircles(from coords: [CGPoint], in geo: GeometryProxy) -> some View {
-        ForEach(coords.indices, id: \.self) { index in
-            Circle(center: coords[index], diameter: viewModel.circleDiameter(in: geo))
-                .fill(viewModel.getColorFor(index: index),
+    @ViewBuilder private func tappableCircles(from coords: [ZegzugCircle], in geo: GeometryProxy) -> some View {
+        ForEach(coords) { $circle in
+            Circle(center: circle.center, diameter: viewModel.circleDiameter(in: geo))
+                .fill(circle.fillColor,
                       stroke: StrokeStyle(lineWidth: Constants.outlineWidth)
                 )
                 .onTapGesture {
-                    viewModel.handleTap(index: index)
+                    viewModel.tapped(&circle)
                 }
         }
     }
