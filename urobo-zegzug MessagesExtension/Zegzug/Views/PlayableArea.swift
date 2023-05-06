@@ -16,21 +16,20 @@ struct PlayableArea: View {
 
     @ViewBuilder private func greenLines(in geo: GeometryProxy) -> some View {
         Path { path in
-            let coords = viewModel.circles
-            path.createClosedPath(start: coords[Constants.greenStartIndex].center) { path in
+            path.createClosedPath(start: viewModel.circles[Constants.greenStartIndex].center) { path in
                 var currPos = path.currentPoint!
                 for nIndex in stride(from: 0, to: viewModel.greenNeighbours.count, by: Constants.stepSize) {
                     let index = viewModel.greenNeighbours[nIndex]
-                    path.move(to: coords[index].center)
+                    path.move(to: viewModel.circles[index].center)
                     //Draw short straight lines
                     path.connectLinesByIndexes(start: nIndex,
                                                end: nIndex + Constants.stepSize,
-                                               points: coords.map { $0.center },
+                                               points: viewModel.circles.map { $0.center },
                                                indexes: viewModel.greenNeighbours)
                     //Draw curved lines
                     path.move(to: currPos)
-                    path.addCurve(from: currPos, to: coords[index].center, geometry: geo)
-                    currPos = coords[index].center
+                    path.addCurve(from: currPos, to: viewModel.circles[index].center, geometry: geo)
+                    currPos = viewModel.circles[index].center
                 }
             }
         }
@@ -39,11 +38,10 @@ struct PlayableArea: View {
 
     @ViewBuilder private func orangeLines(in geo: GeometryProxy) -> some View {
         Path { path in
-            let coords = viewModel.circles
-            path.createClosedPath(start: coords[Constants.orangeStartIndex].center) { path in
+            path.createClosedPath(start: viewModel.circles[Constants.orangeStartIndex].center) { path in
                 path.connectLinesByIndexes(start: 0,
                                            end: viewModel.orangeNeighbours.count,
-                                           points: coords.map { $0.center },
+                                           points: viewModel.circles.map { $0.center },
                                            indexes: viewModel.orangeNeighbours)
             }
         }
@@ -54,9 +52,9 @@ struct PlayableArea: View {
         Path { path in
             let coords = viewModel.circles
             for neighbours in viewModel.playerOne.list(for: .orange) {
-                path.move(to: coords[neighbours.first!].center)
+                path.move(to: viewModel.circles[neighbours.first!].center)
                 for circle in neighbours {
-                    path.addLine(to: coords[circle].center)
+                    path.addLine(to: viewModel.circles[circle].center)
                 }
             }
         }
@@ -67,15 +65,14 @@ struct PlayableArea: View {
                   viewModel.playerOne.list(for: .green).first!.count > 0
             else { return }
 
-            let coords = viewModel.circles
             // straigth lines
             for list in viewModel.playerOne.list(for: .green) {
                 var currIndex = list.first!
                 for index in list {
-                    path.move(to: coords[currIndex].center)
+                    path.move(to: viewModel.circles[currIndex].center)
                     let pos = viewModel.greenNeighbours.firstIndex(of: index)!
                     if pos % 3 != 0 {
-                        path.addLine(to: coords[index].center)
+                        path.addLine(to: viewModel.circles[index].center)
                     }
                     currIndex = index
                 }
@@ -90,7 +87,7 @@ struct PlayableArea: View {
                         let pos = viewModel.greenNeighbours.firstIndex(of: iterIndex)!
                         if pos % 3 == 0, currPos % 3 == 0 {
                             guard (currPos + 3) % 36 == pos || currPos - 3 + (currPos - 3 < 0 ? 36 : 0) == pos else { continue }
-                            path.addCurve(from: coords[index].center, to: coords[iterIndex].center, geometry: geo)
+                            path.addCurve(from: viewModel.circles[index].center, to: viewModel.circles[iterIndex].center, geometry: geo)
                         }
                     }
                 }
@@ -100,8 +97,7 @@ struct PlayableArea: View {
     }
 
     @ViewBuilder private func tappableCircles(in geo: GeometryProxy) -> some View {
-        let coords = viewModel.circles
-        ForEach(Array(coords.enumerated()), id: \.element.id) { index, circle in
+        ForEach(Array(viewModel.circles.enumerated()), id: \.element.id) { index, circle in
             Circle(center: circle.center, diameter: viewModel.circleDiameter(in: geo))
                 .fill(circle.fillColor,
                       stroke: StrokeStyle(lineWidth: Constants.outlineWidth)
