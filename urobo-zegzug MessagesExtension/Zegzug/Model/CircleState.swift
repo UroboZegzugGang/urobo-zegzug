@@ -3,8 +3,3 @@ enum CircleState {
     case playerTwo
     case none
 }
-
-enum NeighbourColor {
-    case orange
-    case green
-}
