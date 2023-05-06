@@ -4,6 +4,7 @@ import SwiftUI
 final class ZegzugGameViewModel: ObservableObject {
     @Published var circleCenters = [CGPoint]()
     @Published var isTapped = [Bool]()
+    @Published var showingHowTo = false
 
     let rotationDegree: CGFloat = 30
 

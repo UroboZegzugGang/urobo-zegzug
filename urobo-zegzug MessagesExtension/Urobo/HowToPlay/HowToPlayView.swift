@@ -78,13 +78,11 @@ struct HowToPlayView: View {
     @ViewBuilder private func closeButton() -> some View {
         HStack {
             Spacer()
-            Button {
+            Button("X") {
                 hideAction()
-            } label: {
-                Image(systemName: "x.circle.fill")
-                    .foregroundColor(.gray)
-                    .frame(width: Constants.closeButtonSize, height: Constants.closeButtonSize)
             }
+            .buttonStyle(.circular)
+            .padding(.trailing, Padding.half)
         }
     }
 
