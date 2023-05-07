@@ -45,43 +45,19 @@ final class ZegzugGameViewModel: ObservableObject {
         11,
     ]
 
-    let greenNeighbours: [Int] = [
-        24,
-        12,
-        0,
-        25,
-        13,
-        1,
-        29,
-        17,
-        5,
-        32,
-        20,
-        8,
-        34,
-        22,
-        10,
-        27,
-        15,
-        3,
-        33,
-        21,
-        9,
-        28,
-        16,
-        4,
-        26,
-        14,
-        2,
-        35,
-        23,
-        11,
-        31,
-        19,
-        7,
-        30,
-        18,
-        6,
+    let greenNeighbours: [[Int]] = [
+        [24, 12, 0],
+        [25, 13, 1],
+        [29, 17, 5],
+        [32, 20, 8],
+        [34, 22, 10],
+        [27, 15, 3],
+        [33, 21, 9],
+        [28, 16, 4],
+        [26, 14, 2],
+        [35, 23, 11],
+        [31, 19, 7],
+        [30, 18, 6],
     ]
 
     private var currentPlayer: ZegzugPlayer!
@@ -143,7 +119,7 @@ final class ZegzugGameViewModel: ObservableObject {
             circles[index].state = .none
         }
 
-        togglePlayers()
+        //togglePlayers()
         determineAllNeighbours()
     }
 
@@ -152,31 +128,29 @@ final class ZegzugGameViewModel: ObservableObject {
     }
 
     private func determineAllNeighbours() {
-        determineNeighbours(for: playerOne, color: .green)
-        determineNeighbours(for: playerOne, color: .orange)
+        determineGreenNeighbours(for: playerOne)
+        //determineOrangeNeighbours(for: playerOne)
+        print(playerOne.greenNeighbours)
 
-        determineNeighbours(for: playerTwo, color: .green)
-        determineNeighbours(for: playerTwo, color: .orange)
+        //determineNeighbours(for: playerTwo, color: .green)
+        //determineNeighbours(for: playerTwo, color: .orange)
     }
 
-    private func determineNeighbours(for player: ZegzugPlayer, color: NeighbourColor) {
-        let firstPersonCLicked = circles.filter { $0.state == player.circleState }
-        guard firstPersonCLicked.count > 1 else { return }
+    private func determineOrangeNeighbours(for player: ZegzugPlayer) {
+        let clicked = circles.filter { $0.state == player.circleState }
+        guard clicked.count > 1 else { return }
 
-        var neighbourList = player.list(for: color)
+        var neighbourList = player.orangeNeighbours
         neighbourList.removeAll()
 
         for index in circles.indices {
             guard circles[index].state == player.circleState else { continue }
             var noNeighbours = true
             for outerIndex in neighbourList.indices {
-                guard neighbourList.indices.contains(outerIndex) else { break }
                 for innerIndex in neighbourList[outerIndex].indices {
-                    guard neighbourList.indices.contains(outerIndex) else { break }
-                    guard neighbourList[outerIndex].indices.contains(innerIndex) else { break }
                     guard !neighbourList[outerIndex].contains(index) else { break }
                     let comparable = neighbourList[outerIndex][innerIndex]
-                    let status = getNeighbourStatus(for: color, first: index, second: comparable)
+                    let status = getNeighbourStatus(for: .orange, first: index, second: comparable)
                     switch status {
                     case .after:
                         neighbourList[outerIndex].append(index)
@@ -184,22 +158,110 @@ final class ZegzugGameViewModel: ObservableObject {
                     case .before:
                         neighbourList[outerIndex].insert(index, at: innerIndex)
                         noNeighbours = false
-                    case .none:
+                    default:
                         break
                     }
-                    neighbourList = mergeConnectedLines(for: color, player: player, in: neighbourList)
                 }
             }
             if noNeighbours {
                 neighbourList.append([index])
-                neighbourList = mergeConnectedLines(for: color, player: player, in: neighbourList)
             }
         }
 
-        player.updateNeighbours(with: neighbourList, color: color)
+        neighbourList = mergeOrangeNeighbours(in: neighbourList)
+        player.updateNeighbours(with: neighbourList, color: .orange)
     }
 
-    private func mergeConnectedLines(for color: NeighbourColor, player: ZegzugPlayer, in neighbourList: [[Int]]) -> [[Int]] {
+    private func determineGreenNeighbours(for player: ZegzugPlayer) {
+        let clicked = circles.filter { $0.state == player.circleState }
+        guard clicked.count > 1 else { return }
+
+        var neighbourList = player.greenNeighbours
+        neighbourList.removeAll()
+
+        for index in circles.indices {
+            guard circles[index].state == player.circleState else { continue }
+            var noNeighbours = true
+            for outerIndex in neighbourList.indices {
+                for trioIndex in neighbourList[outerIndex].indices {
+                    for innerIndex in neighbourList[outerIndex][trioIndex].indices {
+                        guard !neighbourList[outerIndex][trioIndex].contains(index) else { noNeighbours = false; break }
+                        let comparable = neighbourList[outerIndex][trioIndex][innerIndex]
+                        let status = getNeighbourStatus(for: .green, first: index, second: comparable)
+                        switch status {
+                        case .after:
+                            neighbourList[outerIndex].append([index])
+                            noNeighbours = false
+                        case .before:
+                            neighbourList[outerIndex].insert([index], at: innerIndex)
+                            noNeighbours = false
+                        case .beforeInTrio:
+                            neighbourList[outerIndex][trioIndex].append(index)
+                            noNeighbours = false
+                        case .afterInTrio:
+                            neighbourList[outerIndex][trioIndex].insert(index, at: innerIndex)
+                            noNeighbours = false
+                        case .none:
+                            break
+                        }
+                    }
+                }
+            }
+
+            if noNeighbours {
+                neighbourList.append([[index]])
+            }
+        }
+
+        neighbourList = mergeGreenNeighbours(in: neighbourList)
+        player.updateNeighbours(with: neighbourList, color: .green)
+    }
+
+    private func mergeGreenNeighbours(in neighbourList: [[[Int]]]) -> [[[Int]]] {
+        var merged = [[[Int]]]()
+        var current = [[Int]]()
+
+        var hasBeenMerged = [[[Int]]]()
+
+        for (index, doubleBraces) in neighbourList.enumerated() {
+            current = doubleBraces
+            for doubleBracesComparableIndex in index + 1 ..< neighbourList.endIndex {
+                let doubleBracesComparable = neighbourList[doubleBracesComparableIndex]
+
+                if doubleBraces.first!.first! == doubleBracesComparable.last!.last! {
+                    // ex: [[[25, 13, 1]], [[24], [25]]] --> [[[24], [25, 13, 1]]]
+                    current.insert(contentsOf: doubleBracesComparable.dropLast(), at: 0)
+                    hasBeenMerged.append(doubleBraces)
+                    hasBeenMerged.append(doubleBracesComparable)
+                } else if doubleBraces.last!.last! == doubleBracesComparable.first!.first! {
+                    // ex: [[[24, 12, 0], [25]], [[25, 13, 1]]] --> [[[24, 12, 0], [25, 13, 1]]]
+                    current = current.dropLast() + doubleBracesComparable
+                    hasBeenMerged.append(doubleBraces)
+                    hasBeenMerged.append(doubleBracesComparable)
+                }
+
+                if !hasBeenMerged.contains(doubleBraces) {
+                    // ex: [[[24, 12, 0], [25], [30]], [[25, 13, 1]]] --> [[[24, 12, 0], [25, 13, 1], [30]]]
+                    let singleItems = current.filter { $0.count == 1 }
+                    for itemIndex in singleItems.indices {
+                        if current[itemIndex].first! == doubleBracesComparable.first!.first! {
+                            current.remove(at: itemIndex)
+                            current.insert(contentsOf: doubleBracesComparable, at: itemIndex)
+                            hasBeenMerged.append(doubleBraces)
+                            hasBeenMerged.append(doubleBracesComparable)
+                        }
+                    }
+                }
+            }
+
+            if !hasBeenMerged.contains(current) {
+                merged.append(current)
+            }
+        }
+        return merged
+    }
+
+    private func mergeOrangeNeighbours(in neighbourList: [[Int]]) -> [[Int]] {
         var merged = [[Int]]()
         var current = [Int]()
 
@@ -223,47 +285,58 @@ final class ZegzugGameViewModel: ObservableObject {
     }
 
     private func getNeighbourStatus(for color: NeighbourColor, first: Int, second: Int) -> NeighbourStatus {
-        var neighbourList = [Int]()
-        switch color {
-        case .orange:
-            neighbourList = orangeNeighbours
-        case .green:
-            neighbourList = greenNeighbours
-        }
-        let index = neighbourList.firstIndex(of: first)!
         if color == .orange {
-            if neighbourList[(index + 1) % 36] == second {
+            let index = orangeNeighbours.firstIndex(of: first)!
+            if orangeNeighbours[(index + 1) % 36] == second {
                 return .before
             }
-            if neighbourList[index - 1 < 0 ? 35 : index - 1] == second {
+            if orangeNeighbours[index - 1 < 0 ? 35 : index - 1] == second {
                 return .after
             }
         }
         if color == .green {
-            switch index % 3 {
-            case 0:
-            if neighbourList[(index + 3) % 36] == second || neighbourList[(index + 1) % 36] == second {
+            let outerIndex = greenNeighbours.firstIndex(where: { $0.contains(first) })!
+            let outerIndexComparable = greenNeighbours.firstIndex(where: { $0.contains(second) })!
+
+            let innerIndex = greenNeighbours[outerIndex].firstIndex(of: first)!
+            let innerIndexComparable = greenNeighbours[outerIndexComparable].firstIndex(of: second)!
+
+            if outerIndex < outerIndexComparable {
+                guard nextToEachotherWrapping(outerIndex, and: outerIndexComparable, in: greenNeighbours)
+                else { return .none }
+
+                if innerIndex == 0, innerIndexComparable == 0 {
                     return .before
                 }
-                if neighbourList[index - 3 + (index - 3 < 0 ? 36 : 0)] == second {
+            } else if outerIndex > outerIndexComparable {
+                guard nextToEachotherWrapping(outerIndex, and: outerIndexComparable, in: greenNeighbours)
+                else { return .none }
+
+                if innerIndex == 0, innerIndexComparable == 0 {
                     return .after
                 }
-            case 1:
-                if neighbourList[(index + 1) % 36] == second {
-                    return .before
+            } else {
+                // in the same triple
+                guard nextToEachother(innerIndex, and: innerIndexComparable) else { return .none }
+
+                if innerIndex < innerIndexComparable {
+                    return .afterInTrio
+                } else {
+                    return .beforeInTrio
                 }
-                if neighbourList[index - 1 < 0 ? 35 : index - 1] == second {
-                    return .after
-                }
-            case 2:
-                if neighbourList[index - 1 < 0 ? 35 : index - 1] == second{
-                    return .after
-                }
-            default:
-                break
             }
         }
         return .none
+    }
+
+    private func nextToEachother(_ first: Int, and second: Int) -> Bool {
+        abs(first - second) == 1
+    }
+
+    private func nextToEachotherWrapping(_ first: Int, and second: Int, in array: [Any]) -> Bool {
+        nextToEachother(first, and: second) ||
+        (first == array.startIndex && second == array.endIndex - 1) ||
+        (first == array.endIndex - 1 && second == array.startIndex)
     }
 
     private func middle(of geo: GeometryProxy) -> CGPoint {
@@ -296,6 +369,8 @@ private extension ZegzugGameViewModel {
     enum NeighbourStatus {
         case before
         case after
+        case beforeInTrio
+        case afterInTrio
         case none
     }
 }
