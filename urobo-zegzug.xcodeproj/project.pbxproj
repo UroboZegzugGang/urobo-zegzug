@@ -24,6 +24,8 @@
 		418CF6D329F3D1E7001C0FCD /* Image+appImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418CF6D229F3D1E7001C0FCD /* Image+appImages.swift */; };
 		418CF6D829F3D2F2001C0FCD /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418CF6D729F3D2F2001C0FCD /* MenuButton.swift */; };
 		418CF6DB29F3D633001C0FCD /* GameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418CF6DA29F3D633001C0FCD /* GameType.swift */; };
+		41EEBCB32A064BA8002A6798 /* UroboState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EEBCB22A064BA8002A6798 /* UroboState.swift */; };
+		41EEBCB62A06ACB0002A6798 /* Int+isBiggerUroboCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EEBCB52A06ACB0002A6798 /* Int+isBiggerUroboCard.swift */; };
 		55D9B32829F5D77000A2369C /* ZegzugGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B32729F5D77000A2369C /* ZegzugGameView.swift */; };
 		55D9B32B29F5D8B000A2369C /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B32A29F5D8B000A2369C /* Circle.swift */; };
 		55D9B32D29F5DAA500A2369C /* BackgroundCircles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B32C29F5DAA500A2369C /* BackgroundCircles.swift */; };
@@ -82,6 +84,8 @@
 		418CF6D229F3D1E7001C0FCD /* Image+appImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+appImages.swift"; sourceTree = "<group>"; };
 		418CF6D729F3D2F2001C0FCD /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		418CF6DA29F3D633001C0FCD /* GameType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameType.swift; sourceTree = "<group>"; };
+		41EEBCB22A064BA8002A6798 /* UroboState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UroboState.swift; sourceTree = "<group>"; };
+		41EEBCB52A06ACB0002A6798 /* Int+isBiggerUroboCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+isBiggerUroboCard.swift"; sourceTree = "<group>"; };
 		55D9B32729F5D77000A2369C /* ZegzugGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZegzugGameView.swift; sourceTree = "<group>"; };
 		55D9B32A29F5D8B000A2369C /* Circle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Circle.swift; sourceTree = "<group>"; };
 		55D9B32C29F5DAA500A2369C /* BackgroundCircles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundCircles.swift; sourceTree = "<group>"; };
@@ -196,9 +200,8 @@
 		4143724529E0900D00A670C0 /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				41EEBCB12A064B81002A6798 /* Presentation */,
 				55D9B34029F6C6E900A2369C /* Model */,
-				4143724629E0901900A670C0 /* UroboGameScreen.swift */,
-				4143724829E0902600A670C0 /* UroboGameViewModel.swift */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -225,6 +228,7 @@
 		418CF6CC29F3D0D4001C0FCD /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				41EEBCB42A06AC9B002A6798 /* Int */,
 				55D9B34529F6CF4700A2369C /* ButtonStyle */,
 				55D9B33829F5E22600A2369C /* Path */,
 				55D9B33529F5E19B00A2369C /* Shape */,
@@ -275,6 +279,23 @@
 				418CF6DA29F3D633001C0FCD /* GameType.swift */,
 			);
 			path = GameType;
+			sourceTree = "<group>";
+		};
+		41EEBCB12A064B81002A6798 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				4143724629E0901900A670C0 /* UroboGameScreen.swift */,
+				4143724829E0902600A670C0 /* UroboGameViewModel.swift */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		41EEBCB42A06AC9B002A6798 /* Int */ = {
+			isa = PBXGroup;
+			children = (
+				41EEBCB52A06ACB0002A6798 /* Int+isBiggerUroboCard.swift */,
+			);
+			path = Int;
 			sourceTree = "<group>";
 		};
 		55D9B32529F5D74400A2369C /* Zegzug */ = {
@@ -333,6 +354,7 @@
 			isa = PBXGroup;
 			children = (
 				55D9B34129F6C6E900A2369C /* UroboPlayer.swift */,
+				41EEBCB22A064BA8002A6798 /* UroboState.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -450,6 +472,7 @@
 				4143724229E0702E00A670C0 /* GameMenuTile.swift in Sources */,
 				4143724929E0902600A670C0 /* UroboGameViewModel.swift in Sources */,
 				4143724729E0901900A670C0 /* UroboGameScreen.swift in Sources */,
+				41EEBCB62A06ACB0002A6798 /* Int+isBiggerUroboCard.swift in Sources */,
 				4143723F29E06F1900A670C0 /* MenuViewModel.swift in Sources */,
 				55D9B34729F6CF5900A2369C /* ButtonStyle+Extension.swift in Sources */,
 				4143726429E19BEC00A670C0 /* HowToPlayView.swift in Sources */,
@@ -464,6 +487,7 @@
 				55D9B34229F6C6E900A2369C /* UroboPlayer.swift in Sources */,
 				55D9B32829F5D77000A2369C /* ZegzugGameView.swift in Sources */,
 				418CF6D029F3D118001C0FCD /* Color+appColors.swift in Sources */,
+				41EEBCB32A064BA8002A6798 /* UroboState.swift in Sources */,
 				4143724C29E0945000A670C0 /* Padding.swift in Sources */,
 				55D9B32D29F5DAA500A2369C /* BackgroundCircles.swift in Sources */,
 				55D9B34929F6D18000A2369C /* CircularButton.swift in Sources */,
@@ -614,7 +638,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 85XVJT6RC3;
+				DEVELOPMENT_TEAM = H96D2TP7LP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "urobo-zegzug MessagesExtension/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "urobo-zegzug";
@@ -641,7 +665,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 85XVJT6RC3;
+				DEVELOPMENT_TEAM = H96D2TP7LP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "urobo-zegzug MessagesExtension/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "urobo-zegzug";
@@ -670,7 +694,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 85XVJT6RC3;
+				DEVELOPMENT_TEAM = H96D2TP7LP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -694,7 +718,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 85XVJT6RC3;
+				DEVELOPMENT_TEAM = H96D2TP7LP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

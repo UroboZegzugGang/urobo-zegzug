@@ -9,7 +9,7 @@ struct UroboGameScreen: View {
             Spacer()
             uroboTable()
             Spacer()
-            sendButton()
+            chooseButton()
             helpButton()
         }
         .background {
@@ -26,7 +26,7 @@ struct UroboGameScreen: View {
     @ViewBuilder private func uroboTable() -> some View {
         ZStack {
             ForEach(0..<Constants.numberOfCards, id: \.self) { index in
-                card(player: index % 2 == 0 ? .dark : .light, number: index + 1)
+                card(number: index + 1)
                     .offset(y: -Constants.cardTableHeight/2)
                     .rotationEffect(.degrees(Double(index * 360 / Constants.numberOfCards)))
             }
@@ -34,18 +34,22 @@ struct UroboGameScreen: View {
         .frame(height: Constants.cardTableHeight)
     }
 
-    @ViewBuilder private func card(player: UroboPlayer, number: Int) -> some View  {
-        if !viewModel.takenCards.contains(number) {
+    @ViewBuilder private func card(number: Int) -> some View  {
+        if !viewModel.isCardTaken(number) {
             RoundedRectangle(cornerRadius: Constants.cardCornerRadius)
-                .foregroundColor(player == .light ? .gray : .black)
-                .opacity(viewModel.selectedCardNumber == number ? 1 : Constants.notSelectedCardOpacity)
+                .foregroundColor(viewModel.playerOfCard(number) == .light ? .gray : .black)
+                .opacity(
+                    (viewModel.selectedCardNumber == number || viewModel.state.calledCard == number) ? 1 : Constants.notSelectedCardOpacity
+                )
                 .frame(width: Constants.cardWidth, height: Constants.cardHeight)
                 .shadow(radius: 0, x: Constants.shadowOffset, y: Constants.shadowOffset)
                 .overlay {
                     RoundedRectangle(cornerRadius: Constants.cardCornerRadius)
                         .stroke(.black, lineWidth: Constants.cardBorderWidth)
                 }
-                .scaleEffect(viewModel.selectedCardNumber == number ? Constants.selectedCardScaleEffect : 1)
+                .scaleEffect(
+                    (viewModel.selectedCardNumber == number || viewModel.state.calledCard == number) ? Constants.selectedCardScaleEffect : 1
+                )
                 .animation(.easeIn(duration: Constants.selectAnimationDuration), value: viewModel.selectedCardNumber)
                 .onTapGesture {
                     viewModel.cardTapped(number)
@@ -54,23 +58,25 @@ struct UroboGameScreen: View {
     }
 
     @ViewBuilder private func scoreBar() -> some View {
-        HStack {
-            Text("\(viewModel.playerCurrentScore)")
-                .font(.system(size: Constants.scoreValueSize, weight: .bold))
-            Spacer()
-            Text("Score")
-                .font(.system(size: Constants.scoreTitleSize, weight: .bold))
-            Spacer()
-            Text("\(viewModel.opponentCurrentScore)")
-                .font(.system(size: Constants.scoreValueSize, weight: .bold))
+        if let playerScore = viewModel.state.playerScore, let opponentScore = viewModel.state.opponentScore {
+            HStack {
+                Text("\(playerScore)")
+                    .font(.system(size: Constants.scoreValueSize, weight: .bold))
+                Spacer()
+                Text("Score")
+                    .font(.system(size: Constants.scoreTitleSize, weight: .bold))
+                Spacer()
+                Text("\(opponentScore)")
+                    .font(.system(size: Constants.scoreValueSize, weight: .bold))
+            }
+            .padding()
+            .padding(.horizontal)
         }
-        .padding()
-        .padding(.horizontal)
     }
 
-    @ViewBuilder private func sendButton() -> some View {
-        Button("Send") {
-
+    @ViewBuilder private func chooseButton() -> some View {
+        Button("Choose") {
+            viewModel.choosePressed()
         }
         .buttonStyle(.monochromeShadow)
         .disabled(viewModel.selectedCardNumber == nil)

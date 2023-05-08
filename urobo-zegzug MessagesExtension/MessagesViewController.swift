@@ -17,7 +17,7 @@ class MessagesViewController: MSMessagesAppViewController {
         } else {
             switch gameType {
             case .urobo:
-                controller = instantiateUroboVC()
+                controller = instantiateUroboVC(with: UroboState(message: conversation.selectedMessage) ?? UroboState())
             case .zegzug:
                 controller = instantiateZegzugVC()
             }
@@ -48,8 +48,9 @@ class MessagesViewController: MSMessagesAppViewController {
         return UIHostingController(rootView: MenuScreen(viewModel: viewModel))
     }
 
-    private func instantiateUroboVC() -> UIViewController {
-        let viewModel = UroboGameViewModel()
+    private func instantiateUroboVC(with state: UroboState) -> UIViewController {
+        let viewModel = UroboGameViewModel(state: state)
+        viewModel.delegate = self
         return UIHostingController(rootView: UroboGameScreen(viewModel: viewModel))
     }
 
@@ -124,5 +125,48 @@ extension MessagesViewController: MenuViewModelDelegate {
     func startZegZug() {
         self.gameType = .zegzug
         requestPresentationStyle(.expanded)
+    }
+}
+
+extension MessagesViewController: UroboGameViewModelDelegate {
+    func endTurn(with state: UroboState) {
+        print("turn end")
+        dismiss()
+
+        let conversation = activeConversation
+        let session = conversation?.selectedMessage?.session ?? MSSession()
+
+        var components = URLComponents()
+        components.queryItems = state.queryItems
+
+        let layout = MSMessageTemplateLayout()
+        layout.image = getImageFromGameState()
+        layout.caption = "Playing Urobo"
+
+        let message = MSMessage(session: session)
+        message.url = components.url!
+        message.layout = layout
+        message.summaryText = "Urobo"
+
+        conversation?.insert(message) { error in
+            if let error {
+                print(error)
+            }
+        }
+    }
+
+    func endGame(with state: UroboState) {
+        // TODO: implement
+    }
+}
+
+extension MessagesViewController {
+    private func getImageFromGameState() -> UIImage {
+        let rect = controller.view.bounds
+        UIGraphicsBeginImageContextWithOptions(rect.size, false, 0)
+        controller.view.drawHierarchy(in: rect, afterScreenUpdates: true)
+        let image = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return image
     }
 }
