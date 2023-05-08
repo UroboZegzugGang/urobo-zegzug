@@ -54,6 +54,7 @@ struct UroboGameScreen: View {
                 .onTapGesture {
                     viewModel.cardTapped(number)
                 }
+                .overlay { Text(String(number)) }
         }
     }
 

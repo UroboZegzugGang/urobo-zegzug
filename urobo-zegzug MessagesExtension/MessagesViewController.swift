@@ -130,7 +130,6 @@ extension MessagesViewController: MenuViewModelDelegate {
 
 extension MessagesViewController: UroboGameViewModelDelegate {
     func endTurn(with state: UroboState) {
-        print("turn end")
         dismiss()
 
         let conversation = activeConversation

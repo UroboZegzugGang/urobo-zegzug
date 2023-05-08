@@ -5,8 +5,8 @@ extension Int {
         guard self > 0, self <= 12, card > 0, card <= 12 else { return nil }
         var biggerCards: [Int] = []
         for index in 1...6 {
-            biggerCards.append( (self+index) % 13 )
+            biggerCards.append( (card+index) % 13 )
         }
-        return biggerCards.contains(card)
+        return biggerCards.contains(self)
     }
 }

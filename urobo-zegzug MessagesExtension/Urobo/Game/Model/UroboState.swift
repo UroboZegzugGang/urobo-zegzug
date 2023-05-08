@@ -13,7 +13,7 @@ struct UroboState {
         if let playerScore, let opponentScore, let takenCards, let currentPlayer {
             items.append(URLQueryItem(name: URLQueryKeys.currentPlayerScore, value: String(playerScore)))
             items.append(URLQueryItem(name: URLQueryKeys.otherPlayerScore, value: String(opponentScore)))
-            items.append(URLQueryItem(name: URLQueryKeys.takenCards, value: takenCards.value.description))
+            items.append(URLQueryItem(name: URLQueryKeys.takenCards, value: takenCards.toCommaSeparatedString()))
             items.append(URLQueryItem(name: URLQueryKeys.calledCard, value: String(calledCard ?? -1)))
             items.append(URLQueryItem(name: URLQueryKeys.currentPlayer, value: currentPlayer.rawValue))
         }
@@ -24,7 +24,7 @@ struct UroboState {
         playerScore = .zero
         opponentScore = .zero
         takenCards = TakenCards(value: [])
-        calledCard = nil
+        calledCard = -1
         currentPlayer = .dark
     }
 
@@ -53,9 +53,9 @@ struct UroboState {
             case URLQueryKeys.takenCards:
                 self.takenCards = TakenCards.fromCommaSeparatedString(value)
             case URLQueryKeys.calledCard:
-                self.playerScore = Int(value)
+                self.calledCard = Int(value)
             case URLQueryKeys.currentPlayer:
-                self.playerScore = Int(value)
+                self.currentPlayer = UroboPlayer(rawValue: value)
             default: continue
             }
         }
@@ -80,16 +80,21 @@ extension UroboState {
 
         var value: Set<Int>
 
+        init(value: Set<Int>) {
+            self.value = value
+        }
+
+        mutating func addElements(of array: [Int]) {
+            value.formUnion(array)
+        }
+
         func toCommaSeparatedString() -> String {
-            value.map { String($0) }.joined(separator: ",")
+            let str = value.map { String($0) }.joined(separator: ",")
+            return str
         }
 
         func contains(_ number: Int) -> Bool {
             value.contains(number)
-        }
-
-        mutating func add(_ number: Int) {
-            value.insert(number)
         }
     }
 }

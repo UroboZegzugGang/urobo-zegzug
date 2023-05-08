@@ -26,10 +26,10 @@ final class UroboGameViewModel: ObservableObject {
     }
 
     func choosePressed() {
-        guard let takenCards = state.takenCards else {
+        guard let calledCard = state.calledCard else {
             return
         }
-        if takenCards.value.count % 2 == 0 {
+        if calledCard == -1 {
             call()
         } else {
             answer()
@@ -63,22 +63,19 @@ final class UroboGameViewModel: ObservableObject {
             calledCard: selectedCardNumber,
             currentPlayer: currentPlayer == .dark ? .light : .dark
         )
-        self.state = newState
         delegate?.endTurn(with: newState)
     }
 
     private func answer() {
-        guard let takenCards = state.takenCards,
-              let playerScore = state.playerScore,
+        guard let playerScore = state.playerScore,
               let opponentScore = state.opponentScore,
               let currentPlayer = state.currentPlayer,
               let selectedCardNumber,
               let calledCard = state.calledCard else {
             return
         }
-
-        state.takenCards?.add(selectedCardNumber)
-        state.takenCards?.add(calledCard)
+        state.takenCards?.addElements(of: [selectedCardNumber, calledCard])
+        guard let takenCards = state.takenCards else { return }
 
         if let currentPlayerTakes = selectedCardNumber.isBiggerUroboCard(than: calledCard), currentPlayerTakes {
             let newState = UroboState(
@@ -86,10 +83,10 @@ final class UroboGameViewModel: ObservableObject {
                 opponentScore: opponentScore,
                 takenCards: takenCards,
                 calledCard: -1,
-                currentPlayer: currentPlayer == .dark ? .light : .dark
+                currentPlayer: currentPlayer
             )
-            self.state = newState
-            if takenCards.value.count == 12 {
+            state = newState
+            if state.takenCards?.value.count == 12 {
                 delegate?.endGame(with: newState)
             }
         } else {
@@ -100,8 +97,8 @@ final class UroboGameViewModel: ObservableObject {
                 calledCard: -1,
                 currentPlayer: currentPlayer == .dark ? .light : .dark
             )
-            self.state = newState
-            if takenCards.value.count == 12 {
+            state.opponentScore? += 1
+            if state.takenCards?.value.count == 12 {
                 delegate?.endGame(with: newState)
             } else {
                 delegate?.endTurn(with: newState)
