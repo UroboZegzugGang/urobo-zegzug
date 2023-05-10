@@ -120,148 +120,435 @@ final class ZegzugGameViewModel: ObservableObject {
         }
 
         //togglePlayers()
-        determineAllNeighbours()
+        print("\(playerOne.greenNeighbours) -> \(index)")
+        updateNeighbours(at: index)
+        print("\(playerOne.greenNeighbours)")
+        print("-------------------------------")
     }
 
     private func togglePlayers() {
         currentPlayer = currentPlayer.num == .first ? playerTwo : playerOne
     }
 
-    private func determineAllNeighbours() {
-        determineGreenNeighbours(for: playerOne)
-        //determineOrangeNeighbours(for: playerOne)
-        print(playerOne.greenNeighbours)
-
-        //determineNeighbours(for: playerTwo, color: .green)
-        //determineNeighbours(for: playerTwo, color: .orange)
+    private func updateNeighbours(at index: Int) {
+        switch circles[index].state {
+        case .none:
+            removeFromNeighbours(index)
+        case .playerOne:
+            addToNeighbours(index, for: playerOne)
+        case .playerTwo:
+            addToNeighbours(index, for: playerTwo)
+        }
     }
 
-    private func determineOrangeNeighbours(for player: ZegzugPlayer) {
-        let clicked = circles.filter { $0.state == player.circleState }
-        guard clicked.count > 1 else { return }
+    private func removeFromNeighbours(_ index: Int) {
+        removeFromOrangeNeighbours(index, for: playerOne)
+        removeFromGreenNeighbours(index, for: playerOne)
 
-        var neighbourList = player.orangeNeighbours
-        neighbourList.removeAll()
+        removeFromOrangeNeighbours(index, for: playerTwo)
+        removeFromGreenNeighbours(index, for: playerTwo)
+    }
 
-        for index in circles.indices {
-            guard circles[index].state == player.circleState else { continue }
-            var noNeighbours = true
-            for outerIndex in neighbourList.indices {
-                for innerIndex in neighbourList[outerIndex].indices {
-                    guard !neighbourList[outerIndex].contains(index) else { break }
-                    let comparable = neighbourList[outerIndex][innerIndex]
-                    let status = getNeighbourStatus(for: .orange, first: index, second: comparable)
-                    switch status {
-                    case .after:
-                        neighbourList[outerIndex].append(index)
-                        noNeighbours = false
-                    case .before:
-                        neighbourList[outerIndex].insert(index, at: innerIndex)
-                        noNeighbours = false
-                    default:
-                        break
-                    }
-                }
+    private func addToNeighbours(_ index: Int, for player: ZegzugPlayer) {
+        //addToOrangeNeighbours(index, for: player)
+        addToGreenNeighbours(index, for: player)
+    }
+
+    private func addToOrangeNeighbours(_ index: Int, for player: ZegzugPlayer) {
+        func previousIndexWrapped(_ index: Int, in list: [Int]) -> Int {
+            var lowerIndex = index - 1
+            if lowerIndex < 0 {
+                lowerIndex = list.endIndex - 1
             }
-            if noNeighbours {
-                neighbourList.append([index])
-            }
+            return lowerIndex
         }
 
-        neighbourList = mergeOrangeNeighbours(in: neighbourList)
-        player.updateNeighbours(with: neighbourList, color: .orange)
+        func nextIndexWrapped(_ index: Int, in list: [Int]) -> Int {
+            var upperIndex = index + 1
+            if upperIndex >= list.endIndex {
+                upperIndex = 0
+            }
+            return upperIndex
+        }
+
+        let isNeighbourClosure = { (index: Int, of: Int, list: [Int]) -> Bool in
+            let upperIndex = nextIndexWrapped(index, in: list)
+            let lowerIndex = previousIndexWrapped(index, in: list)
+            return of == upperIndex || of == lowerIndex
+        }
+
+        let isBeforeNeighbourClosure = { (index: Int, of: Int, list: [Int]) -> Bool in
+            let lowerIndex = previousIndexWrapped(index, in: list)
+            return of == lowerIndex
+        }
+
+        let indexes = getIndexes(of: player.orangeNeighbours, in: orangeNeighbours)
+        let nIndex = orangeNeighbours.firstIndex(of: index)!
+
+        let isNeighbour = indexes.contains { $0.contains { isNeighbourClosure(nIndex, $0, orangeNeighbours) } }
+        if isNeighbour {
+            // either the previous or next neighbour is already in the list
+            // find it and insert current into the right place
+            let isBefore = indexes.contains { $0.contains { isBeforeNeighbourClosure(nIndex, $0, orangeNeighbours) } }
+            if isBefore {
+                // ex: index = 11. Found neighbour is 10. Find it and insert it after.
+                let outerIndex = indexes.firstIndex {
+                    $0.contains { isBeforeNeighbourClosure(nIndex, $0, orangeNeighbours) }
+                }!
+                let innerIndex = indexes[outerIndex].firstIndex(of: previousIndexWrapped(nIndex, in: orangeNeighbours))!
+                player.orangeNeighbours[outerIndex].insert(index, at: innerIndex + 1)
+            } else {
+                // ex index = 11, found 12. Insert it before the found one.
+                let outerIndex = indexes.firstIndex {
+                    $0.contains { $0 == nextIndexWrapped(nIndex, in: orangeNeighbours) }
+                }!
+                let innerIndex = indexes[outerIndex].firstIndex(of: nextIndexWrapped(nIndex, in: orangeNeighbours))!
+                player.orangeNeighbours[outerIndex].insert(index, at: innerIndex)
+            }
+        } else {
+            // not a neighbour to any pressed circles, just insert to correct place
+            let insertIndex = indexes.firstIndex(where: { $0.contains { $0 > nIndex } }) ?? indexes.endIndex
+            player.orangeNeighbours.insert([index], at: insertIndex)
+        }
+
+        func areNeighbours(_ item1: Int, and item2: Int, in list: [Int]) -> Bool {
+            guard let index = list.firstIndex(of: item1) else { return false }
+            let nextIndex = index + 1 >= list.endIndex ? 0 : index + 1
+            return list[nextIndex] == item2
+        }
+
+        // check if adjecent arrays coud be merged together (their outer most items are neighbours)
+        var toBeMergedIndexes = [[Int]]()
+        for (arrayIndex, array) in player.orangeNeighbours.enumerated() {
+            guard player.orangeNeighbours.indices.contains(arrayIndex + 1) else { break }
+            let nextArray = player.orangeNeighbours[arrayIndex + 1]
+            if areNeighbours(array.last!, and: nextArray.first!, in: orangeNeighbours) {
+                toBeMergedIndexes.append([arrayIndex, arrayIndex + 1])
+            }
+        }
+        // if we have indexes in multiple pairs ex: [0, 1], [1, 2], we merge these to be [0, 1, 2]
+        toBeMergedIndexes = mergeCommonItemSubarrays(in: toBeMergedIndexes)
+
+        player.orangeNeighbours = mergeSubarrays(player.orangeNeighbours, from: toBeMergedIndexes)
     }
 
-    private func determineGreenNeighbours(for player: ZegzugPlayer) {
-        let clicked = circles.filter { $0.state == player.circleState }
-        guard clicked.count > 1 else { return }
+    private func removeFromOrangeNeighbours(_ element: Int, for player: ZegzugPlayer) {
+        guard let outerIndex = player.orangeNeighbours.firstIndex(where: { $0.contains(element) }) else { return }
 
-        var neighbourList = player.greenNeighbours
-        neighbourList.removeAll()
+        let index = player.orangeNeighbours[outerIndex].firstIndex(of: element)!
+        var subArr = player.orangeNeighbours[outerIndex]
 
-        for index in circles.indices {
-            guard circles[index].state == player.circleState else { continue }
-            var noNeighbours = true
-            for outerIndex in neighbourList.indices {
-                for trioIndex in neighbourList[outerIndex].indices {
-                    for innerIndex in neighbourList[outerIndex][trioIndex].indices {
-                        guard !neighbourList[outerIndex][trioIndex].contains(index) else { noNeighbours = false; break }
-                        let comparable = neighbourList[outerIndex][trioIndex][innerIndex]
-                        let status = getNeighbourStatus(for: .green, first: index, second: comparable)
-                        switch status {
-                        case .after:
-                            neighbourList[outerIndex].append([index])
-                            noNeighbours = false
-                        case .before:
-                            neighbourList[outerIndex].insert([index], at: innerIndex)
-                            noNeighbours = false
-                        case .beforeInTrio:
-                            neighbourList[outerIndex][trioIndex].append(index)
-                            noNeighbours = false
-                        case .afterInTrio:
-                            neighbourList[outerIndex][trioIndex].insert(index, at: innerIndex)
-                            noNeighbours = false
-                        case .none:
-                            break
+        if player.orangeNeighbours[outerIndex].first! == element || player.orangeNeighbours[outerIndex].last! == element {
+            subArr.remove(at: index)
+            if subArr.count > 0 {
+                player.orangeNeighbours = Array(player.orangeNeighbours[..<outerIndex]
+                + [Array(subArr)]
+                + player.orangeNeighbours[(outerIndex + 1)...])
+            } else {
+                player.orangeNeighbours = Array(player.orangeNeighbours[..<outerIndex] + player.orangeNeighbours[(outerIndex + 1)...])
+            }
+        } else {
+            subArr.remove(at: index)
+            player.orangeNeighbours = Array(player.orangeNeighbours[..<outerIndex]
+            + [Array(subArr[..<index]), Array(subArr[index...])]
+            + player.orangeNeighbours[(outerIndex + 1)...])
+        }
+    }
+
+    private func addToGreenNeighbours(_ index: Int, for player: ZegzugPlayer) {
+        func previousIndexWrapped(_ index: Int, in list: [[Int]]) -> Int {
+            var lowerIndex = index - 1
+            if lowerIndex < 0 {
+                lowerIndex = list.endIndex - 1
+            }
+            return lowerIndex
+        }
+
+        func nextIndexWrapped(_ index: Int, in list: [[Int]]) -> Int {
+            var upperIndex = index + 1
+            if upperIndex >= list.endIndex {
+                upperIndex = 0
+            }
+            return upperIndex
+        }
+
+        let isNeighbourClosure = { (index: Int, of: Int, list: [[Int]]) -> Bool in
+            let upperIndex = nextIndexWrapped(index, in: list)
+            let lowerIndex = previousIndexWrapped(index, in: list)
+            return of == upperIndex || of == lowerIndex
+        }
+
+        let isBeforeNeighbourClosure = { (index: Int, of: Int, list: [[Int]]) -> Bool in
+            let lowerIndex = previousIndexWrapped(index, in: list)
+            return of == lowerIndex
+        }
+
+        let isAfterNeighbourClosure = { (index: Int, of: Int, list: [[Int]]) -> Bool in
+            let upperIndex = nextIndexWrapped(index, in: list)
+            return of == upperIndex
+        }
+
+        var indexes = getIndexes(of: player.greenNeighbours, in: greenNeighbours)
+        let outerIndexOfPressed = greenNeighbours.firstIndex(where: { $0.contains(index) })!
+        let innerIndexOfPressed = greenNeighbours[outerIndexOfPressed].firstIndex(of: index)!
+
+        // check if this outerIndex is in indexes already
+        let isAlreadyInIndexes = indexes.contains { $0.contains(outerIndexOfPressed) }
+
+        // check if neighbouring index is in list already
+        let isNeighbourInList = indexes.contains { $0.contains { isNeighbourClosure(outerIndexOfPressed, $0, greenNeighbours) } }
+
+        if isAlreadyInIndexes {
+            var matchingIndexIndex = indexes.firstIndex(where: { $0.contains(outerIndexOfPressed) })!
+            var innerMatchingIndex = indexes[matchingIndexIndex].firstIndex(of: outerIndexOfPressed)!
+
+            // element from this outerIndex has already been pressed
+            // check if they are neighbours
+            if player.greenNeighbours[matchingIndexIndex][innerMatchingIndex].count == 1 && innerIndexOfPressed != 0 {
+                // from subarray [24, 12, 0] the pressed could be 24 and the newly pressed is 0. They are not neighbours.
+                let onlyElement = player.greenNeighbours[matchingIndexIndex][innerMatchingIndex].first!
+                let indexOfContaining = greenNeighbours[outerIndexOfPressed].firstIndex(of: onlyElement)!
+
+                if !nextToEachother(innerIndexOfPressed, and: indexOfContaining) {
+                    // not neighbours, insert into new subarray
+                    let insertIndex = index > onlyElement ?
+                        matchingIndexIndex : matchingIndexIndex + 1
+                    player.greenNeighbours.insert([[index]], at: insertIndex)
+                } else {
+                    // neighbours
+                    // should check if both neighbours were added previously
+                    let bothAdded = indexes.filter({ $0.contains(outerIndexOfPressed)}).count == 2
+
+                    if !bothAdded {
+                        let insertInnerIndex = index > onlyElement ? 0 : 1
+                        player.greenNeighbours[matchingIndexIndex][innerMatchingIndex].insert(index, at: insertInnerIndex)
+                    } else {
+                        //both added -> merge them
+                        if player.greenNeighbours[matchingIndexIndex].count == 1 {
+                            let removed = player.greenNeighbours[matchingIndexIndex].remove(at: innerMatchingIndex)
+                            player.greenNeighbours.remove(at: matchingIndexIndex)
+                            indexes = getIndexes(of: player.greenNeighbours, in: greenNeighbours)
+                            matchingIndexIndex = indexes.firstIndex(where: { $0.contains(outerIndexOfPressed) })!
+                            innerMatchingIndex = indexes[matchingIndexIndex].firstIndex(of: outerIndexOfPressed)!
+                            player.greenNeighbours[matchingIndexIndex][innerMatchingIndex].insert(contentsOf: removed + [index], at: 0)
+                        } else {
+                            player.greenNeighbours[matchingIndexIndex][innerMatchingIndex].append(index)
+                            let nextIndex = player.greenNeighbours.firstIndex { $0.contains{ $0.contains(greenNeighbours[outerIndexOfPressed][innerIndexOfPressed + 1]) } }!
+                            if player.greenNeighbours[nextIndex].count == 1 {
+                                player.greenNeighbours.remove(at: nextIndex)
+                            } else {
+                                player.greenNeighbours[nextIndex].remove(at: 0)
+                            }
+                            player.greenNeighbours[matchingIndexIndex][innerMatchingIndex].append(greenNeighbours[outerIndexOfPressed][innerIndexOfPressed + 1])
+                        }
+                    }
+                }
+            } else if isNeighbourInList && innerIndexOfPressed == 0 {
+                let isBefore = indexes.contains { $0.contains { isBeforeNeighbourClosure(outerIndexOfPressed, $0, greenNeighbours) } }
+                let isAfter = indexes.contains { $0.contains { isAfterNeighbourClosure(outerIndexOfPressed, $0, greenNeighbours) } }
+                if isBefore {
+                    let neigbourIndex = previousIndexWrapped(outerIndexOfPressed, in: greenNeighbours)
+                    let zeroIndexElement = greenNeighbours[neigbourIndex].first!
+                    // check if neighbouring subarray(s) has the 0 index element in it
+                    let possibleNeighbourIndex1 = previousIndexWrapped(matchingIndexIndex, in: indexes)
+                    let possibleNeighbourIndex2 = previousIndexWrapped(possibleNeighbourIndex1, in: indexes)
+
+                    if player.greenNeighbours[possibleNeighbourIndex1].contains(where: { $0.contains(zeroIndexElement) }) || player.greenNeighbours[possibleNeighbourIndex2].contains(where: { $0.contains(zeroIndexElement) }) {
+
+                        var removed = [[Int]]()
+                        if indexes[possibleNeighbourIndex2].contains(neigbourIndex) {
+                            // its in the second array from the currently pressed
+                            removed = player.greenNeighbours.remove(at: possibleNeighbourIndex2)
+                        } else {
+                            // its in the first
+                            removed = player.greenNeighbours.remove(at: possibleNeighbourIndex1)
+                        }
+                        indexes = getIndexes(of: player.greenNeighbours, in: greenNeighbours)
+                        matchingIndexIndex = indexes.firstIndex(where: { $0.contains(outerIndexOfPressed) })!
+                        player.greenNeighbours[matchingIndexIndex].insert(contentsOf: removed, at: 0)
+                        indexes = getIndexes(of: player.greenNeighbours, in: greenNeighbours)
+                        matchingIndexIndex = indexes.firstIndex(where: { $0.contains(outerIndexOfPressed) })!
+                        innerMatchingIndex = indexes[matchingIndexIndex].firstIndex(of: outerIndexOfPressed)!
+                    }
+
+                    player.greenNeighbours[matchingIndexIndex][innerMatchingIndex].insert(index, at: 0)
+                }
+                if isAfter {
+                    let neigbourIndex = nextIndexWrapped(outerIndexOfPressed, in: greenNeighbours)
+                    let zeroIndexElement = greenNeighbours[neigbourIndex].first!
+
+                    // check if neighbouring subarray(s) has the 0 index element in it
+                    let possibleNeighbourIndex1 = nextIndexWrapped(matchingIndexIndex, in: indexes)
+
+                    if player.greenNeighbours[possibleNeighbourIndex1].contains(where: { $0.contains(zeroIndexElement) }) {
+                        // check if existing index is next to the new index
+                        let existing = player.greenNeighbours[matchingIndexIndex][innerMatchingIndex].first!
+                        let indexOfContaining = greenNeighbours[outerIndexOfPressed].firstIndex(of: existing)!
+                        if nextToEachother(innerIndexOfPressed, and: indexOfContaining) {
+                            var removed = [[Int]]()
+                            removed = player.greenNeighbours.remove(at: possibleNeighbourIndex1)
+
+                            indexes = getIndexes(of: player.greenNeighbours, in: greenNeighbours)
+                            matchingIndexIndex = indexes.firstIndex(where: { $0.contains(outerIndexOfPressed) })!
+                            player.greenNeighbours[matchingIndexIndex].append(contentsOf: removed)
+                            indexes = getIndexes(of: player.greenNeighbours, in: greenNeighbours)
+                            matchingIndexIndex = indexes.firstIndex(where: { $0.contains(outerIndexOfPressed) })!
+                            innerMatchingIndex = indexes[matchingIndexIndex].firstIndex(of: outerIndexOfPressed)!
+                        } else {
+                            player.greenNeighbours[possibleNeighbourIndex1].insert([index], at: 0)
+                        }
+                        if !player.greenNeighbours.contains(where: { $0.contains { $0.contains(index) } }) {
+                            player.greenNeighbours[matchingIndexIndex][innerMatchingIndex].insert(index, at: 0)
+                        }
+                    }
+                }
+            } else if innerIndexOfPressed == 0 {
+                if player.greenNeighbours[matchingIndexIndex][innerMatchingIndex].count == 1 {
+                    // should check if they are neighbours
+                    let onlyElement = player.greenNeighbours[matchingIndexIndex][innerMatchingIndex].first!
+                    let indexOfContaining = greenNeighbours[outerIndexOfPressed].firstIndex(of: onlyElement)!
+                    if nextToEachother(innerIndexOfPressed, and: indexOfContaining) {
+                        player.greenNeighbours[matchingIndexIndex][innerMatchingIndex].insert(index, at: 0)
+                    } else {
+                        player.greenNeighbours.insert([[index]], at: matchingIndexIndex)
+                    }
+                } else {
+                    player.greenNeighbours[matchingIndexIndex][innerMatchingIndex].insert(index, at: 0)
+                }
+            } else {
+                player.greenNeighbours[matchingIndexIndex][innerMatchingIndex].append(index)
+            }
+        } else if isNeighbourInList && innerIndexOfPressed == 0 {
+            // find out if neighbour is smaller or bigger than index. or both
+            let isBefore = indexes.contains { $0.contains { isBeforeNeighbourClosure(outerIndexOfPressed, $0, greenNeighbours) } }
+            let isAfter = indexes.contains { $0.contains { isAfterNeighbourClosure(outerIndexOfPressed, $0, greenNeighbours) } }
+
+            if isBefore {
+                let neigbourIndex = previousIndexWrapped(outerIndexOfPressed, in: greenNeighbours)
+                let zeroIndexElement = greenNeighbours[neigbourIndex].first!
+
+                if let zeroElementOuterIndex = player.greenNeighbours.firstIndex(where: { $0.contains(where: { $0.contains(zeroIndexElement)})}) {
+                    var offset = indexes.filter({ $0.contains(neigbourIndex) }).count
+                    var indexOfPressedIndex = zeroElementOuterIndex + offset
+
+                    // check if neighbouring subarray(s) has the 0 index element in it
+                    let possibleNeighbourIndex1 = previousIndexWrapped(indexOfPressedIndex, in: indexes)
+                    let possibleNeighbourIndex2 = previousIndexWrapped(possibleNeighbourIndex1, in: indexes)
+
+                    if player.greenNeighbours[possibleNeighbourIndex1].contains(where: { $0.contains(zeroIndexElement) }) || player.greenNeighbours[possibleNeighbourIndex2].contains(where: { $0.contains(zeroIndexElement) }) {
+                        var removed = [[Int]]()
+                        if indexes[possibleNeighbourIndex2].contains(neigbourIndex) {
+                            // its in the second array from the currently pressed
+                            removed = player.greenNeighbours.remove(at: possibleNeighbourIndex2)
+                            indexes = getIndexes(of: player.greenNeighbours, in: greenNeighbours)
+                            offset = indexes.filter({ $0.contains(neigbourIndex) }).count
+                            indexOfPressedIndex = zeroElementOuterIndex + offset
+                            player.greenNeighbours.insert(removed, at: indexOfPressedIndex)
+                            player.greenNeighbours[indexOfPressedIndex].append([index])
+                        }
+                    }
+                    if !player.greenNeighbours.contains(where: { $0.contains { $0.contains(index) } }) {
+                        player.greenNeighbours[zeroElementOuterIndex].append([index])
+                    }
+                } else {
+                    let indexOfNeighbour = player.greenNeighbours.firstIndex { $0.contains { Set($0).intersection(Set(greenNeighbours[neigbourIndex])).count > 0 } }!
+                    player.greenNeighbours.insert([[index]], at: indexOfNeighbour + 1)
+                }
+            }
+            if isAfter {
+                let neigbourIndex = nextIndexWrapped(outerIndexOfPressed, in: greenNeighbours)
+                let zeroIndexElement = greenNeighbours[neigbourIndex].first!
+
+                let hasBeenWrittenIn = player.greenNeighbours.contains { $0.contains { $0.contains(index) } }
+                let zeroElementOuterIndex = player.greenNeighbours.firstIndex(where: { $0.contains(where: { $0.contains(zeroIndexElement)})})
+                var removed: [[Int]]? = nil
+
+                if hasBeenWrittenIn && zeroElementOuterIndex != nil {
+                    // needs to be deleted
+                    let outerIndexOfElement = player.greenNeighbours.firstIndex { $0.contains([index]) }!
+                    removed = player.greenNeighbours.remove(at: outerIndexOfElement)
+                } else if !hasBeenWrittenIn && zeroElementOuterIndex == nil {
+                    // add it without merge
+                    let indexOfNeighbour = player.greenNeighbours.firstIndex { $0.contains { Set($0).intersection(Set(greenNeighbours[neigbourIndex])).count > 0 } }!
+                    player.greenNeighbours.insert([[index]], at: indexOfNeighbour)
+                }
+                if zeroElementOuterIndex != nil {
+                    // add with merge
+                    if let outerIndexOfZero = player.greenNeighbours.firstIndex(where: { $0.contains { $0.contains(zeroIndexElement) } }) {
+                        if let removed {
+                            player.greenNeighbours[outerIndexOfZero].insert(contentsOf: removed, at: 0)
+                        } else {
+                            player.greenNeighbours[outerIndexOfZero].insert([index], at: 0)
+                        }
+                    } else {
+                        // no element in array
+                        if let removed {
+                            player.greenNeighbours.insert(removed, at: 0)
+                        } else {
+                            player.greenNeighbours.insert([[index]], at: 0)
                         }
                     }
                 }
             }
-
-            if noNeighbours {
-                neighbourList.append([[index]])
-            }
+        } else {
+            // find the index of first bigger index in indexes, indert it before that
+            let insertIndex = indexes.firstIndex(where: { $0.contains { $0 > outerIndexOfPressed } }) ?? indexes.endIndex
+            player.greenNeighbours.insert([[index]], at: insertIndex)
         }
-
-        neighbourList = mergeGreenNeighbours(in: neighbourList)
-        player.updateNeighbours(with: neighbourList, color: .green)
     }
 
-    private func mergeGreenNeighbours(in neighbourList: [[[Int]]]) -> [[[Int]]] {
-        var merged = [[[Int]]]()
-        var current = [[Int]]()
+    private func removeFromGreenNeighbours(_ index: Int, for player: ZegzugPlayer) {
 
-        var hasBeenMerged = [[[Int]]]()
-
-        for (index, doubleBraces) in neighbourList.enumerated() {
-            current = doubleBraces
-            for doubleBracesComparableIndex in index + 1 ..< neighbourList.endIndex {
-                let doubleBracesComparable = neighbourList[doubleBracesComparableIndex]
-
-                if doubleBraces.first!.first! == doubleBracesComparable.last!.last! {
-                    // ex: [[[25, 13, 1]], [[24], [25]]] --> [[[24], [25, 13, 1]]]
-                    current.insert(contentsOf: doubleBracesComparable.dropLast(), at: 0)
-                    hasBeenMerged.append(doubleBraces)
-                    hasBeenMerged.append(doubleBracesComparable)
-                } else if doubleBraces.last!.last! == doubleBracesComparable.first!.first! {
-                    // ex: [[[24, 12, 0], [25]], [[25, 13, 1]]] --> [[[24, 12, 0], [25, 13, 1]]]
-                    current = current.dropLast() + doubleBracesComparable
-                    hasBeenMerged.append(doubleBraces)
-                    hasBeenMerged.append(doubleBracesComparable)
-                }
-
-                if !hasBeenMerged.contains(doubleBraces) {
-                    // ex: [[[24, 12, 0], [25], [30]], [[25, 13, 1]]] --> [[[24, 12, 0], [25, 13, 1], [30]]]
-                    let singleItems = current.filter { $0.count == 1 }
-                    for itemIndex in singleItems.indices {
-                        if current[itemIndex].first! == doubleBracesComparable.first!.first! {
-                            current.remove(at: itemIndex)
-                            current.insert(contentsOf: doubleBracesComparable, at: itemIndex)
-                            hasBeenMerged.append(doubleBraces)
-                            hasBeenMerged.append(doubleBracesComparable)
-                        }
-                    }
-                }
-            }
-
-            if !hasBeenMerged.contains(current) {
-                merged.append(current)
-            }
-        }
-        return merged
     }
 
-    private func mergeOrangeNeighbours(in neighbourList: [[Int]]) -> [[Int]] {
+    private func getIndexes(of list: [[Int]], in parent: [Int]) -> [[Int]] {
+        var indexes = [[Int]]()
+        for outer in list {
+            indexes.append([])
+            for inner in outer {
+                indexes[indexes.endIndex - 1].append(parent.firstIndex(of: inner)!)
+            }
+        }
+        return indexes
+    }
+
+    private func getIndexes(of list: [[[Int]]], in parent: [[Int]]) -> [[Int]] {
+        var indexes = [[Int]]()
+        for outer in list {
+            indexes.append([])
+            for inner in outer {
+                let parentOuterI = parent.firstIndex(where: { $0.contains(inner.first!)})!
+                indexes[indexes.endIndex - 1].append(parentOuterI)
+            }
+        }
+        return indexes
+    }
+
+    private func mergeSubarrays(_ arr: [[Int]], from idx: [[Int]]) -> [[Int]] {
+        guard idx.flatMap({ $0 }).count > 0 else { return arr }
+
+        var result = [[Int]]()
+        var mergedArr = [Int]()
+        var currentIdx = 0
+        for subIdx in idx {
+            for i in currentIdx..<subIdx[0] {
+                result.append(arr[i])
+            }
+            for i in subIdx {
+                mergedArr.append(contentsOf: arr[i])
+            }
+            currentIdx = subIdx.last! + 1
+        }
+        for i in currentIdx..<arr.count {
+            result.append(arr[i])
+        }
+        if mergedArr.count > 0 {
+            result.insert(mergedArr, at: idx[0][0])
+        }
+        return result
+    }
+
+    private func mergeCommonItemSubarrays(in neighbourList: [[Int]]) -> [[Int]] {
         var merged = [[Int]]()
         var current = [Int]()
 
@@ -282,51 +569,6 @@ final class ZegzugGameViewModel: ObservableObject {
 
         merged.append(current)
         return merged
-    }
-
-    private func getNeighbourStatus(for color: NeighbourColor, first: Int, second: Int) -> NeighbourStatus {
-        if color == .orange {
-            let index = orangeNeighbours.firstIndex(of: first)!
-            if orangeNeighbours[(index + 1) % 36] == second {
-                return .before
-            }
-            if orangeNeighbours[index - 1 < 0 ? 35 : index - 1] == second {
-                return .after
-            }
-        }
-        if color == .green {
-            let outerIndex = greenNeighbours.firstIndex(where: { $0.contains(first) })!
-            let outerIndexComparable = greenNeighbours.firstIndex(where: { $0.contains(second) })!
-
-            let innerIndex = greenNeighbours[outerIndex].firstIndex(of: first)!
-            let innerIndexComparable = greenNeighbours[outerIndexComparable].firstIndex(of: second)!
-
-            if outerIndex < outerIndexComparable {
-                guard nextToEachotherWrapping(outerIndex, and: outerIndexComparable, in: greenNeighbours)
-                else { return .none }
-
-                if innerIndex == 0, innerIndexComparable == 0 {
-                    return .before
-                }
-            } else if outerIndex > outerIndexComparable {
-                guard nextToEachotherWrapping(outerIndex, and: outerIndexComparable, in: greenNeighbours)
-                else { return .none }
-
-                if innerIndex == 0, innerIndexComparable == 0 {
-                    return .after
-                }
-            } else {
-                // in the same triple
-                guard nextToEachother(innerIndex, and: innerIndexComparable) else { return .none }
-
-                if innerIndex < innerIndexComparable {
-                    return .afterInTrio
-                } else {
-                    return .beforeInTrio
-                }
-            }
-        }
-        return .none
     }
 
     private func nextToEachother(_ first: Int, and second: Int) -> Bool {
@@ -372,5 +614,12 @@ private extension ZegzugGameViewModel {
         case beforeInTrio
         case afterInTrio
         case none
+    }
+}
+
+extension Sequence where Element: Hashable {
+    func uniqued() -> [Element] {
+        var set = Set<Element>()
+        return filter { set.insert($0).inserted }
     }
 }
