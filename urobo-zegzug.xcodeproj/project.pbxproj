@@ -26,6 +26,7 @@
 		418CF6DB29F3D633001C0FCD /* GameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418CF6DA29F3D633001C0FCD /* GameType.swift */; };
 		555B3DF42A06687200F5C867 /* ZegzugCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555B3DF32A06687200F5C867 /* ZegzugCircle.swift */; };
 		555B3DF62A06B4A000F5C867 /* NeighbourColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555B3DF52A06B4A000F5C867 /* NeighbourColor.swift */; };
+		555B3DF92A0C43E400F5C867 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555B3DF82A0C43E400F5C867 /* Array+Extension.swift */; };
 		55C257B529FBFF9F00F6B046 /* ZegzugPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C257B429FBFF9F00F6B046 /* ZegzugPlayer.swift */; };
 		55C257B729FBFFF300F6B046 /* CircleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C257B629FBFFF300F6B046 /* CircleState.swift */; };
 		55D9B32829F5D77000A2369C /* ZegzugGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B32729F5D77000A2369C /* ZegzugGameView.swift */; };
@@ -88,6 +89,7 @@
 		418CF6DA29F3D633001C0FCD /* GameType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameType.swift; sourceTree = "<group>"; };
 		555B3DF32A06687200F5C867 /* ZegzugCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZegzugCircle.swift; sourceTree = "<group>"; };
 		555B3DF52A06B4A000F5C867 /* NeighbourColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeighbourColor.swift; sourceTree = "<group>"; };
+		555B3DF82A0C43E400F5C867 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		55C257B429FBFF9F00F6B046 /* ZegzugPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZegzugPlayer.swift; sourceTree = "<group>"; };
 		55C257B629FBFFF300F6B046 /* CircleState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleState.swift; sourceTree = "<group>"; };
 		55D9B32729F5D77000A2369C /* ZegzugGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZegzugGameView.swift; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 		418CF6CC29F3D0D4001C0FCD /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				555B3DF72A0C43D400F5C867 /* Array */,
 				55D9B34529F6CF4700A2369C /* ButtonStyle */,
 				55D9B33829F5E22600A2369C /* Path */,
 				55D9B33529F5E19B00A2369C /* Shape */,
@@ -283,6 +286,14 @@
 				418CF6DA29F3D633001C0FCD /* GameType.swift */,
 			);
 			path = GameType;
+			sourceTree = "<group>";
+		};
+		555B3DF72A0C43D400F5C867 /* Array */ = {
+			isa = PBXGroup;
+			children = (
+				555B3DF82A0C43E400F5C867 /* Array+Extension.swift */,
+			);
+			path = Array;
 			sourceTree = "<group>";
 		};
 		55C257B329FBFF8700F6B046 /* Model */ = {
@@ -466,6 +477,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				55D9B33A29F5E23400A2369C /* Path+Extension.swift in Sources */,
+				555B3DF92A0C43E400F5C867 /* Array+Extension.swift in Sources */,
 				55D9B32F29F5DFB100A2369C /* PlayableArea.swift in Sources */,
 				4143724229E0702E00A670C0 /* GameMenuTile.swift in Sources */,
 				4143724929E0902600A670C0 /* UroboGameViewModel.swift in Sources */,

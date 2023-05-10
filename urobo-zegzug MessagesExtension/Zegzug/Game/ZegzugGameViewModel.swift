@@ -498,7 +498,55 @@ final class ZegzugGameViewModel: ObservableObject {
     }
 
     private func removeFromGreenNeighbours(_ index: Int, for player: ZegzugPlayer) {
+        // first, find out if index is in pos 0, 1 or 2 in the neighbours list
+        let outerIndexOfPressed = greenNeighbours.firstIndex(where: { $0.contains(index)})!
+        let innerIndexOfPressed = greenNeighbours[outerIndexOfPressed].firstIndex(of: index)!
 
+        guard
+        let outerIndexInNeighbours = player.greenNeighbours.firstIndex(where: { $0.contains { $0.contains(index) } }),
+        let innerIndexInNeighbours = player.greenNeighbours[outerIndexInNeighbours].firstIndex(where: { $0.contains(index) }),
+        let concreteIndexInNeighbours = player.greenNeighbours[outerIndexInNeighbours][innerIndexInNeighbours].firstIndex(of: index)
+        else { return }
+
+        if innerIndexOfPressed == 2 {
+            // this is the easiest, just remove the pressed element from the list
+            // first, check if its the only element in the list
+            if player.greenNeighbours[outerIndexInNeighbours].count == 1 &&
+                player.greenNeighbours[outerIndexInNeighbours][innerIndexInNeighbours].count == 1 {
+                player.greenNeighbours.remove(at: outerIndexInNeighbours)
+            } else if player.greenNeighbours[outerIndexInNeighbours][innerIndexInNeighbours].count == 1 {
+                player.greenNeighbours[outerIndexInNeighbours].remove(at: innerIndexOfPressed)
+            } else {
+                player.greenNeighbours[outerIndexInNeighbours][innerIndexInNeighbours].remove(at: concreteIndexInNeighbours)
+            }
+        } else if innerIndexOfPressed == 1 {
+            player.greenNeighbours[outerIndexInNeighbours][innerIndexInNeighbours].remove(at: concreteIndexInNeighbours)
+            if player.greenNeighbours[outerIndexInNeighbours][innerIndexInNeighbours].count > 1 {
+                let removedLastElement = player.greenNeighbours[outerIndexInNeighbours][innerIndexInNeighbours].remove(at: concreteIndexInNeighbours)
+                player.greenNeighbours.insert([[removedLastElement]], at: outerIndexInNeighbours + 1)
+            }
+        } else if innerIndexOfPressed == 0 {
+            // check if innerIndex is at the edge of the array
+            if innerIndexInNeighbours == 0 ||
+                innerIndexInNeighbours == player.greenNeighbours[outerIndexInNeighbours].endIndex - 1{
+                //at the edge, just delete it and insert other element in a new array
+                player.greenNeighbours[outerIndexInNeighbours][innerIndexInNeighbours].remove(at: concreteIndexInNeighbours)
+                let removed = player.greenNeighbours[outerIndexInNeighbours].remove(at: innerIndexInNeighbours)
+                player.greenNeighbours.insert([removed], at: outerIndexInNeighbours + 1)
+            } else {
+                // in the middle
+                // subarray needs separation
+                var removed = player.greenNeighbours[outerIndexInNeighbours].removeAndReturnSubrange(innerIndexInNeighbours ..< player.greenNeighbours[outerIndexInNeighbours].endIndex)
+                removed[0].remove(at: 0)
+                let removedWithoutNeighbours = removed.remove(at: 0)
+                if removedWithoutNeighbours.count > 0 {
+                    player.greenNeighbours.insert([removedWithoutNeighbours], at: outerIndexInNeighbours + 1)
+                    player.greenNeighbours.insert(removed, at: outerIndexInNeighbours + 2)
+                } else {
+                    player.greenNeighbours.insert(removed, at: outerIndexInNeighbours + 1)
+                }
+            }
+        }
     }
 
     private func getIndexes(of list: [[Int]], in parent: [Int]) -> [[Int]] {
