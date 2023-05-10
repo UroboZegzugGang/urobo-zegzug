@@ -119,11 +119,8 @@ final class ZegzugGameViewModel: ObservableObject {
             circles[index].state = .none
         }
 
-        //togglePlayers()
-        print("\(playerOne.greenNeighbours) -> \(index)")
+        togglePlayers()
         updateNeighbours(at: index)
-        print("\(playerOne.greenNeighbours)")
-        print("-------------------------------")
     }
 
     private func togglePlayers() {
@@ -150,7 +147,7 @@ final class ZegzugGameViewModel: ObservableObject {
     }
 
     private func addToNeighbours(_ index: Int, for player: ZegzugPlayer) {
-        //addToOrangeNeighbours(index, for: player)
+        addToOrangeNeighbours(index, for: player)
         addToGreenNeighbours(index, for: player)
     }
 
@@ -537,7 +534,7 @@ final class ZegzugGameViewModel: ObservableObject {
                 } else {
                     player.greenNeighbours[outerIndexInNeighbours][innerIndexInNeighbours].remove(at: concreteIndexInNeighbours)
                     let removed = player.greenNeighbours[outerIndexInNeighbours].remove(at: innerIndexInNeighbours)
-                    
+
                     if innerIndexInNeighbours == 0 {
                         player.greenNeighbours.insert([removed], at: outerIndexInNeighbours)
                     } else {
@@ -634,12 +631,6 @@ final class ZegzugGameViewModel: ObservableObject {
         abs(first - second) == 1
     }
 
-    private func nextToEachotherWrapping(_ first: Int, and second: Int, in array: [Any]) -> Bool {
-        nextToEachother(first, and: second) ||
-        (first == array.startIndex && second == array.endIndex - 1) ||
-        (first == array.endIndex - 1 && second == array.startIndex)
-    }
-
     private func middle(of geo: GeometryProxy) -> CGPoint {
         CGPoint(x: geo.size.width / 2, y: geo.size.height / 2)
     }
@@ -663,22 +654,5 @@ final class ZegzugGameViewModel: ObservableObject {
             return newIndex >= 24 ? newIndex % 24 + 12 : newIndex % 24
         }
         return newIndex >= 36 ? newIndex % 36 + 24 : newIndex % 36
-    }
-}
-
-private extension ZegzugGameViewModel {
-    enum NeighbourStatus {
-        case before
-        case after
-        case beforeInTrio
-        case afterInTrio
-        case none
-    }
-}
-
-extension Sequence where Element: Hashable {
-    func uniqued() -> [Element] {
-        var set = Set<Element>()
-        return filter { set.insert($0).inserted }
     }
 }
