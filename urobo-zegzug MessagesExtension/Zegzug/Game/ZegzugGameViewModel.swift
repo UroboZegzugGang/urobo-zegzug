@@ -371,7 +371,9 @@ final class ZegzugGameViewModel: ObservableObject {
                         innerMatchingIndex = indexes[matchingIndexIndex].firstIndex(of: outerIndexOfPressed)!
                     }
 
-                    player.greenNeighbours[matchingIndexIndex][innerMatchingIndex].insert(index, at: 0)
+                    if !isAfter {
+                        player.greenNeighbours[matchingIndexIndex][innerMatchingIndex].insert(index, at: 0)
+                    }
                 }
                 if isAfter {
                     let neigbourIndex = nextIndexWrapped(outerIndexOfPressed, in: greenNeighbours)
@@ -528,11 +530,20 @@ final class ZegzugGameViewModel: ObservableObject {
         } else if innerIndexOfPressed == 0 {
             // check if innerIndex is at the edge of the array
             if innerIndexInNeighbours == 0 ||
-                innerIndexInNeighbours == player.greenNeighbours[outerIndexInNeighbours].endIndex - 1{
+                innerIndexInNeighbours == player.greenNeighbours[outerIndexInNeighbours].endIndex - 1 {
                 //at the edge, just delete it and insert other element in a new array
-                player.greenNeighbours[outerIndexInNeighbours][innerIndexInNeighbours].remove(at: concreteIndexInNeighbours)
-                let removed = player.greenNeighbours[outerIndexInNeighbours].remove(at: innerIndexInNeighbours)
-                player.greenNeighbours.insert([removed], at: outerIndexInNeighbours + 1)
+                if player.greenNeighbours[outerIndexInNeighbours][innerIndexInNeighbours].count == 1 {
+                    player.greenNeighbours[outerIndexInNeighbours].remove(at: innerIndexInNeighbours)
+                } else {
+                    player.greenNeighbours[outerIndexInNeighbours][innerIndexInNeighbours].remove(at: concreteIndexInNeighbours)
+                    let removed = player.greenNeighbours[outerIndexInNeighbours].remove(at: innerIndexInNeighbours)
+                    
+                    if innerIndexInNeighbours == 0 {
+                        player.greenNeighbours.insert([removed], at: outerIndexInNeighbours)
+                    } else {
+                        player.greenNeighbours.insert([removed], at: outerIndexInNeighbours + 1)
+                    }
+                }
             } else {
                 // in the middle
                 // subarray needs separation
