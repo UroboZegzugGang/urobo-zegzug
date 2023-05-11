@@ -169,15 +169,21 @@ final class ZegzugGameViewModel: ObservableObject {
     }
 
     private func movePebble(to circle: ZegzugCircle) {
-        guard circle.state == .none,
-              let index = circles.firstIndex(where: { $0.id == circle.id }),
-              let selectedIndex,
-              isNeighbour(index, to: selectedIndex)
+        guard let index = circles.firstIndex(where: { $0.id == circle.id }),
+              let selectedIndex
         else { return }
 
-        removePebble(from: circles[selectedIndex])
-        placePebble(on: circle)
-        self.selectedIndex = nil
+        if isNeighbour(index, to: selectedIndex){
+            removePebble(from: circles[selectedIndex])
+            placePebble(on: circle)
+            self.selectedIndex = nil
+        } else {
+            let currState = circles[index].state
+            circles[index].state = .wrong
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { [weak self] in
+                self?.circles[index].state = currState
+            }
+        }
     }
 
     private func removePebble(from circle: ZegzugCircle) {

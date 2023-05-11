@@ -14,6 +14,8 @@ struct ZegzugCircle: Identifiable {
             return .blue
         case .playerTwo:
             return .yellow
+        case .wrong:
+            return .red
         }
     }
 }

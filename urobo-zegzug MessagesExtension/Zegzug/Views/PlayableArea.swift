@@ -89,6 +89,7 @@ struct PlayableArea: View {
                 .onTapGesture {
                     viewModel.tapped(circle)
                 }
+                .shake(circle.state == .wrong)
         }
     }
 }
