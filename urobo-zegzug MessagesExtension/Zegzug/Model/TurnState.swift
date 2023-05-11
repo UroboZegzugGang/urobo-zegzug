@@ -10,9 +10,9 @@ enum TurnState {
         case .place:
             return "Place a pebble"
         case .select:
-            return "Select a pebble to move"
+            return "Select a pebble"
         case .move:
-            return "Choose a neighbouring place"
+            return "Move it"
         case .won:
             return "You have won!"
         case .lost:
