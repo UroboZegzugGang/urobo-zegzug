@@ -5,6 +5,9 @@ final class ZegzugGameViewModel: ObservableObject {
     @Published var showingHowTo = false
     @Published var playerOne: ZegzugPlayer = ZegzugPlayer(num: .first)
     @Published var playerTwo: ZegzugPlayer = ZegzugPlayer(num: .second)
+    @Published private(set) var turnState: TurnState = .place
+
+    @Published var numOfPebbles: Int = 0
 
     @Published var orangeNeighbours: [Int] = [
         0,
@@ -60,6 +63,10 @@ final class ZegzugGameViewModel: ObservableObject {
         [30, 18, 6],
     ]
 
+    var placedPebbles: Int {
+        currentPlayer.placedPebbles
+    }
+
     private var currentPlayer: ZegzugPlayer!
 
     init() {
@@ -88,6 +95,8 @@ final class ZegzugGameViewModel: ObservableObject {
         // TODO: rotate by the stored value in the gameState
         rotateBoardBy(sections: 0)
 
+        numOfPebbles = 5
+
         currentPlayer = playerOne
     }
 
@@ -99,7 +108,7 @@ final class ZegzugGameViewModel: ObservableObject {
                                                                                around: middle(of: geo))
                 // This guard is critical since the view could call this function multiple times, resulting in the
                 // the coordinates being placed further and further off the screen. This prevents that.
-                guard CGRectContainsPoint(geo.frame(in: .local), newCenter) else { continue }
+                guard CGRectContainsPoint(geo.frame(in: .local).expanded(by: 40), newCenter) else { continue }
                 circles[index].center = newCenter
             }
         }
@@ -115,8 +124,10 @@ final class ZegzugGameViewModel: ObservableObject {
         else { return }
         if circle.state == .none {
             circles[index].state = currentPlayer.circleState
+            currentPlayer.placedPebbles += 1
         } else {
             circles[index].state = .none
+            currentPlayer.placedPebbles -= 1
         }
 
         updateNeighbours(at: index)

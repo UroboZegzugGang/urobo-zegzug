@@ -27,6 +27,8 @@
 		555B3DF42A06687200F5C867 /* ZegzugCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555B3DF32A06687200F5C867 /* ZegzugCircle.swift */; };
 		555B3DF62A06B4A000F5C867 /* NeighbourColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555B3DF52A06B4A000F5C867 /* NeighbourColor.swift */; };
 		555B3DF92A0C43E400F5C867 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555B3DF82A0C43E400F5C867 /* Array+Extension.swift */; };
+		555B3DFB2A0CC3CD00F5C867 /* TurnState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555B3DFA2A0CC3CD00F5C867 /* TurnState.swift */; };
+		555B3DFE2A0CC94800F5C867 /* CGRect+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555B3DFD2A0CC94800F5C867 /* CGRect+Extension.swift */; };
 		55C257B529FBFF9F00F6B046 /* ZegzugPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C257B429FBFF9F00F6B046 /* ZegzugPlayer.swift */; };
 		55C257B729FBFFF300F6B046 /* CircleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C257B629FBFFF300F6B046 /* CircleState.swift */; };
 		55D9B32829F5D77000A2369C /* ZegzugGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B32729F5D77000A2369C /* ZegzugGameView.swift */; };
@@ -90,6 +92,8 @@
 		555B3DF32A06687200F5C867 /* ZegzugCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZegzugCircle.swift; sourceTree = "<group>"; };
 		555B3DF52A06B4A000F5C867 /* NeighbourColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeighbourColor.swift; sourceTree = "<group>"; };
 		555B3DF82A0C43E400F5C867 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
+		555B3DFA2A0CC3CD00F5C867 /* TurnState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnState.swift; sourceTree = "<group>"; };
+		555B3DFD2A0CC94800F5C867 /* CGRect+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGRect+Extension.swift"; sourceTree = "<group>"; };
 		55C257B429FBFF9F00F6B046 /* ZegzugPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZegzugPlayer.swift; sourceTree = "<group>"; };
 		55C257B629FBFFF300F6B046 /* CircleState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleState.swift; sourceTree = "<group>"; };
 		55D9B32729F5D77000A2369C /* ZegzugGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZegzugGameView.swift; sourceTree = "<group>"; };
@@ -235,6 +239,7 @@
 		418CF6CC29F3D0D4001C0FCD /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				555B3DFC2A0CC93800F5C867 /* CGRect */,
 				555B3DF72A0C43D400F5C867 /* Array */,
 				55D9B34529F6CF4700A2369C /* ButtonStyle */,
 				55D9B33829F5E22600A2369C /* Path */,
@@ -296,6 +301,14 @@
 			path = Array;
 			sourceTree = "<group>";
 		};
+		555B3DFC2A0CC93800F5C867 /* CGRect */ = {
+			isa = PBXGroup;
+			children = (
+				555B3DFD2A0CC94800F5C867 /* CGRect+Extension.swift */,
+			);
+			path = CGRect;
+			sourceTree = "<group>";
+		};
 		55C257B329FBFF8700F6B046 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -303,6 +316,7 @@
 				55C257B629FBFFF300F6B046 /* CircleState.swift */,
 				555B3DF32A06687200F5C867 /* ZegzugCircle.swift */,
 				555B3DF52A06B4A000F5C867 /* NeighbourColor.swift */,
+				555B3DFA2A0CC3CD00F5C867 /* TurnState.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -494,6 +508,7 @@
 				55D9B32B29F5D8B000A2369C /* Circle.swift in Sources */,
 				418CF6D829F3D2F2001C0FCD /* MenuButton.swift in Sources */,
 				4143722929E0540000A670C0 /* MessagesViewController.swift in Sources */,
+				555B3DFB2A0CC3CD00F5C867 /* TurnState.swift in Sources */,
 				55D9B34229F6C6E900A2369C /* UroboPlayer.swift in Sources */,
 				55D9B32829F5D77000A2369C /* ZegzugGameView.swift in Sources */,
 				418CF6D029F3D118001C0FCD /* Color+appColors.swift in Sources */,
@@ -505,6 +520,7 @@
 				555B3DF62A06B4A000F5C867 /* NeighbourColor.swift in Sources */,
 				418CF6D329F3D1E7001C0FCD /* Image+appImages.swift in Sources */,
 				55D9B33129F5E02400A2369C /* ZegzugGameViewModel.swift in Sources */,
+				555B3DFE2A0CC94800F5C867 /* CGRect+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

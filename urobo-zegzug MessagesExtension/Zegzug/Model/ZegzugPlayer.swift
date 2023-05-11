@@ -6,6 +6,8 @@ class ZegzugPlayer {
     var orangeNeighbours: [[Int]] = .init()
     var greenNeighbours: [[[Int]]] = .init()
 
+    var placedPebbles: Int = 0
+
     var circleState: CircleState {
         switch num {
         case .first:
@@ -26,17 +28,6 @@ class ZegzugPlayer {
 
     init(num: PlayerNumber) {
         self.num = num
-    }
-
-    func updateNeighbours(with array: [Any], color: NeighbourColor) {
-        switch color {
-        case .orange:
-            guard let array = array as? [[Int]] else { return }
-            orangeNeighbours = array
-        case .green:
-            guard let array = array as? [[[Int]]] else { return }
-            greenNeighbours = array
-        }
     }
 }
 

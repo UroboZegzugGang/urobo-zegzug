@@ -6,6 +6,7 @@ struct ZegzugGameView: View {
     var body: some View {
         VStack {
             Spacer()
+            turnTitle()
             resetButton()
             BackgroundCircles()
                 .background {
@@ -24,6 +25,18 @@ struct ZegzugGameView: View {
         .overlay {
             if viewModel.showingHowTo {
                 howToPanel()
+            }
+        }
+    }
+
+    @ViewBuilder private func turnTitle() -> some View {
+        VStack(alignment: .leading) {
+            Text(viewModel.turnState.title)
+                .font(.largeTitle)
+                .bold()
+            if viewModel.placedPebbles != viewModel.numOfPebbles {
+                Text("Placed: \(viewModel.placedPebbles) out of \(viewModel.numOfPebbles)")
+                    .font(.subheadline)
             }
         }
     }
