@@ -119,36 +119,36 @@ final class ZegzugGameViewModel: ObservableObject {
             circles[index].state = .none
         }
 
-        togglePlayers()
         updateNeighbours(at: index)
+        calculateLongestLine(for: currentPlayer)
+        togglePlayers()
     }
 
     private func togglePlayers() {
         currentPlayer = currentPlayer.num == .first ? playerTwo : playerOne
     }
 
+    private func calculateLongestLine(for player: ZegzugPlayer) {
+
+    }
+
     private func updateNeighbours(at index: Int) {
         switch circles[index].state {
         case .none:
             removeFromNeighbours(index)
-        case .playerOne:
-            addToNeighbours(index, for: playerOne)
-        case .playerTwo:
-            addToNeighbours(index, for: playerTwo)
+        default:
+            addToNeighbours(index)
         }
     }
 
     private func removeFromNeighbours(_ index: Int) {
-        removeFromOrangeNeighbours(index, for: playerOne)
-        removeFromGreenNeighbours(index, for: playerOne)
-
-        removeFromOrangeNeighbours(index, for: playerTwo)
-        removeFromGreenNeighbours(index, for: playerTwo)
+        removeFromOrangeNeighbours(index, for: currentPlayer)
+        removeFromGreenNeighbours(index, for: currentPlayer)
     }
 
-    private func addToNeighbours(_ index: Int, for player: ZegzugPlayer) {
-        addToOrangeNeighbours(index, for: player)
-        addToGreenNeighbours(index, for: player)
+    private func addToNeighbours(_ index: Int) {
+        addToOrangeNeighbours(index, for: currentPlayer)
+        addToGreenNeighbours(index, for: currentPlayer)
     }
 
     private func addToOrangeNeighbours(_ index: Int, for player: ZegzugPlayer) {
