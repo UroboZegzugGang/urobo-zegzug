@@ -173,6 +173,11 @@ final class ZegzugGameViewModel: ObservableObject {
               let selectedIndex
         else { return }
 
+        if circles[index].state == currentPlayer.circleState {
+            selectPebble(on: circle)
+            return
+        }
+
         if isNeighbour(index, to: selectedIndex){
             removePebble(from: circles[selectedIndex])
             placePebble(on: circle)
