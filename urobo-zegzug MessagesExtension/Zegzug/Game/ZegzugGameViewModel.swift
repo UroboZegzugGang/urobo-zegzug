@@ -699,7 +699,25 @@ final class ZegzugGameViewModel: ObservableObject {
     }
 
     private func isNeighbour(_ index: Int, to other: Int) -> Bool {
-        return true
+        guard let indexInOrange = orangeNeighbours.firstIndex(of: index),
+              let otherIndexinOrange = orangeNeighbours.firstIndex(of: other)
+        else { return false }
+        if nextToEachother(indexInOrange, and: otherIndexinOrange) {
+            return true
+        }
+
+        guard let outerIndexinGreen = greenNeighbours.firstIndex(where: { $0.contains(index)}),
+              let otherOuterIndexinGreen = greenNeighbours.firstIndex(where: { $0.contains(other)}),
+              let innerIndex = greenNeighbours[outerIndexinGreen].firstIndex(of: index),
+              let otherInnerIndex = greenNeighbours[otherOuterIndexinGreen].firstIndex(of: other)
+        else { return false }
+        if outerIndexinGreen == otherOuterIndexinGreen {
+            return nextToEachother(innerIndex, and: otherInnerIndex)
+        }
+        if nextToEachother(outerIndexinGreen, and: otherOuterIndexinGreen) || abs(outerIndexinGreen - otherOuterIndexinGreen) == 11 {
+            return innerIndex == 0 && otherInnerIndex == 0
+        }
+        return false
     }
 
     private func middle(of geo: GeometryProxy) -> CGPoint {
