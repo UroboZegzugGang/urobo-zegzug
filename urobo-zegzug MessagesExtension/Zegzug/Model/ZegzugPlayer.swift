@@ -7,6 +7,7 @@ class ZegzugPlayer {
     var greenNeighbours: [[[Int]]] = .init()
 
     var placedPebbles: Int = 0
+    var areAllPebblesPlaced: Bool = false
 
     var circleState: CircleState {
         switch num {
@@ -28,6 +29,12 @@ class ZegzugPlayer {
 
     init(num: PlayerNumber) {
         self.num = num
+    }
+
+    func placePebble(max: Int) {
+        guard placedPebbles < max else { return }
+        placedPebbles += 1
+        areAllPebblesPlaced = placedPebbles == max
     }
 }
 

@@ -5,9 +5,10 @@ final class ZegzugGameViewModel: ObservableObject {
     @Published var showingHowTo = false
     @Published var playerOne: ZegzugPlayer = ZegzugPlayer(num: .first)
     @Published var playerTwo: ZegzugPlayer = ZegzugPlayer(num: .second)
-    @Published private(set) var turnState: TurnState = .place
 
+    @Published private(set) var turnState: TurnState = .place
     @Published var numOfPebbles: Int = 0
+    @Published var selectedIndex: Int? = nil
 
     @Published var orangeNeighbours: [Int] = [
         0,
@@ -119,20 +120,52 @@ final class ZegzugGameViewModel: ObservableObject {
     }
 
     func tapped(_ circle: ZegzugCircle) {
-        guard circle.state == .none || circle.state == currentPlayer.circleState,
+        switch turnState {
+        case .place:
+            placePebble(on: circle)
+        case .select:
+            selectPebble(on: circle)
+        case .move:
+            break
+        case .won:
+            break
+        case .lost:
+            break
+        }
+        turnState = updateState()
+    }
+
+    private func updateState() -> TurnState {
+        // TODO: check here for winning condition
+        if currentPlayer.areAllPebblesPlaced {
+            if selectedIndex == nil {
+                return .select
+            } else {
+                return .move
+            }
+        }
+        return .place
+    }
+
+    private func placePebble(on circle: ZegzugCircle) {
+        guard circle.state == .none,
               let index = circles.firstIndex(where: { $0.id == circle.id })
         else { return }
-        if circle.state == .none {
-            circles[index].state = currentPlayer.circleState
-            currentPlayer.placedPebbles += 1
-        } else {
-            circles[index].state = .none
-            currentPlayer.placedPebbles -= 1
-        }
+
+        circles[index].state = currentPlayer.circleState
+        currentPlayer.placePebble(max: numOfPebbles)
 
         updateNeighbours(at: index)
         calculateLongestLine(for: currentPlayer)
-        togglePlayers()
+        // togglePlayers()
+    }
+
+    private func selectPebble(on circle: ZegzugCircle) {
+        guard circle.state == currentPlayer.circleState,
+              let index = circles.firstIndex(where: { $0.id == circle.id })
+        else { return }
+
+        selectedIndex = index
     }
 
     private func togglePlayers() {

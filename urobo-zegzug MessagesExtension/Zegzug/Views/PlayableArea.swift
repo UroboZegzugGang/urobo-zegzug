@@ -84,7 +84,7 @@ struct PlayableArea: View {
         ForEach(Array(viewModel.circles.enumerated()), id: \.element.id) { index, circle in
             Circle(center: circle.center, diameter: viewModel.circleDiameter(in: geo))
                 .fill(circle.fillColor,
-                      stroke: StrokeStyle(lineWidth: Constants.outlineWidth)
+                      stroke: (viewModel.selectedIndex == index ? .yellow : .black, StrokeStyle(lineWidth: Constants.outlineWidth))
                 )
                 .onTapGesture {
                     viewModel.tapped(circle)
