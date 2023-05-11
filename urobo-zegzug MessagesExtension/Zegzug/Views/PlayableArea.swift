@@ -31,7 +31,7 @@ struct PlayableArea: View {
                 }
             }
         }
-        .stroke(lineWidth: Constants.lineWidth).foregroundColor(.greenLine)
+        .stroke(lineWidth: Constants.lineWidth).foregroundColor(.zegzugGreen)
     }
 
     @ViewBuilder private func orangeLines(in geo: GeometryProxy) -> some View {
@@ -41,7 +41,7 @@ struct PlayableArea: View {
                                            indexes: viewModel.orangeNeighbours)
             }
         }
-        .stroke(lineWidth: Constants.lineWidth).foregroundColor(.orangeLine)
+        .stroke(lineWidth: Constants.lineWidth).foregroundColor(.zegzugOrange)
     }
 
     @ViewBuilder private func neighbourLines(for player: ZegzugPlayer, in geo: GeometryProxy) -> some View {

@@ -21,9 +21,9 @@ class ZegzugPlayer {
     var lineColor: Color {
         switch num {
         case .first:
-            return .blue
+            return .zegzugPlayerOne
         case .second:
-            return .yellow
+            return .zegzugPlayerTwo
         }
     }
 
