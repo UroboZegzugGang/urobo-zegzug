@@ -302,16 +302,16 @@ final class ZegzugGameViewModel: ObservableObject {
             subArr.remove(at: index)
             if subArr.count > 0 {
                 player.orangeNeighbours = Array(player.orangeNeighbours[..<outerIndex]
-                + [Array(subArr)]
-                + player.orangeNeighbours[(outerIndex + 1)...])
+                                                + [Array(subArr)]
+                                                + player.orangeNeighbours[(outerIndex + 1)...])
             } else {
                 player.orangeNeighbours = Array(player.orangeNeighbours[..<outerIndex] + player.orangeNeighbours[(outerIndex + 1)...])
             }
         } else {
             subArr.remove(at: index)
             player.orangeNeighbours = Array(player.orangeNeighbours[..<outerIndex]
-            + [Array(subArr[..<index]), Array(subArr[index...])]
-            + player.orangeNeighbours[(outerIndex + 1)...])
+                                            + [Array(subArr[..<index]), Array(subArr[index...])]
+                                            + player.orangeNeighbours[(outerIndex + 1)...])
         }
     }
 
@@ -372,7 +372,7 @@ final class ZegzugGameViewModel: ObservableObject {
                 if !nextToEachother(innerIndexOfPressed, and: indexOfContaining) {
                     // not neighbours, insert into new subarray
                     let insertIndex = index > onlyElement ?
-                        matchingIndexIndex : matchingIndexIndex + 1
+                    matchingIndexIndex : matchingIndexIndex + 1
                     player.greenNeighbours.insert([[index]], at: insertIndex)
                 } else {
                     // neighbours
@@ -565,9 +565,9 @@ final class ZegzugGameViewModel: ObservableObject {
         let innerIndexOfPressed = greenNeighbours[outerIndexOfPressed].firstIndex(of: index)!
 
         guard
-        let outerIndexInNeighbours = player.greenNeighbours.firstIndex(where: { $0.contains { $0.contains(index) } }),
-        let innerIndexInNeighbours = player.greenNeighbours[outerIndexInNeighbours].firstIndex(where: { $0.contains(index) }),
-        let concreteIndexInNeighbours = player.greenNeighbours[outerIndexInNeighbours][innerIndexInNeighbours].firstIndex(of: index)
+            let outerIndexInNeighbours = player.greenNeighbours.firstIndex(where: { $0.contains { $0.contains(index) } }),
+            let innerIndexInNeighbours = player.greenNeighbours[outerIndexInNeighbours].firstIndex(where: { $0.contains(index) }),
+            let concreteIndexInNeighbours = player.greenNeighbours[outerIndexInNeighbours][innerIndexInNeighbours].firstIndex(of: index)
         else { return }
 
         if innerIndexOfPressed == 2 {
