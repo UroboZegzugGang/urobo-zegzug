@@ -7,6 +7,4 @@ extension Color {
     static let menuTileBackground = Color("menuTileBackground")
     static let zegzugOrange = Color("zegzugOrange")
     static let zegzugGreen = Color("zegzugGreen")
-    static let zegzugPlayerOne = Color("playerOne")
-    static let zegzugPlayerTwo = Color("playerTwo")
 }
