@@ -126,7 +126,7 @@ final class ZegzugGameViewModel: ObservableObject {
         case .select:
             selectPebble(on: circle)
         case .move:
-            break
+            movePebble(to: circle)
         case .won:
             break
         case .lost:
@@ -166,6 +166,25 @@ final class ZegzugGameViewModel: ObservableObject {
         else { return }
 
         selectedIndex = index
+    }
+
+    private func movePebble(to circle: ZegzugCircle) {
+        guard circle.state == .none,
+              let index = circles.firstIndex(where: { $0.id == circle.id }),
+              let selectedIndex,
+              isNeighbour(index, to: selectedIndex)
+        else { return }
+
+        removePebble(from: circles[selectedIndex])
+        placePebble(on: circle)
+        self.selectedIndex = nil
+    }
+
+    private func removePebble(from circle: ZegzugCircle) {
+        guard let index = circles.firstIndex(where: { $0.id == circle.id }) else { return }
+        circles[index].state = .none
+        updateNeighbours(at: index)
+        calculateLongestLine(for: currentPlayer)
     }
 
     private func togglePlayers() {
@@ -617,6 +636,7 @@ final class ZegzugGameViewModel: ObservableObject {
         for outer in list {
             indexes.append([])
             for inner in outer {
+                guard inner.count > 0 else { continue }
                 let parentOuterI = parent.firstIndex(where: { $0.contains(inner.first!)})!
                 indexes[indexes.endIndex - 1].append(parentOuterI)
             }
@@ -673,6 +693,10 @@ final class ZegzugGameViewModel: ObservableObject {
 
     private func nextToEachother(_ first: Int, and second: Int) -> Bool {
         abs(first - second) == 1
+    }
+
+    private func isNeighbour(_ index: Int, to other: Int) -> Bool {
+        return true
     }
 
     private func middle(of geo: GeometryProxy) -> CGPoint {

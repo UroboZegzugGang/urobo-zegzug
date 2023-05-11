@@ -61,7 +61,7 @@ struct PlayableArea: View {
                   player.greenNeighbours.first!.first!.count > 0
             else { return }
             for lines in player.greenNeighbours {
-                var currCurvePos = lines.first!.first!
+                guard var currCurvePos = lines.first?.first else { continue }
                 for straightLines in lines {
                     path.move(to: viewModel.circles[straightLines.first!].center)
                     for circle in straightLines {
