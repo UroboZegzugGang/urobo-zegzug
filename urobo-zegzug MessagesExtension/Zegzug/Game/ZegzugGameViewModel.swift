@@ -592,7 +592,10 @@ final class ZegzugGameViewModel: ObservableObject {
             if innerIndexInNeighbours == 0 ||
                 innerIndexInNeighbours == player.greenNeighbours[outerIndexInNeighbours].endIndex - 1 {
                 //at the edge, just delete it and insert other element in a new array
-                if player.greenNeighbours[outerIndexInNeighbours][innerIndexInNeighbours].count == 1 {
+                if player.greenNeighbours[outerIndexInNeighbours].count == 1 &&
+                    player.greenNeighbours[outerIndexInNeighbours][innerIndexInNeighbours].count == 1 {
+                    player.greenNeighbours.remove(at: outerIndexInNeighbours)
+                } else if player.greenNeighbours[outerIndexInNeighbours][innerIndexInNeighbours].count == 1 {
                     player.greenNeighbours[outerIndexInNeighbours].remove(at: innerIndexInNeighbours)
                 } else {
                     player.greenNeighbours[outerIndexInNeighbours][innerIndexInNeighbours].remove(at: concreteIndexInNeighbours)
