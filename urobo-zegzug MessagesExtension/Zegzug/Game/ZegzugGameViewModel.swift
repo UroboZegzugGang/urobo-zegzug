@@ -157,7 +157,9 @@ final class ZegzugGameViewModel: ObservableObject {
 
         updateNeighbours(at: index)
         calculateLongestLine(for: currentPlayer)
-        // togglePlayers()
+
+        //TODO: toggle them ony after send button is pressed
+        togglePlayers()
     }
 
     private func selectPebble(on circle: ZegzugCircle) {
