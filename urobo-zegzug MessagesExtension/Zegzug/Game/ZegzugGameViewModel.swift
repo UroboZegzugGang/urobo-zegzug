@@ -135,14 +135,14 @@ final class ZegzugGameViewModel: ObservableObject {
 
     private func updateState() -> TurnState {
         if didPlayerWin() {
-            //return .won
+            return .won
         }
         if currentPlayer.areAllPebblesPlaced {
-//            if selectedIndex == nil {
-//                return .select
-//            } else {
-//                return .move
-//            }
+            if selectedIndex == nil {
+                return .select
+            } else {
+                return .move
+            }
         }
         return .place
     }
@@ -172,7 +172,7 @@ final class ZegzugGameViewModel: ObservableObject {
                 }
             }
 
-            if numOfMultipleTrios > 1 && subarray.count > 2 {
+            if numOfMultipleTrios > 0 && subarray.count > 2 {
                 // there is an intersection -> exception is if its 2 and they are the only elements
                 // start counting the elements from the beginning until we fint a multipleTrio
                 // then start again but this time the already found multipleTrio counts as 1 and we dont stop at it
@@ -238,7 +238,7 @@ final class ZegzugGameViewModel: ObservableObject {
         calculateLongestLine(for: currentPlayer)
 
         //TODO: toggle them ony after send button is pressed
-        //togglePlayers()
+        togglePlayers()
     }
 
     private func selectPebble(on circle: ZegzugCircle) {
@@ -678,6 +678,11 @@ final class ZegzugGameViewModel: ObservableObject {
             if player.greenNeighbours[outerIndexInNeighbours][innerIndexInNeighbours].count > 1 {
                 let removedLastElement = player.greenNeighbours[outerIndexInNeighbours][innerIndexInNeighbours].remove(at: concreteIndexInNeighbours)
                 player.greenNeighbours.insert([[removedLastElement]], at: outerIndexInNeighbours + 1)
+            } else if player.greenNeighbours[outerIndexInNeighbours].count == 1 &&
+                        player.greenNeighbours[outerIndexInNeighbours][innerIndexInNeighbours].isEmpty {
+                player.greenNeighbours.remove(at: outerIndexInNeighbours)
+            } else if player.greenNeighbours[outerIndexInNeighbours][innerIndexInNeighbours].isEmpty {
+                player.greenNeighbours[outerIndexInNeighbours].remove(at: innerIndexInNeighbours)
             }
         } else if innerIndexOfPressed == 0 {
             // check if innerIndex is at the edge of the array
