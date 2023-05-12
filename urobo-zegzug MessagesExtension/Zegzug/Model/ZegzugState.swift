@@ -14,6 +14,8 @@ struct ZegzugState {
     var numOfPebbles: Int
     var rotationValue: Int
 
+    var didWin: Bool
+
     var queryItems: [URLQueryItem] {
         var items = [URLQueryItem]()
         if let circles {
@@ -27,7 +29,7 @@ struct ZegzugState {
             items.append(URLQueryItem(name: URLQueryKeys.numOfPebbles, value: String(numOfPebbles)))
             items.append(URLQueryItem(name: URLQueryKeys.rotationValue, value: String(rotationValue)))
 
-
+            items.append(URLQueryItem(name: URLQueryKeys.didWin, value: String(didWin)))
         }
         return items
     }
@@ -39,6 +41,7 @@ struct ZegzugState {
         self.circles = nil
         self.numOfPebbles = DefaultValues.numOfPebbles
         self.rotationValue = DefaultValues.rotationValue
+        self.didWin = DefaultValues.didWin
     }
 
     init(playerOne: ZegzugPlayer,
@@ -46,7 +49,8 @@ struct ZegzugState {
          sender: ZegzugPlayer,
          circles: [ZegzugCircle],
          numOfPebbles: Int,
-         rotationValue: Int
+         rotationValue: Int,
+         didWin: Bool
     ) {
         self.playerOne = playerOne
         self.playerTwo = playerTwo
@@ -54,6 +58,7 @@ struct ZegzugState {
         self.circles = circles
         self.numOfPebbles = numOfPebbles
         self.rotationValue = rotationValue
+        self.didWin = didWin
     }
 
     init?(queryItems: [URLQueryItem]) {
@@ -61,6 +66,7 @@ struct ZegzugState {
         playerTwo = ZegzugPlayer(num: .second)
         numOfPebbles = DefaultValues.numOfPebbles
         rotationValue = DefaultValues.rotationValue
+        didWin = DefaultValues.didWin
 
         for queryItem in queryItems {
             guard let value = queryItem.value else { continue }
@@ -77,6 +83,8 @@ struct ZegzugState {
                 numOfPebbles = Int(value) ?? DefaultValues.numOfPebbles
             case URLQueryKeys.rotationValue:
                 rotationValue = Int(value) ?? DefaultValues.rotationValue
+            case URLQueryKeys.didWin:
+                didWin = Bool(value) ?? DefaultValues.didWin
             default:
                 break
             }
@@ -101,10 +109,12 @@ extension ZegzugState {
         static let circles = "circles"
         static let numOfPebbles = "numOfPebbles"
         static let rotationValue = "rotationValue"
+        static let didWin = "didWin"
     }
 
     private enum DefaultValues {
         static let numOfPebbles: Int = 6
         static let rotationValue: Int = 0
+        static let didWin = false
     }
 }

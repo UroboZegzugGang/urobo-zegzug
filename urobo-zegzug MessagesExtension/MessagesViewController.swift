@@ -141,7 +141,11 @@ extension MessagesViewController: ZegzugGameViewModelDelegate {
 
         let layout = MSMessageTemplateLayout()
         // TODO: set layout.image
-        layout.caption = "Opponent moved. Your turn!"
+        if state.didWin {
+            layout.caption = "\(state.sender?.num.rawValue.capitalized ?? "A") player won!"
+        } else {
+            layout.caption = "Opponent moved. Your turn!"
+        }
 
         let message = MSMessage(session: session)
         message.url = components.url!

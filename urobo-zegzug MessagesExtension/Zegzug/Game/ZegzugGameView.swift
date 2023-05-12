@@ -50,6 +50,7 @@ struct ZegzugGameView: View {
                 Image(systemName: "arrow.counterclockwise")
             }
             .buttonStyle(.circular)
+            .disabled([.won, .lost].contains(viewModel.turnState))
         }
     }
 

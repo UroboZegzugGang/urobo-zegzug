@@ -85,7 +85,9 @@ final class ZegzugGameViewModel: ObservableObject {
         resetToLastSate()
 
         rotateBoardBy(sections: rotationValue)
-        turnState = updateState()
+        if state.didWin, let sender = state.sender, sender != currentPlayer {
+            turnState = .lost
+        }
     }
 
     func resetToLastSate() {
@@ -155,7 +157,8 @@ final class ZegzugGameViewModel: ObservableObject {
                                 sender: currentPlayer,
                                 circles: circles,
                                 numOfPebbles: numOfPebbles,
-                                rotationValue: rotationValue)
+                                rotationValue: rotationValue,
+                                didWin: turnState == .won)
 
         delegate?.endTurn(with: state)
     }
