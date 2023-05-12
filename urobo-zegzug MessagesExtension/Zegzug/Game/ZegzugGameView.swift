@@ -35,7 +35,7 @@ struct ZegzugGameView: View {
                 .font(.largeTitle)
                 .bold()
             if viewModel.turnState == .place {
-                Text("Placed: \(viewModel.placedPebbles) out of \(viewModel.numOfPebbles)")
+                Text("Placed: \(viewModel.placedPebbles) out of \(Int(viewModel.numOfPebbles))")
                     .font(.subheadline)
             }
         }

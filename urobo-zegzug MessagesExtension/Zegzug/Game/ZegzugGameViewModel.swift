@@ -1,7 +1,7 @@
 import SwiftUI
 
 protocol ZegzugGameViewModelDelegate {
-    func endTurn(with state: ZegzugState)
+    func endTurn(with state: ZegzugState, isInitial: Bool)
 }
 
 final class ZegzugGameViewModel: ObservableObject {
@@ -12,7 +12,8 @@ final class ZegzugGameViewModel: ObservableObject {
     @Published private(set) var playerOne: ZegzugPlayer = ZegzugPlayer(num: .first)
     @Published private(set) var playerTwo: ZegzugPlayer = ZegzugPlayer(num: .second)
     @Published private(set) var turnState: TurnState = .place
-    @Published private(set) var numOfPebbles: Int = 0
+    @Published var numOfPebbles: Double = 0
+    @Published var rotationValue: Double = 0
     @Published private(set) var selectedIndex: Int? = nil
     @Published private(set) var canSend = false
     @Published private(set) var orangeNeighbours: [Int] = [
@@ -70,7 +71,6 @@ final class ZegzugGameViewModel: ObservableObject {
     ]
 
     private var currentPlayer: ZegzugPlayer!
-    private var rotationValue: Int = 0
     private var lastState: ZegzugState = ZegzugState()
 
     var placedPebbles: Int {
@@ -84,7 +84,7 @@ final class ZegzugGameViewModel: ObservableObject {
 
         resetToLastSate()
 
-        rotateBoardBy(sections: rotationValue)
+        rotateBoardBy(sections: Int(rotationValue))
         if state.didWin, let sender = state.sender, sender != currentPlayer {
             turnState = .lost
         }
@@ -151,16 +151,16 @@ final class ZegzugGameViewModel: ObservableObject {
         geo.size.width / 14
     }
 
-    func sendAction() {
+    func sendAction(isInitial: Bool = false, isRotationRandom: Bool = false) {
         let state = ZegzugState(playerOne: playerOne,
                                 playerTwo: playerTwo,
-                                sender: currentPlayer,
+                                sender: isInitial ? nil : currentPlayer,
                                 circles: circles,
                                 numOfPebbles: numOfPebbles,
-                                rotationValue: rotationValue,
+                                rotationValue: isRotationRandom ? Double(Int.random(in: 0...11)) : rotationValue,
                                 didWin: turnState == .won)
 
-        delegate?.endTurn(with: state)
+        delegate?.endTurn(with: state, isInitial: isInitial)
     }
 
     func tapped(_ circle: ZegzugCircle) {
@@ -279,7 +279,7 @@ final class ZegzugGameViewModel: ObservableObject {
         else { return }
 
         circles[index].state = currentPlayer.circleState
-        currentPlayer.placePebble(max: numOfPebbles)
+        currentPlayer.placePebble(max: Int(numOfPebbles))
 
         updateNeighbours(at: index)
         checkForWin()

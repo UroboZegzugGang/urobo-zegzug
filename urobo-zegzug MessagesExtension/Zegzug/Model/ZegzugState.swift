@@ -11,8 +11,8 @@ struct ZegzugState {
     // MARK: Game information
 
     var circles: [ZegzugCircle]?
-    var numOfPebbles: Int
-    var rotationValue: Int
+    var numOfPebbles: Double
+    var rotationValue: Double
 
     var didWin: Bool
 
@@ -46,10 +46,10 @@ struct ZegzugState {
 
     init(playerOne: ZegzugPlayer,
          playerTwo: ZegzugPlayer,
-         sender: ZegzugPlayer,
+         sender: ZegzugPlayer?,
          circles: [ZegzugCircle],
-         numOfPebbles: Int,
-         rotationValue: Int,
+         numOfPebbles: Double,
+         rotationValue: Double,
          didWin: Bool
     ) {
         self.playerOne = playerOne
@@ -80,9 +80,9 @@ struct ZegzugState {
             case URLQueryKeys.circles:
                 circles = value.toArray()
             case URLQueryKeys.numOfPebbles:
-                numOfPebbles = Int(value) ?? DefaultValues.numOfPebbles
+                numOfPebbles = Double(value) ?? DefaultValues.numOfPebbles
             case URLQueryKeys.rotationValue:
-                rotationValue = Int(value) ?? DefaultValues.rotationValue
+                rotationValue = Double(value) ?? DefaultValues.rotationValue
             case URLQueryKeys.didWin:
                 didWin = Bool(value) ?? DefaultValues.didWin
             default:
@@ -113,8 +113,8 @@ extension ZegzugState {
     }
 
     private enum DefaultValues {
-        static let numOfPebbles: Int = 6
-        static let rotationValue: Int = 0
+        static let numOfPebbles: Double = 6
+        static let rotationValue: Double = 0
         static let didWin = false
     }
 }
