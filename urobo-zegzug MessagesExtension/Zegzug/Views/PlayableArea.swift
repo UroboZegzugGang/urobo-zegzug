@@ -103,7 +103,7 @@ extension PlayableArea {
         static let orangeStartIndex: Int = 0
         static let greenStartIndex: Int = 24
         static let neighbourLineWidth: CGFloat = 2
-        static let neighbourLineDash: [CGFloat] = [3]
+        static let neighbourLineDash: [CGFloat] = [6]
         static let curvedNeighbourDistance: Int = 3
     }
 }
