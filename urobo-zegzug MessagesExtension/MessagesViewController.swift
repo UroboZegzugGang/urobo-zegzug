@@ -72,7 +72,11 @@ class MessagesViewController: MSMessagesAppViewController {
     private func instantiateZegzugMenuVC() -> UIViewController {
         let viewModel = ZegzugGameViewModel(state: ZegzugState())
         viewModel.delegate = self
-        return UIHostingController(rootView: ZegzugMenu(viewModel: viewModel))
+        let menu = ZegzugMenu(viewModel: viewModel) { [weak self] in
+            guard let self else { return }
+            show(controller: instantiateMenuVC())
+        }
+        return UIHostingController(rootView: menu)
     }
 }
 
