@@ -12,6 +12,7 @@ class MessagesViewController: MSMessagesAppViewController {
     }
 
     private func presentVC(for conversation: MSConversation, with presentationStyle: MSMessagesAppPresentationStyle) {
+        let gameType = GameType(rawValue: conversation.selectedMessage?.summaryText ?? "") ?? gameType
         if presentationStyle == .compact {
             controller = instantiateMenuVC()
         } else {
@@ -19,7 +20,7 @@ class MessagesViewController: MSMessagesAppViewController {
             case .urobo:
                 controller = instantiateUroboVC()
             case .zegzug:
-                controller = instantiateZegzugVC()
+                controller = instantiateZegzugVC(with: ZegzugState(message: conversation.selectedMessage) ?? ZegzugState())
             }
         }
 
@@ -53,8 +54,9 @@ class MessagesViewController: MSMessagesAppViewController {
         return UIHostingController(rootView: UroboGameScreen(viewModel: viewModel))
     }
 
-    private func instantiateZegzugVC() -> UIViewController {
-        let viewModel = ZegzugGameViewModel()
+    private func instantiateZegzugVC(with state: ZegzugState) -> UIViewController {
+        let viewModel = ZegzugGameViewModel(state: state)
+        viewModel.delegate = self
         return UIHostingController(rootView: ZegzugGameView(viewModel: viewModel))
     }
 }
@@ -124,5 +126,32 @@ extension MessagesViewController: MenuViewModelDelegate {
     func startZegZug() {
         self.gameType = .zegzug
         requestPresentationStyle(.expanded)
+    }
+}
+
+extension MessagesViewController: ZegzugGameViewModelDelegate {
+    func endTurn(with state: ZegzugState) {
+        dismiss()
+
+        let conversation = activeConversation
+        let session = conversation?.selectedMessage?.session ?? MSSession()
+
+        var components = URLComponents()
+        components.queryItems = state.queryItems
+
+        let layout = MSMessageTemplateLayout()
+        // TODO: set layout.image
+        layout.caption = "Opponent moved. Your turn!"
+
+        let message = MSMessage(session: session)
+        message.url = components.url!
+        message.layout = layout
+        message.summaryText = gameType.name
+
+        conversation?.insert(message) { error in
+            if let error {
+                print("Error sending message: \(error)")
+            }
+        }
     }
 }

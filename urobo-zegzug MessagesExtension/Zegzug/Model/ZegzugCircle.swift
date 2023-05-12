@@ -1,7 +1,7 @@
 import SwiftUI
 
-struct ZegzugCircle: Identifiable {
-    let id = UUID()
+struct ZegzugCircle: Identifiable, Codable {
+    var id = UUID()
     
     var center: CGPoint
     var state: CircleState
@@ -17,5 +17,12 @@ struct ZegzugCircle: Identifiable {
         case .wrong:
             return .red
         }
+    }
+}
+
+extension ZegzugCircle {
+    enum CodingKeys: String, CodingKey {
+        case state
+        case center
     }
 }

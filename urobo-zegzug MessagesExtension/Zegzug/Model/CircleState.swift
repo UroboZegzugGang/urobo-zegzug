@@ -1,6 +1,6 @@
-enum CircleState {
-    case playerOne
-    case playerTwo
-    case none
-    case wrong
+enum CircleState: String, Codable {
+    case playerOne = "playerOne"
+    case playerTwo = "playerTwo"
+    case none = "none"
+    case wrong = "wrong"
 }

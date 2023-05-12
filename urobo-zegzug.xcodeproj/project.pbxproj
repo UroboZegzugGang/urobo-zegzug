@@ -31,6 +31,8 @@
 		555B3DFE2A0CC94800F5C867 /* CGRect+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555B3DFD2A0CC94800F5C867 /* CGRect+Extension.swift */; };
 		555B3E012A0D6A0900F5C867 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555B3E002A0D6A0900F5C867 /* View+Extension.swift */; };
 		555B3E032A0D6A3900F5C867 /* Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555B3E022A0D6A3900F5C867 /* Shake.swift */; };
+		555B3E052A0E57C400F5C867 /* ZegzugState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555B3E042A0E57C400F5C867 /* ZegzugState.swift */; };
+		555B3E082A0E69E700F5C867 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555B3E072A0E69E700F5C867 /* String+Extension.swift */; };
 		55C257B529FBFF9F00F6B046 /* ZegzugPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C257B429FBFF9F00F6B046 /* ZegzugPlayer.swift */; };
 		55C257B729FBFFF300F6B046 /* CircleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C257B629FBFFF300F6B046 /* CircleState.swift */; };
 		55D9B32829F5D77000A2369C /* ZegzugGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9B32729F5D77000A2369C /* ZegzugGameView.swift */; };
@@ -98,6 +100,8 @@
 		555B3DFD2A0CC94800F5C867 /* CGRect+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGRect+Extension.swift"; sourceTree = "<group>"; };
 		555B3E002A0D6A0900F5C867 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		555B3E022A0D6A3900F5C867 /* Shake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shake.swift; sourceTree = "<group>"; };
+		555B3E042A0E57C400F5C867 /* ZegzugState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZegzugState.swift; sourceTree = "<group>"; };
+		555B3E072A0E69E700F5C867 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		55C257B429FBFF9F00F6B046 /* ZegzugPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZegzugPlayer.swift; sourceTree = "<group>"; };
 		55C257B629FBFFF300F6B046 /* CircleState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleState.swift; sourceTree = "<group>"; };
 		55D9B32729F5D77000A2369C /* ZegzugGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZegzugGameView.swift; sourceTree = "<group>"; };
@@ -243,6 +247,7 @@
 		418CF6CC29F3D0D4001C0FCD /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				555B3E062A0E69DA00F5C867 /* String */,
 				555B3DFF2A0D69FC00F5C867 /* View */,
 				555B3DFC2A0CC93800F5C867 /* CGRect */,
 				555B3DF72A0C43D400F5C867 /* Array */,
@@ -322,6 +327,14 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		555B3E062A0E69DA00F5C867 /* String */ = {
+			isa = PBXGroup;
+			children = (
+				555B3E072A0E69E700F5C867 /* String+Extension.swift */,
+			);
+			path = String;
+			sourceTree = "<group>";
+		};
 		55C257B329FBFF8700F6B046 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -330,6 +343,7 @@
 				555B3DF32A06687200F5C867 /* ZegzugCircle.swift */,
 				555B3DF52A06B4A000F5C867 /* NeighbourColor.swift */,
 				555B3DFA2A0CC3CD00F5C867 /* TurnState.swift */,
+				555B3E042A0E57C400F5C867 /* ZegzugState.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -512,9 +526,11 @@
 				4143724729E0901900A670C0 /* UroboGameScreen.swift in Sources */,
 				4143723F29E06F1900A670C0 /* MenuViewModel.swift in Sources */,
 				55D9B34729F6CF5900A2369C /* ButtonStyle+Extension.swift in Sources */,
+				555B3E082A0E69E700F5C867 /* String+Extension.swift in Sources */,
 				55C257B729FBFFF300F6B046 /* CircleState.swift in Sources */,
 				4143726429E19BEC00A670C0 /* HowToPlayView.swift in Sources */,
 				418CF6DB29F3D633001C0FCD /* GameType.swift in Sources */,
+				555B3E052A0E57C400F5C867 /* ZegzugState.swift in Sources */,
 				55D9B34429F6C6F400A2369C /* MonochromeShadowButton.swift in Sources */,
 				4143723D29E06F0B00A670C0 /* MenuScreen.swift in Sources */,
 				55D9B33429F5E15100A2369C /* CGPoint+Extension.swift in Sources */,

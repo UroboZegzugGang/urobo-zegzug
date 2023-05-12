@@ -25,3 +25,16 @@ extension Array {
         return removed
     }
 }
+
+extension Array where Element: Encodable {
+    func toString() -> String? {
+        do {
+            let data = try JSONEncoder().encode(self)
+            let jsonString = String(data: data, encoding: .utf8)
+            return jsonString
+        } catch {
+            print("Error converting array to string: \(error)")
+            return nil
+        }
+    }
+}

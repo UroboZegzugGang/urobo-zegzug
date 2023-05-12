@@ -1,6 +1,12 @@
 import SwiftUI
 
+protocol ZegzugGameViewModelDelegate {
+    func endTurn(with state: ZegzugState)
+}
+
 final class ZegzugGameViewModel: ObservableObject {
+    var delegate: ZegzugGameViewModelDelegate?
+
     @Published var circles = [ZegzugCircle]()
     @Published var showingHowTo = false
     @Published var playerOne: ZegzugPlayer = ZegzugPlayer(num: .first)
@@ -72,35 +78,43 @@ final class ZegzugGameViewModel: ObservableObject {
 
     private var currentPlayer: ZegzugPlayer!
 
-    init() {
-        let startOuterX = 0.0
-        let startInnerX = 0.25
-        let startMiddleX = (startInnerX + startOuterX) / 2
+    private var rotationValue: Int = 0
 
-        let startY = 0.5
-
-        let outer = CGPoint(x: startOuterX, y: startY)
-        let middle = CGPoint(x: startMiddleX, y: startY)
-        let inner = CGPoint(x: startInnerX, y: startY)
-
-        for _ in 0 ..< 12 {
-            circles.append(ZegzugCircle(center: outer, state: .none))
+    init(state: ZegzugState) {
+        playerOne = state.playerOne ?? ZegzugPlayer(num: .first)
+        playerTwo = state.playerTwo ?? ZegzugPlayer(num: .second)
+        if let sender = state.sender {
+            currentPlayer = sender == playerOne ? playerTwo : playerOne
+        } else {
+            currentPlayer = playerOne
         }
+        if let circles = state.circles {
+            self.circles = circles
+        } else {
+            let startOuterX = 0.0
+            let startInnerX = 0.25
+            let startMiddleX = (startInnerX + startOuterX) / 2
 
-        for _ in 0 ..< 12 {
-            circles.append(ZegzugCircle(center: middle, state: .none))
+            let startY = 0.5
+            let outer = CGPoint(x: startOuterX, y: startY)
+            let middle = CGPoint(x: startMiddleX, y: startY)
+            let inner = CGPoint(x: startInnerX, y: startY)
+
+            for _ in 0 ..< 12 {
+                circles.append(ZegzugCircle(center: outer, state: .none))
+            }
+            for _ in 0 ..< 12 {
+                circles.append(ZegzugCircle(center: middle, state: .none))
+            }
+            for _ in 0 ..< 12 {
+                circles.append(ZegzugCircle(center: inner, state: .none))
+            }
         }
+        numOfPebbles = state.numOfPebbles
+        rotationValue = state.rotationValue
 
-        for _ in 0 ..< 12 {
-            circles.append(ZegzugCircle(center: inner, state: .none))
-        }
-
-        // TODO: rotate by the stored value in the gameState
-        rotateBoardBy(sections: 0)
-
-        numOfPebbles = 5
-
-        currentPlayer = playerOne
+        rotateBoardBy(sections: rotationValue)
+        turnState = updateState()
     }
 
     func normalizeCoords(for geo: GeometryProxy) {
@@ -119,6 +133,17 @@ final class ZegzugGameViewModel: ObservableObject {
 
     func circleDiameter(in geo: GeometryProxy) -> CGFloat {
         geo.size.width / 14
+    }
+
+    func sendAction() {
+        let state = ZegzugState(playerOne: playerOne,
+                                playerTwo: playerTwo,
+                                sender: currentPlayer,
+                                circles: circles,
+                                numOfPebbles: numOfPebbles,
+                                rotationValue: rotationValue)
+
+        delegate?.endTurn(with: state)
     }
 
     func tapped(_ circle: ZegzugCircle) {

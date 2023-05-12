@@ -1,6 +1,6 @@
 import SwiftUI
 
-class ZegzugPlayer {
+class ZegzugPlayer: Codable {
     let num: PlayerNumber
 
     var orangeNeighbours: [[Int]] = .init()
@@ -38,9 +38,44 @@ class ZegzugPlayer {
     }
 }
 
+extension ZegzugPlayer: Equatable {
+    static func == (lhs: ZegzugPlayer, rhs: ZegzugPlayer) -> Bool {
+        lhs.num == rhs.num
+    }
+}
+
+
 extension ZegzugPlayer {
-    enum PlayerNumber {
-        case first
-        case second
+    enum PlayerNumber: String, Codable {
+        case first = "first"
+        case second = "second"
+    }
+}
+
+extension ZegzugPlayer {
+    var queryKey: String {
+        num.rawValue
+    }
+
+    func toQueryValue() -> String {
+        do {
+            let data = try JSONEncoder().encode(self)
+            let jsonString = String(data: data, encoding: .utf8)
+            return jsonString ?? ""
+        } catch {
+            print("Error converting ZegzugPlayer to string: \(error)")
+            return ""
+        }
+    }
+
+    static func from(queryValue: String) -> ZegzugPlayer? {
+        let data = Data(queryValue.utf8)
+        do {
+            let player = try JSONDecoder().decode(ZegzugPlayer.self, from: data)
+            return player
+        } catch {
+            print("Error converting string to ZegzugPlayer: \(error)")
+            return nil
+        }
     }
 }

@@ -55,7 +55,7 @@ struct ZegzugGameView: View {
 
     @ViewBuilder private func sendButton() -> some View {
         Button("Send") {
-            // TODO: End turn and send it
+            viewModel.sendAction()
         }
         .buttonStyle(.monochromeShadow)
         .disabled(!viewModel.canSend)
