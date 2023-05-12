@@ -175,7 +175,7 @@ final class ZegzugGameViewModel: ObservableObject {
     }
 
     private func updateState() -> TurnState {
-        if didPlayerWin() {
+        if checkForWin() {
             return .won
         }
         if currentPlayer.areAllPebblesPlaced {
@@ -188,8 +188,12 @@ final class ZegzugGameViewModel: ObservableObject {
         return .place
     }
 
-    private func didPlayerWin() -> Bool {
-        return countLongestOrangeLine() >= 5 || countLongestGreenLine() >= 5
+    @discardableResult private func checkForWin() -> Bool {
+        if countLongestOrangeLine() >= 5 || countLongestGreenLine() >= 5 {
+            turnState = .won
+            return true
+        }
+        return false
     }
 
     private func countLongestOrangeLine() -> Int {
@@ -275,10 +279,8 @@ final class ZegzugGameViewModel: ObservableObject {
         currentPlayer.placePebble(max: numOfPebbles)
 
         updateNeighbours(at: index)
-        calculateLongestLine(for: currentPlayer)
-
-        //TODO: toggle them ony after send button is pressed
-        //togglePlayers()
+        checkForWin()
+        
         canSend = true
     }
 
@@ -288,6 +290,7 @@ final class ZegzugGameViewModel: ObservableObject {
         else { return }
 
         selectedIndex = index
+        turnState = updateState()
     }
 
     private func movePebble(to circle: ZegzugCircle) {
@@ -317,15 +320,6 @@ final class ZegzugGameViewModel: ObservableObject {
         guard let index = circles.firstIndex(where: { $0.id == circle.id }) else { return }
         circles[index].state = .none
         updateNeighbours(at: index)
-        calculateLongestLine(for: currentPlayer)
-    }
-
-    private func togglePlayers() {
-        currentPlayer = currentPlayer.num == .first ? playerTwo : playerOne
-    }
-
-    private func calculateLongestLine(for player: ZegzugPlayer) {
-
     }
 
     private func updateNeighbours(at index: Int) {
@@ -524,6 +518,8 @@ final class ZegzugGameViewModel: ObservableObject {
                             matchingIndexIndex = indexes.firstIndex(where: { $0.contains(outerIndexOfPressed) })!
                             innerMatchingIndex = indexes[matchingIndexIndex].firstIndex(of: outerIndexOfPressed)!
                             player.greenNeighbours[matchingIndexIndex][innerMatchingIndex].insert(contentsOf: removed + [index], at: 0)
+                            // reorder inner array
+                            player.greenNeighbours[matchingIndexIndex][innerMatchingIndex].sort(by: >)
                         } else {
                             player.greenNeighbours[matchingIndexIndex][innerMatchingIndex].append(index)
                             let nextIndex = player.greenNeighbours.firstIndex { $0.contains{ $0.contains(greenNeighbours[outerIndexOfPressed][innerIndexOfPressed + 1]) } }!
