@@ -7,18 +7,15 @@ protocol ZegzugGameViewModelDelegate {
 final class ZegzugGameViewModel: ObservableObject {
     var delegate: ZegzugGameViewModelDelegate?
 
-    @Published var circles = [ZegzugCircle]()
+    @Published private(set) var circles = [ZegzugCircle]()
     @Published var showingHowTo = false
-    @Published var playerOne: ZegzugPlayer = ZegzugPlayer(num: .first)
-    @Published var playerTwo: ZegzugPlayer = ZegzugPlayer(num: .second)
-
+    @Published private(set) var playerOne: ZegzugPlayer = ZegzugPlayer(num: .first)
+    @Published private(set) var playerTwo: ZegzugPlayer = ZegzugPlayer(num: .second)
     @Published private(set) var turnState: TurnState = .place
-    @Published var numOfPebbles: Int = 0
-    @Published var selectedIndex: Int? = nil
-
-    @Published var canSend = false
-
-    @Published var orangeNeighbours: [Int] = [
+    @Published private(set) var numOfPebbles: Int = 0
+    @Published private(set) var selectedIndex: Int? = nil
+    @Published private(set) var canSend = false
+    @Published private(set) var orangeNeighbours: [Int] = [
         0,
         25,
         26,
@@ -72,25 +69,41 @@ final class ZegzugGameViewModel: ObservableObject {
         [30, 18, 6],
     ]
 
+    private var currentPlayer: ZegzugPlayer!
+    private var rotationValue: Int = 0
+    private var lastState: ZegzugState = ZegzugState()
+
     var placedPebbles: Int {
         currentPlayer.placedPebbles
     }
 
-    private var currentPlayer: ZegzugPlayer!
-
-    private var rotationValue: Int = 0
-
     init(state: ZegzugState) {
-        playerOne = state.playerOne ?? ZegzugPlayer(num: .first)
-        playerTwo = state.playerTwo ?? ZegzugPlayer(num: .second)
-        if let sender = state.sender {
+        lastState = state
+        numOfPebbles = state.numOfPebbles
+        rotationValue = state.rotationValue
+
+        resetToLastSate()
+
+        rotateBoardBy(sections: rotationValue)
+        turnState = updateState()
+    }
+
+    func resetToLastSate() {
+        canSend = false
+
+        playerOne = lastState.playerOne.copy()
+        playerTwo = lastState.playerTwo.copy()
+        
+        if let sender = lastState.sender {
             currentPlayer = sender == playerOne ? playerTwo : playerOne
         } else {
             currentPlayer = playerOne
         }
-        if let circles = state.circles {
+
+
+        if let circles = lastState.circles {
             self.circles = circles
-        } else {
+        } else if self.circles.isEmpty {
             let startOuterX = 0.0
             let startInnerX = 0.25
             let startMiddleX = (startInnerX + startOuterX) / 2
@@ -109,11 +122,12 @@ final class ZegzugGameViewModel: ObservableObject {
             for _ in 0 ..< 12 {
                 circles.append(ZegzugCircle(center: inner, state: .none))
             }
+        } else {
+            for i in self.circles.indices {
+                self.circles[i].state = .none
+            }
         }
-        numOfPebbles = state.numOfPebbles
-        rotationValue = state.rotationValue
-
-        rotateBoardBy(sections: rotationValue)
+        selectedIndex = nil
         turnState = updateState()
     }
 
@@ -147,6 +161,7 @@ final class ZegzugGameViewModel: ObservableObject {
     }
 
     func tapped(_ circle: ZegzugCircle) {
+        guard !canSend else { return }
         switch turnState {
         case .place:
             placePebble(on: circle)
@@ -157,7 +172,6 @@ final class ZegzugGameViewModel: ObservableObject {
         default:
             return
         }
-        turnState = updateState()
     }
 
     private func updateState() -> TurnState {

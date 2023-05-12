@@ -146,7 +146,7 @@ extension MessagesViewController: ZegzugGameViewModelDelegate {
         let message = MSMessage(session: session)
         message.url = components.url!
         message.layout = layout
-        message.summaryText = gameType.name
+        message.summaryText = GameType.zegzug.name
 
         conversation?.insert(message) { error in
             if let error {

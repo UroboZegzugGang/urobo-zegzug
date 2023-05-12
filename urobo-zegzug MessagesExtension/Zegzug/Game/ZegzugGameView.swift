@@ -45,7 +45,7 @@ struct ZegzugGameView: View {
         HStack {
             Spacer()
             Button {
-                // TODO: reset current turn
+                viewModel.resetToLastSate()
             } label: {
                 Image(systemName: "arrow.counterclockwise")
             }

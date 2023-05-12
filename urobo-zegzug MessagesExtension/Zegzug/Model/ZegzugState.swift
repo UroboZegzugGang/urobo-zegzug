@@ -4,8 +4,8 @@ import Messages
 struct ZegzugState {
     // MARK: Player information
 
-    var playerOne: ZegzugPlayer?
-    var playerTwo: ZegzugPlayer?
+    var playerOne: ZegzugPlayer
+    var playerTwo: ZegzugPlayer
     var sender: ZegzugPlayer?
 
     // MARK: Game information
@@ -16,7 +16,7 @@ struct ZegzugState {
 
     var queryItems: [URLQueryItem] {
         var items = [URLQueryItem]()
-        if let playerOne, let playerTwo, let circles {
+        if let circles {
             items.append(URLQueryItem(name: URLQueryKeys.playerOne, value: playerOne.toQueryValue()))
             items.append(URLQueryItem(name: URLQueryKeys.playerTwo, value: playerTwo.toQueryValue()))
             if let sender {
@@ -57,6 +57,8 @@ struct ZegzugState {
     }
 
     init?(queryItems: [URLQueryItem]) {
+        playerOne = ZegzugPlayer(num: .first)
+        playerTwo = ZegzugPlayer(num: .second)
         numOfPebbles = DefaultValues.numOfPebbles
         rotationValue = DefaultValues.rotationValue
 
@@ -64,9 +66,9 @@ struct ZegzugState {
             guard let value = queryItem.value else { continue }
             switch queryItem.name {
             case URLQueryKeys.playerOne:
-                playerOne = ZegzugPlayer.from(queryValue: value)
+                playerOne = ZegzugPlayer.from(queryValue: value) ?? ZegzugPlayer(num: .first)
             case URLQueryKeys.playerTwo:
-                playerTwo = ZegzugPlayer.from(queryValue: value)
+                playerTwo = ZegzugPlayer.from(queryValue: value) ?? ZegzugPlayer(num: .second)
             case URLQueryKeys.sender:
                 sender = ZegzugPlayer.from(queryValue: value)
             case URLQueryKeys.circles:

@@ -36,6 +36,16 @@ class ZegzugPlayer: Codable {
         placedPebbles += 1
         areAllPebblesPlaced = placedPebbles == max
     }
+
+    func copy() -> ZegzugPlayer {
+        let player = ZegzugPlayer(num: self.num)
+        player.orangeNeighbours = orangeNeighbours
+        player.greenNeighbours = greenNeighbours
+        player.placedPebbles = placedPebbles
+        player.areAllPebblesPlaced = areAllPebblesPlaced
+
+        return player
+    }
 }
 
 extension ZegzugPlayer: Equatable {
