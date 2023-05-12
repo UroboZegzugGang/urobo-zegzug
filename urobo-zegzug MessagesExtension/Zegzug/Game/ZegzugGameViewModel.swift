@@ -127,24 +127,103 @@ final class ZegzugGameViewModel: ObservableObject {
             selectPebble(on: circle)
         case .move:
             movePebble(to: circle)
-        case .won:
-            break
-        case .lost:
-            break
+        default:
+            return
         }
         turnState = updateState()
     }
 
     private func updateState() -> TurnState {
-        // TODO: check here for winning condition
+        if didPlayerWin() {
+            //return .won
+        }
         if currentPlayer.areAllPebblesPlaced {
-            if selectedIndex == nil {
-                return .select
-            } else {
-                return .move
-            }
+//            if selectedIndex == nil {
+//                return .select
+//            } else {
+//                return .move
+//            }
         }
         return .place
+    }
+
+    private func didPlayerWin() -> Bool {
+        return countLongestOrangeLine() >= 5 || countLongestGreenLine() >= 5
+    }
+
+    private func countLongestOrangeLine() -> Int {
+        var longest = 0
+        for subarray in currentPlayer.orangeNeighbours {
+            longest = subarray.count > longest ? subarray.count : longest
+        }
+        return longest
+    }
+
+    private func countLongestGreenLine() -> Int {
+        var longest = 0
+        for subarray in currentPlayer.greenNeighbours {
+            // here are the [[ ]] arrays
+            // compactMap is needed, but only if theres no intersection
+            // check if theres an intersection
+            var numOfMultipleTrios = 0
+            for miniarray in subarray {
+                if miniarray.count > 1 {
+                    numOfMultipleTrios += 1
+                }
+            }
+
+            if numOfMultipleTrios > 1 && subarray.count > 2 {
+                // there is an intersection -> exception is if its 2 and they are the only elements
+                // start counting the elements from the beginning until we fint a multipleTrio
+                // then start again but this time the already found multipleTrio counts as 1 and we dont stop at it
+                // the next startin gposition becomes the next [] and we count again
+                // do this until we reach the end
+                var visitedTrios = [[Int]]()
+                var countedArrays = [[Int]]()
+                var startingPos = 0
+                while countedArrays.count != subarray.count {
+                    var lengthOfCurrPath = 0
+                    startingPos = countedArrays.count
+
+                    var currPos = startingPos + 1
+                    guard subarray.indices.contains(currPos) else { break }
+                    lengthOfCurrPath += subarray[startingPos].count
+
+                    if !visitedTrios.contains(subarray[startingPos]) {
+                        visitedTrios.append(subarray[startingPos])
+                    }
+
+                    while subarray.indices.contains(currPos) && (subarray[currPos].count == 1 || visitedTrios.contains(subarray[currPos])) {
+                        lengthOfCurrPath += 1
+                        currPos += 1
+                    }
+
+                    guard subarray.indices.contains(currPos)
+                    else {
+                        countedArrays.append(subarray[startingPos])
+                        visitedTrios.removeAll()
+                        longest = lengthOfCurrPath > longest ? lengthOfCurrPath : longest
+                        continue
+                    }
+
+                    lengthOfCurrPath += subarray[currPos].count
+                    visitedTrios.append(subarray[currPos])
+                    longest = lengthOfCurrPath > longest ? lengthOfCurrPath : longest
+
+                    if visitedTrios.count == subarray.count {
+                        countedArrays.append(subarray[startingPos])
+                        visitedTrios.removeAll()
+                    }
+                }
+
+            } else {
+                // no intersecion
+                longest = Array(subarray.joined()).count > longest ? Array(subarray.joined()).count : longest
+            }
+        }
+
+        print(longest)
+        return longest
     }
 
     private func placePebble(on circle: ZegzugCircle) {
@@ -159,7 +238,7 @@ final class ZegzugGameViewModel: ObservableObject {
         calculateLongestLine(for: currentPlayer)
 
         //TODO: toggle them ony after send button is pressed
-        togglePlayers()
+        //togglePlayers()
     }
 
     private func selectPebble(on circle: ZegzugCircle) {
