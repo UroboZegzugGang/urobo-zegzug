@@ -58,6 +58,7 @@ struct ZegzugGameView: View {
             // TODO: End turn and send it
         }
         .buttonStyle(.monochromeShadow)
+        .disabled(!viewModel.canSend)
         .padding(.top)
     }
 

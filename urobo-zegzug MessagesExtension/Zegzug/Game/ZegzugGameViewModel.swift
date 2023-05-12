@@ -10,6 +10,8 @@ final class ZegzugGameViewModel: ObservableObject {
     @Published var numOfPebbles: Int = 0
     @Published var selectedIndex: Int? = nil
 
+    @Published var canSend = false
+
     @Published var orangeNeighbours: [Int] = [
         0,
         25,
@@ -222,7 +224,6 @@ final class ZegzugGameViewModel: ObservableObject {
             }
         }
 
-        print(longest)
         return longest
     }
 
@@ -238,7 +239,8 @@ final class ZegzugGameViewModel: ObservableObject {
         calculateLongestLine(for: currentPlayer)
 
         //TODO: toggle them ony after send button is pressed
-        togglePlayers()
+        //togglePlayers()
+        canSend = true
     }
 
     private func selectPebble(on circle: ZegzugCircle) {
