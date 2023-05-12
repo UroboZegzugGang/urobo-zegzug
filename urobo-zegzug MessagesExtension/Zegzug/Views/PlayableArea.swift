@@ -36,7 +36,7 @@ struct PlayableArea: View {
 
     @ViewBuilder private func orangeLines(in geo: GeometryProxy) -> some View {
         Path { path in
-            path.createClosedPath(start: viewModel.circles[Constants.orangeStartIndex].center) { path in
+            path.createClosedPath(start: viewModel.circles[viewModel.orangeNeighbours.first!].center) { path in
                 path.connectLinesByIndexes(points: viewModel.circles.map { $0.center },
                                            indexes: viewModel.orangeNeighbours)
             }
