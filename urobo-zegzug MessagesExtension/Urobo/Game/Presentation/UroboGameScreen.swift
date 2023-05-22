@@ -59,20 +59,18 @@ struct UroboGameScreen: View {
     }
 
     @ViewBuilder private func scoreBar() -> some View {
-        if let playerScore = viewModel.state.playerScore, let opponentScore = viewModel.state.opponentScore {
-            HStack {
-                Text("\(playerScore)")
-                    .font(.system(size: Constants.scoreValueSize, weight: .bold))
-                Spacer()
-                Text("Score")
-                    .font(.system(size: Constants.scoreTitleSize, weight: .bold))
-                Spacer()
-                Text("\(opponentScore)")
-                    .font(.system(size: Constants.scoreValueSize, weight: .bold))
-            }
-            .padding()
-            .padding(.horizontal)
+        HStack {
+            Text("\(viewModel.state.playerScore)")
+                .font(.system(size: Constants.scoreValueSize, weight: .bold))
+            Spacer()
+            Text("Score")
+                .font(.system(size: Constants.scoreTitleSize, weight: .bold))
+            Spacer()
+            Text("\(viewModel.state.opponentScore)")
+                .font(.system(size: Constants.scoreValueSize, weight: .bold))
         }
+        .padding()
+        .padding(.horizontal)
     }
 
     @ViewBuilder private func chooseButton() -> some View {

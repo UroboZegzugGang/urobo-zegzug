@@ -26,10 +26,8 @@ final class UroboGameViewModel: ObservableObject {
     }
 
     func choosePressed() {
-        guard let calledCard = state.calledCard else {
-            return
-        }
-        if calledCard == -1 {
+        guard selectedCardNumber != nil else { return }
+        if state.calledCard == -1 {
             call()
         } else {
             answer()
@@ -37,10 +35,7 @@ final class UroboGameViewModel: ObservableObject {
     }
 
     func isCardTaken(_ card: Int) -> Bool {
-        guard let takenCards = state.takenCards else {
-            return true
-        }
-        return takenCards.contains(card)
+        state.takenCards.contains(card)
     }
 
     func playerOfCard(_ card: Int) -> UroboPlayer {
@@ -48,57 +43,43 @@ final class UroboGameViewModel: ObservableObject {
     }
 
     private func call() {
-        guard let takenCards = state.takenCards,
-              let playerScore = state.playerScore,
-              let opponentScore = state.opponentScore,
-              let currentPlayer = state.currentPlayer,
-              let selectedCardNumber else {
-            return
-        }
-
+        guard let selectedCardNumber else { return }
         let newState = UroboState(
-            playerScore: opponentScore,
-            opponentScore: playerScore,
-            takenCards: takenCards,
+            playerScore: state.opponentScore,
+            opponentScore: state.playerScore,
+            takenCards: state.takenCards,
             calledCard: selectedCardNumber,
-            currentPlayer: currentPlayer == .dark ? .light : .dark
+            currentPlayer: state.currentPlayer == .dark ? .light : .dark
         )
         delegate?.endTurn(with: newState)
     }
 
     private func answer() {
-        guard let playerScore = state.playerScore,
-              let opponentScore = state.opponentScore,
-              let currentPlayer = state.currentPlayer,
-              let selectedCardNumber,
-              let calledCard = state.calledCard else {
-            return
-        }
-        state.takenCards?.addElements(of: [selectedCardNumber, calledCard])
-        guard let takenCards = state.takenCards else { return }
+        guard let selectedCardNumber else { return }
+        state.takenCards.addElements(of: [selectedCardNumber, state.calledCard])
 
-        if let currentPlayerTakes = selectedCardNumber.isBiggerUroboCard(than: calledCard), currentPlayerTakes {
+        if let currentPlayerTakes = selectedCardNumber.isBiggerUroboCard(than: state.calledCard), currentPlayerTakes {
             let newState = UroboState(
-                playerScore: playerScore + 1,
-                opponentScore: opponentScore,
-                takenCards: takenCards,
+                playerScore: state.playerScore + 1,
+                opponentScore: state.opponentScore,
+                takenCards: state.takenCards,
                 calledCard: -1,
-                currentPlayer: currentPlayer
+                currentPlayer: state.currentPlayer
             )
             state = newState
-            if state.takenCards?.value.count == 12 {
+            if state.takenCards.value.count == 12 {
                 delegate?.endGame(with: newState)
             }
         } else {
             let newState = UroboState(
-                playerScore: opponentScore + 1,
-                opponentScore: playerScore,
-                takenCards: takenCards,
+                playerScore: state.opponentScore + 1,
+                opponentScore: state.playerScore,
+                takenCards: state.takenCards,
                 calledCard: -1,
-                currentPlayer: currentPlayer == .dark ? .light : .dark
+                currentPlayer: state.currentPlayer == .dark ? .light : .dark
             )
-            state.opponentScore? += 1
-            if state.takenCards?.value.count == 12 {
+            state.opponentScore += 1
+            if state.takenCards.value.count == 12 {
                 delegate?.endGame(with: newState)
             } else {
                 delegate?.endTurn(with: newState)

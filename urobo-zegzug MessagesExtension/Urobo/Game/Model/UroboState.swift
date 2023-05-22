@@ -2,21 +2,20 @@ import Foundation
 import Messages
 
 struct UroboState {
-    var playerScore: Int?
-    var opponentScore: Int?
-    var takenCards: TakenCards?
-    var calledCard: Int?
-    var currentPlayer: UroboPlayer?
+    var playerScore: Int
+    var opponentScore: Int
+    var takenCards: TakenCards
+    var calledCard: Int
+    var currentPlayer: UroboPlayer
 
     var queryItems: [URLQueryItem] {
-        var items: [URLQueryItem] = []
-        if let playerScore, let opponentScore, let takenCards, let currentPlayer {
-            items.append(URLQueryItem(name: URLQueryKeys.currentPlayerScore, value: String(playerScore)))
-            items.append(URLQueryItem(name: URLQueryKeys.otherPlayerScore, value: String(opponentScore)))
-            items.append(URLQueryItem(name: URLQueryKeys.takenCards, value: takenCards.toCommaSeparatedString()))
-            items.append(URLQueryItem(name: URLQueryKeys.calledCard, value: String(calledCard ?? -1)))
-            items.append(URLQueryItem(name: URLQueryKeys.currentPlayer, value: currentPlayer.rawValue))
-        }
+        var items: [URLQueryItem] = [
+            URLQueryItem(name: URLQueryKeys.currentPlayerScore, value: String(playerScore)),
+            URLQueryItem(name: URLQueryKeys.otherPlayerScore, value: String(opponentScore)),
+            URLQueryItem(name: URLQueryKeys.takenCards, value: takenCards.toCommaSeparatedString()),
+            URLQueryItem(name: URLQueryKeys.calledCard, value: String(calledCard)),
+            URLQueryItem(name: URLQueryKeys.currentPlayer, value: currentPlayer.rawValue)
+        ]
         return items
     }
 
@@ -43,19 +42,20 @@ struct UroboState {
     }
 
     init?(queryItems: [URLQueryItem]) {
+        self.init()
         for queryItem in queryItems {
             guard let value = queryItem.value else { continue }
             switch queryItem.name {
             case URLQueryKeys.currentPlayerScore:
-                self.playerScore = Int(value)
+                self.playerScore = Int(value) ?? .zero
             case URLQueryKeys.otherPlayerScore:
-                self.opponentScore = Int(value)
+                self.opponentScore = Int(value) ?? .zero
             case URLQueryKeys.takenCards:
                 self.takenCards = TakenCards.fromCommaSeparatedString(value)
             case URLQueryKeys.calledCard:
-                self.calledCard = Int(value)
+                self.calledCard = Int(value) ?? -1
             case URLQueryKeys.currentPlayer:
-                self.currentPlayer = UroboPlayer(rawValue: value)
+                self.currentPlayer = UroboPlayer(rawValue: value) ?? .dark
             default: continue
             }
         }
