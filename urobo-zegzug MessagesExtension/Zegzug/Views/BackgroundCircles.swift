@@ -6,10 +6,10 @@ struct BackgroundCircles: View {
     var body: some View {
         GeometryReader { geo in
             Circle(center: middle(of: geo), diameter: smallCircleDiameter(in: geo))
-                .stroke(style: StrokeStyle(lineWidth: Constants.lineWidth))
+                .stroke(.black, style: StrokeStyle(lineWidth: Constants.lineWidth))
 
             Circle(center: middle(of: geo), diameter: bigCircleDiameter(in: geo))
-                .stroke(style: StrokeStyle(lineWidth: Constants.lineWidth))
+                .stroke(.black, style: StrokeStyle(lineWidth: Constants.lineWidth))
                 .onAppear {
                     height = geo.size.width
                 }

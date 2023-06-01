@@ -5,6 +5,7 @@ import SwiftUI
 class MessagesViewController: MSMessagesAppViewController {
     var controller = UIViewController()
     var gameType: GameType = .urobo
+    var zegzugMenuShowing = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -12,17 +13,26 @@ class MessagesViewController: MSMessagesAppViewController {
     }
 
     private func presentVC(for conversation: MSConversation, with presentationStyle: MSMessagesAppPresentationStyle) {
+        let gameType = GameType(rawValue: conversation.selectedMessage?.summaryText ?? "") ?? gameType
         if presentationStyle == .compact {
-            controller = instantiateMenuVC()
+            if gameType == .zegzug && zegzugMenuShowing {
+                controller = instantiateZegzugMenuVC()
+            } else {
+                controller = instantiateMenuVC()
+            }
         } else {
             switch gameType {
             case .urobo:
                 controller = instantiateUroboVC()
             case .zegzug:
-                controller = instantiateZegzugVC()
+                controller = instantiateZegzugVC(with: ZegzugState(message: conversation.selectedMessage) ?? ZegzugState())
             }
         }
 
+        show(controller: controller)
+    }
+
+    private func show(controller: UIViewController) {
         for child in children {
             child.willMove(toParent: nil)
             child.view.removeFromSuperview()
@@ -53,9 +63,20 @@ class MessagesViewController: MSMessagesAppViewController {
         return UIHostingController(rootView: UroboGameScreen(viewModel: viewModel))
     }
 
-    private func instantiateZegzugVC() -> UIViewController {
-        let viewModel = ZegzugGameViewModel()
+    private func instantiateZegzugVC(with state: ZegzugState) -> UIViewController {
+        let viewModel = ZegzugGameViewModel(state: state)
+        viewModel.delegate = self
         return UIHostingController(rootView: ZegzugGameView(viewModel: viewModel))
+    }
+
+    private func instantiateZegzugMenuVC() -> UIViewController {
+        let viewModel = ZegzugGameViewModel(state: ZegzugState())
+        viewModel.delegate = self
+        let menu = ZegzugMenu(viewModel: viewModel) { [weak self] in
+            guard let self else { return }
+            show(controller: instantiateMenuVC())
+        }
+        return UIHostingController(rootView: menu)
     }
 }
 
@@ -122,7 +143,43 @@ extension MessagesViewController: MenuViewModelDelegate {
     }
 
     func startZegZug() {
-        self.gameType = .zegzug
-        requestPresentationStyle(.expanded)
+        gameType = .zegzug
+        zegzugMenuShowing = true
+
+        controller = instantiateZegzugMenuVC()
+        show(controller: controller)
+    }
+}
+
+extension MessagesViewController: ZegzugGameViewModelDelegate {
+    func endTurn(with state: ZegzugState, isInitial: Bool) {
+        dismiss()
+
+        let conversation = activeConversation
+        let session = conversation?.selectedMessage?.session ?? MSSession()
+
+        var components = URLComponents()
+        components.queryItems = state.queryItems
+
+        let layout = MSMessageTemplateLayout()
+        // TODO: set layout.image
+        if state.didWin {
+            layout.caption = "\(state.sender?.num.rawValue.capitalized ?? "A") player won!"
+        } else if isInitial {
+            layout.caption = "Let's play ZegZug!"
+        } else {
+            layout.caption = "Opponent moved. Your turn!"
+        }
+
+        let message = MSMessage(session: session)
+        message.url = components.url!
+        message.layout = layout
+        message.summaryText = GameType.zegzug.name
+
+        conversation?.insert(message) { error in
+            if let error {
+                print("Error sending message: \(error)")
+            }
+        }
     }
 }

@@ -6,11 +6,13 @@ struct ZegzugGameView: View {
     var body: some View {
         VStack {
             Spacer()
+            turnTitle()
             resetButton()
             BackgroundCircles()
                 .background {
                     PlayableArea(viewModel: viewModel)
                 }
+                .rotationEffect(Angle(degrees: -15))
             Spacer()
             sendButton()
             infoButton()
@@ -27,23 +29,37 @@ struct ZegzugGameView: View {
         }
     }
 
+    @ViewBuilder private func turnTitle() -> some View {
+        VStack(alignment: .leading) {
+            Text(viewModel.turnState.title)
+                .font(.largeTitle)
+                .bold()
+            if viewModel.turnState == .place {
+                Text("Placed: \(viewModel.placedPebbles) out of \(Int(viewModel.numOfPebbles))")
+                    .font(.subheadline)
+            }
+        }
+    }
+
     @ViewBuilder private func resetButton() -> some View {
         HStack {
             Spacer()
             Button {
-                // TODO: reset current turn
+                viewModel.resetToLastSate()
             } label: {
                 Image(systemName: "arrow.counterclockwise")
             }
             .buttonStyle(.circular)
+            .disabled([.won, .lost].contains(viewModel.turnState))
         }
     }
 
     @ViewBuilder private func sendButton() -> some View {
         Button("Send") {
-            // TODO: End turn and send it
+            viewModel.sendAction()
         }
         .buttonStyle(.monochromeShadow)
+        .disabled(!viewModel.canSend)
         .padding(.top)
     }
 

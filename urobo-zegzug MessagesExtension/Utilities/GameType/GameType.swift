@@ -1,7 +1,8 @@
 import Foundation
 
-enum GameType {
-    case urobo, zegzug
+enum GameType: String {
+    case urobo = "Urobo"
+    case zegzug = "ZegZug"
 
     var name: String {
         switch self {
