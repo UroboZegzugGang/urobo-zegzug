@@ -22,8 +22,9 @@ extension Path {
     }
 
     mutating func connectLinesByIndexes(start: Int = 0, end: Int = -1, points: [CGPoint], indexes: [Int]) {
+        guard let first = indexes.first else { return }
         let endIndex = end == -1 ? indexes.count : end
-        self.move(to: points[indexes.first!])
+        self.move(to: points[first])
         for i in start ..< endIndex {
             let lineIndex = indexes[i]
             self.addLine(to: points[lineIndex])

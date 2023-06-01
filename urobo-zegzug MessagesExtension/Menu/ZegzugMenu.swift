@@ -48,7 +48,7 @@ struct ZegzugMenu: View {
         HStack(spacing: 20) {
             Text("Board rotation:")
                 .fontWeight(.bold)
-            Picker("Asd", selection: $rotation) {
+            Picker("Rotation", selection: $rotation) {
                 Text("Random").tag(0)
                 Text("Custom").tag(1)
             }
