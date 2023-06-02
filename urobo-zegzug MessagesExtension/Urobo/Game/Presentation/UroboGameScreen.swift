@@ -9,7 +9,11 @@ struct UroboGameScreen: View {
             Spacer()
             uroboTable()
             Spacer()
-            chooseButton()
+            if viewModel.gameWinner != nil {
+                gameEndLabel()
+            } else {
+                chooseButton()
+            }
             helpButton()
         }
         .background {
@@ -54,7 +58,6 @@ struct UroboGameScreen: View {
                 .onTapGesture {
                     viewModel.cardTapped(number)
                 }
-                .overlay { Text(String(number)) }
         }
     }
 
@@ -79,6 +82,13 @@ struct UroboGameScreen: View {
         }
         .buttonStyle(.monochromeShadow)
         .disabled(viewModel.selectedCardNumber == nil)
+    }
+
+    @ViewBuilder private func gameEndLabel() -> some View {
+        if let winner = viewModel.gameWinner {
+            Text(winner == viewModel.state.currentPlayer ? "You won!" : "You lost!")
+                .font(.system(size: Constants.gameEndLabelSize, weight: .bold))
+        }
     }
 
     @ViewBuilder private func helpButton() -> some View {
@@ -117,5 +127,6 @@ extension UroboGameScreen {
         static let selectAnimationDuration: CGFloat = 0.1
         static let scoreTitleSize: CGFloat = 24
         static let scoreValueSize: CGFloat = 64
+        static let gameEndLabelSize: CGFloat = 22
     }
 }

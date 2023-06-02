@@ -153,10 +153,6 @@ extension MessagesViewController: UroboGameViewModelDelegate {
             }
         }
     }
-
-    func endGame(with state: UroboState) {
-        // TODO: implement
-    }
 }
 
 extension MessagesViewController {

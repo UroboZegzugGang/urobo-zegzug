@@ -5,6 +5,8 @@ enum UroboPlayer: String {
         UroboPlayer(rawValue: string)
     }
 
+    var opposite: UroboPlayer { self == .dark ? .light : .dark }
+
     case light = "light"
     case dark = "dark"
 }

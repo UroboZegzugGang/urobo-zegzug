@@ -7,6 +7,7 @@ struct UroboState {
     var takenCards: TakenCards
     var calledCard: Int
     var currentPlayer: UroboPlayer
+    var winner: UroboPlayer?
 
     var queryItems: [URLQueryItem] {
         var items: [URLQueryItem] = [
@@ -16,6 +17,9 @@ struct UroboState {
             URLQueryItem(name: URLQueryKeys.calledCard, value: String(calledCard)),
             URLQueryItem(name: URLQueryKeys.currentPlayer, value: currentPlayer.rawValue)
         ]
+        if let winner {
+            items.append(URLQueryItem(name: URLQueryKeys.winner, value: winner.rawValue))
+        }
         return items
     }
 
@@ -25,6 +29,7 @@ struct UroboState {
         takenCards = TakenCards(value: [])
         calledCard = -1
         currentPlayer = .dark
+        winner = nil
     }
 
     init(
@@ -32,13 +37,15 @@ struct UroboState {
         opponentScore: Int,
         takenCards: TakenCards,
         calledCard: Int,
-        currentPlayer: UroboPlayer
+        currentPlayer: UroboPlayer,
+        winner: UroboPlayer?
     ) {
         self.playerScore = playerScore
         self.opponentScore = opponentScore
         self.takenCards = takenCards
         self.calledCard = calledCard
         self.currentPlayer = currentPlayer
+        self.winner = winner
     }
 
     init?(queryItems: [URLQueryItem]) {
@@ -56,6 +63,8 @@ struct UroboState {
                 self.calledCard = Int(value) ?? -1
             case URLQueryKeys.currentPlayer:
                 self.currentPlayer = UroboPlayer(rawValue: value) ?? .dark
+            case URLQueryKeys.winner:
+                self.winner = UroboPlayer(rawValue: value)
             default: continue
             }
         }
@@ -79,6 +88,8 @@ extension UroboState {
         }
 
         var value: Set<Int>
+
+        var count: Int { value.count }
 
         init(value: Set<Int>) {
             self.value = value
@@ -106,5 +117,6 @@ extension UroboState {
         static let takenCards = "takencards"
         static let calledCard = "calledcard"
         static let currentPlayer = "currentplayer"
+        static let winner = "winner"
     }
 }

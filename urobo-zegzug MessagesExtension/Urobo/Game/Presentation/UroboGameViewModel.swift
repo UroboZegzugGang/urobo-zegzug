@@ -2,7 +2,6 @@ import Foundation
 
 protocol UroboGameViewModelDelegate {
     func endTurn(with state: UroboState)
-    func endGame(with state: UroboState)
 }
 
 final class UroboGameViewModel: ObservableObject {
@@ -11,13 +10,15 @@ final class UroboGameViewModel: ObservableObject {
     @Published private(set) var state: UroboState
     @Published var helpShowing: Bool = false
     @Published var selectedCardNumber: Int?
+    @Published var gameWinner: UroboPlayer?
 
     init(state: UroboState) {
         self.state = state
+        self.gameWinner = state.winner
     }
 
     func cardTapped(_ number: Int) {
-        guard playerOfCard(number) == state.currentPlayer else { return }
+        guard playerOfCard(number) == state.currentPlayer, gameWinner == nil else { return }
         if selectedCardNumber == number {
             selectedCardNumber = nil
         } else {
@@ -26,7 +27,7 @@ final class UroboGameViewModel: ObservableObject {
     }
 
     func choosePressed() {
-        guard selectedCardNumber != nil else { return }
+        guard selectedCardNumber != nil, gameWinner == nil else { return }
         if state.calledCard == -1 {
             call()
         } else {
@@ -49,7 +50,8 @@ final class UroboGameViewModel: ObservableObject {
             opponentScore: state.playerScore,
             takenCards: state.takenCards,
             calledCard: selectedCardNumber,
-            currentPlayer: state.currentPlayer == .dark ? .light : .dark
+            currentPlayer: state.currentPlayer.opposite,
+            winner: nil
         )
         delegate?.endTurn(with: newState)
     }
@@ -59,31 +61,44 @@ final class UroboGameViewModel: ObservableObject {
         state.takenCards.addElements(of: [selectedCardNumber, state.calledCard])
 
         if let currentPlayerTakes = selectedCardNumber.isBiggerUroboCard(than: state.calledCard), currentPlayerTakes {
-            let newState = UroboState(
-                playerScore: state.playerScore + 1,
-                opponentScore: state.opponentScore,
-                takenCards: state.takenCards,
-                calledCard: -1,
-                currentPlayer: state.currentPlayer
-            )
-            state = newState
-            if state.takenCards.value.count == 12 {
-                delegate?.endGame(with: newState)
+            let playerScore = state.playerScore + 1
+            let opponentScore = state.opponentScore
+            var winner: UroboPlayer?
+            if playerScore >= 4 || (playerScore == 3 && opponentScore == 3) {
+                winner = state.currentPlayer
             }
-        } else {
-            let newState = UroboState(
-                playerScore: state.opponentScore + 1,
-                opponentScore: state.playerScore,
-                takenCards: state.takenCards,
-                calledCard: -1,
-                currentPlayer: state.currentPlayer == .dark ? .light : .dark
-            )
-            state.opponentScore += 1
-            if state.takenCards.value.count == 12 {
-                delegate?.endGame(with: newState)
+
+            if let winner {
+                delegate?.endTurn(with: createNewStateOnAnswer(playerScore: playerScore, opponentScore: opponentScore, switchingPlayers: true, winner: winner))
             } else {
-                delegate?.endTurn(with: newState)
+                state = createNewStateOnAnswer(playerScore: playerScore, opponentScore: opponentScore)
             }
+            self.selectedCardNumber = nil
+        } else {
+            let playerScore = state.playerScore
+            let opponentScore = state.opponentScore + 1
+            var winner: UroboPlayer?
+            if opponentScore >= 4 || (opponentScore == 3 && playerScore == 3) {
+                winner = state.currentPlayer.opposite
+            }
+            state.opponentScore = opponentScore
+            delegate?.endTurn(with: createNewStateOnAnswer(playerScore: playerScore, opponentScore: opponentScore, switchingPlayers: true, winner: winner))
         }
+    }
+
+    private func createNewStateOnAnswer(
+        playerScore: Int,
+        opponentScore: Int,
+        switchingPlayers: Bool = false,
+        winner: UroboPlayer? = nil
+    ) -> UroboState {
+        return UroboState(
+            playerScore: switchingPlayers ? opponentScore : playerScore,
+            opponentScore: switchingPlayers ? playerScore : opponentScore,
+            takenCards: state.takenCards,
+            calledCard: -1,
+            currentPlayer: switchingPlayers ? state.currentPlayer.opposite : state.currentPlayer,
+            winner: winner
+        )
     }
 }
