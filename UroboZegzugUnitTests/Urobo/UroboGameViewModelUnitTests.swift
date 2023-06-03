@@ -16,7 +16,8 @@ final class UroboGameViewModelUnitTests: XCTestCase {
                 opponentScore: .zero,
                 takenCards: .init(value: []),
                 calledCard: -1,
-                currentPlayer: .dark
+                currentPlayer: .dark,
+                winner: nil
             )
         )
         viewModel.selectedCardNumber = nil
@@ -32,7 +33,8 @@ final class UroboGameViewModelUnitTests: XCTestCase {
                 opponentScore: .zero,
                 takenCards: .init(value: []),
                 calledCard: -1,
-                currentPlayer: .dark
+                currentPlayer: .dark,
+                winner: nil
             )
         )
         viewModel.selectedCardNumber = 2
@@ -47,7 +49,8 @@ final class UroboGameViewModelUnitTests: XCTestCase {
                 opponentScore: .zero,
                 takenCards: .init(value: []),
                 calledCard: -1,
-                currentPlayer: .dark
+                currentPlayer: .dark,
+                winner: nil
             )
         )
         viewModel.selectedCardNumber = nil
@@ -62,7 +65,8 @@ final class UroboGameViewModelUnitTests: XCTestCase {
                 opponentScore: .zero,
                 takenCards: .init(value: []),
                 calledCard: 2,
-                currentPlayer: .light
+                currentPlayer: .light,
+                winner: nil
             )
         )
         viewModel.selectedCardNumber = 3
@@ -78,7 +82,8 @@ final class UroboGameViewModelUnitTests: XCTestCase {
                 opponentScore: .zero,
                 takenCards: .init(value: []),
                 calledCard: 2,
-                currentPlayer: .light
+                currentPlayer: .light,
+                winner: nil
             )
         )
         viewModel.selectedCardNumber = 3
@@ -94,7 +99,8 @@ final class UroboGameViewModelUnitTests: XCTestCase {
                 opponentScore: .zero,
                 takenCards: .init(value: []),
                 calledCard: 2,
-                currentPlayer: .light
+                currentPlayer: .light,
+                winner: nil
             )
         )
         viewModel.selectedCardNumber = 3
